@@ -1,0 +1,185 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="16959F05-EBAC-E1BE-1ED3-2DBA9C3A1E50" name="Offer">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:25:57 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="OfferId" id="A097F73E-4D3E-F0B2-1448-83F0888D3322">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:26:04 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Title" id="CD145C57-640C-6238-0E38-404BB11C7AB5">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:26:19 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="UserId" id="21F1D72F-D5DF-C593-EF46-C6D09C1E416B">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:26:43 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Description" id="7F3DAA06-EEBE-7063-D3F6-D753C5441078">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:27:13 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="CategoryId" id="5691E1DF-60BA-D156-3DDA-C790732A83C9">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:27:38 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="CreationDate" id="D186CE69-A89E-0B44-E32F-E319DDFD5130">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:27:56 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="LastModificationDate" id="34EBFFAA-9102-FBED-E385-69455EBDC91C">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:28:42 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="ExpirationDate" id="D8B59397-95AD-5B6A-EC49-7BD4ABE8048A">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:29:06 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="ViewCounter" id="26A5BF93-ACAD-4BEA-B13F-3D060BF8B9C8">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:29:26 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Wage" id="6E2EFD0E-DD52-9741-8E41-4A668545D531">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:29:54 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="UserId1" id="C503715E-9388-030D-C185-BCC3AD508A0B">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:30:56 UTC</createdTime>
+<generatorID>E6F79AE8-13EC-B82A-21C6-7A22A1F66773</generatorID>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<referedAttribute>05B69BBA-63B4-07EE-3D68-A9AB874918CE</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="CategoryId1" id="0C37456B-5857-991C-C01A-27FF91229663">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:33:12 UTC</createdTime>
+<generatorID>6A151B17-4FBA-2E89-42D6-E7F99569891A</generatorID>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<referedAttribute>28B112A1-95EB-8EB4-CBAE-AF9795ACB81C</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="8EE7D5FA-B3F0-ADF8-D7C1-854138FBAF53" name="Offer PK">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:26:13 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>A097F73E-4D3E-F0B2-1448-83F0888D3322</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

@@ -1,0 +1,97 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="C3F0FAEC-836A-1277-5EDB-097E5523BE4A" name="MessageReport">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:47:40 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="ReportId" id="581C20CD-E849-184F-44F0-548980F4949A">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:47:47 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="MessageId" id="E8C66867-0804-820C-1A01-C3A88B825498">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:48:10 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="ReasonId" id="2F550384-5A25-435E-429A-974F2DEE86AA">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:48:19 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="MessageId1" id="7BDB5365-21AD-1624-B300-EEB074862721">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:48:51 UTC</createdTime>
+<generatorID>69D3CD56-5448-766A-9ABE-05E9B1B8F88E</generatorID>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<referedAttribute>63CBA511-C86A-213D-2EC4-EFA85CDB9298</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="ReasonId1" id="FF32B186-FB95-EA48-3FE4-5B3635ADC59A">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:50:14 UTC</createdTime>
+<generatorID>53B44AB2-0CBB-FD94-FFEF-4A5BC44ABA9F</generatorID>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<referedAttribute>94D3924B-4BAC-E597-56B3-85736A011544</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="1B492236-119E-DA9C-0937-09AB67D8D0D4" name="MessageReport PK">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:48:09 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>581C20CD-E849-184F-44F0-548980F4949A</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>
