@@ -1,0 +1,86 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="79ECE37E-AA66-65A3-FF62-06E388F9E870" name="PermissionUser">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:51:38 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="PermissionId" id="ABE22CEA-FE2E-4A4A-CC4E-2B2F449EAD74">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:51:46 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="UserId" id="592A28E2-AE2C-E965-4CA4-9099D66D5395">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:51:58 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="UserId1" id="7D2EE77C-0E0E-109A-2175-62D83F3F0F68">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:52:20 UTC</createdTime>
+<generatorID>52B4C679-28E7-92DB-F586-1E9CBCF18FB6</generatorID>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<referedAttribute>05B69BBA-63B4-07EE-3D68-A9AB874918CE</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="PermissionId1" id="3A2D959F-394E-703E-A3E1-3C79CE2A7A15">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:52:48 UTC</createdTime>
+<generatorID>D19C0284-4630-9996-E169-7BC46C5585AF</generatorID>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<referedAttribute>00C2F727-3EAD-5888-2E14-457D94A23E12</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="AA83FEEC-3BFD-6D0A-645F-F81F908F0C98" name="PermissionUser PK">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:51:56 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>ABE22CEA-FE2E-4A4A-CC4E-2B2F449EAD74</attributeRef>
+<attributeRef>592A28E2-AE2C-E965-4CA4-9099D66D5395</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>
