@@ -5,13 +5,13 @@
 <div class="container">
     <h1> Zaloguj się! </h1>
 
-    <input type="text" placeholder="Adres email" name="email" required> </br> </br>
+    <input type="email" placeholder="Adres email" name="email" required> </br> </br>
 
 
     <input type="password" placeholder="Hasło" name="password" required> </br> </br>
 
     <button type="submit">Zatwierdź</button> </br> </br>
 
-    <a href="">Nie pamiętam hasła</a> </br> </br>
-    <a href="">Rejestracja</a> </br> </br>
+    <a class="nav-link" asp-area="" asp-controller="User">Nie pamiętam hasła</a> 
+    <a class="nav-link" asp-area="" asp-controller="User" asp-action="Register">Rejestracja</a> 
 </div>
