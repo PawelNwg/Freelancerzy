@@ -2,17 +2,43 @@
     ViewData["Title"] = "Register";
 }
 
-<div class="container">
-    <h1> Zarejestruj się! </h1>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#show_password').hover(function show() {
+                $('#txtPassword').attr('type', 'text');
+                $('.icon').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+            },
+                function () {
+                    $('#txtPassword').attr('type', 'password');
+                    $('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+                });
+        });  
+    </script>
+</head>
+<form method="post" asp-controller="User" asp-action="Login">
+    <div class="container">
+        <h1> Zarejestruj się! </h1>
 
-    <input type="text" placeholder="Nazwa użytkownika" name="name" required> </br> </br>
-    
-    <input type="email" placeholder="Adres email" name="email" required> </br> </br>
+        <input type="text" placeholder="Nazwa użytkownika" name="name" required> </br> </br>
 
+        <input type="email" placeholder="Adres email" name="email" required> </br> </br>
 
-    <input type="password" placeholder="Hasło" name="password" required> <input type="checkbox" onclick="myFunction()">Pokaż hasło</br> </br>
+        <div class="input-group">
+            <input id="txtPassword" type="password" placeholder="Hasło" name="password" required>
+            <div class="input-group-append">
+                <button id="show_password" class="btn btn-primary" type="button">
+                    <span class="fa fa-eye-slash icon"></span>
+                </button>
+            </div>
+        </div>
+        </br>
+        <button type="submit">Zatwierdź</button> </br> </br>
 
-    <button type="submit">Zatwierdź</button> </br> </br>
+        <label>Cieszymy się, że dołączasz do naszej społeczności!</label>
 
-    <label >Cieszymy się, że dołączasz do naszej społeczności!</label>
-</div>
+    </div>
+</form>
