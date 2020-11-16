@@ -1,0 +1,55 @@
+.gold{
+    background-color: red;
+    color: goldenrod;
+}
+
+.frontImage {
+    filter: brightness(100%);
+    /* filter: saturate(70%); */
+    background: #90918e;
+    background: -webkit-linear-gradient(rgba(135, 135, 134, 0.4), rgba(83, 84, 83, 0.9)), url("front.jpg");
+    /* background-image:url('front.jpg');  */
+    /* Set a specific height */
+    height: 600px;
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* overflow: hidden; */
+    /* background: #C33764;  fallback colour. Make sure this is just one solid colour. */
+    /* background: -webkit-linear-gradient(rgba(29, 38, 113, 0.8), rgba(195, 55, 100, 0.8)), url("https://bit.ly/2rlzaXi"); */
+    /* background: linear-gradient(rgba(29, 38, 113, 0.8), rgba(195, 55, 100, 0.8)), url("https://bit.ly/2rlzaXi"); The least supported option. */
+}
+
+.swipe
+{
+    overflow:auto;
+    white-space:nowrap;
+}
+.vertical-center {
+    margin: 5%;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  .parallax {
+    /* The image used */
+   
+  }
+
+
+  span{
+    font-size:120%;   
+    font-weight: 600;
+    font-kerning: auto;
+
+  }
+
+
+.icon {
+    width: 25%;
+    margin: 20px 2px 0px 2px;
+    /* margin-top: 5px; */
+}
