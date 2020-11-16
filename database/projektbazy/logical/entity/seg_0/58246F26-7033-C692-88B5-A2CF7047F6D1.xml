@@ -1,0 +1,71 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="58246F26-7033-C692-88B5-A2CF7047F6D1" name="Credentials">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:19:01 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="UserId" id="66F47091-6930-FE52-F9BD-61053FF83121">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:19:30 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Password" id="65265548-67FB-F1B8-D0F4-364AC2DE4679">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:19:52 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="UserId1" id="4F6F0D89-E264-63D7-F7F3-93BC37471AB4">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:20:23 UTC</createdTime>
+<generatorID>48AAFC5C-F466-E03E-A898-7ACB61568FDC</generatorID>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<referedAttribute>05B69BBA-63B4-07EE-3D68-A9AB874918CE</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="FBCC4BAC-41AD-2F6A-2D99-F31DABB27A68" name="Credentials PK">
+<createdBy>marci</createdBy>
+<createdTime>2020-11-06 13:19:40 UTC</createdTime>
+<ownerDesignName>projektbazy</ownerDesignName>
+<engineerTo>
+<item key="BC3F4CB6-DAC4-5AC9-78BD-AC037B3991B9" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>66F47091-6930-FE52-F9BD-61053FF83121</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>
