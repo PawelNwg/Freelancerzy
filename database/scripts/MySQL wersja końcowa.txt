@@ -1,0 +1,190 @@
+
+
+
+CREATE TABLE category 
+    ( categoryid INT NOT NULL AUTO_INCREMENT PRIMARY key, 
+     CategoryName VARCHAR(30) NOT null ); 
+
+ 
+
+CREATE TABLE credentials (
+    userid     INT NOT NULL,
+    password   VARCHAR(200) NOT NULL
+);
+
+
+CREATE unique index credentials__idx ON credentials ( userid ) ;
+
+ALTER TABLE credentials ADD constraint credentials_pk PRIMARY KEY (UserId)
+    ;  
+
+CREATE TABLE message 
+    ( messageid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+     UserFromId INT NOT NULL , 
+     UserToId INT NOT NULL , 
+     Date DATETIME NOT NULL , 
+     Content VARCHAR (250) NOT NULL , 
+     Status VARCHAR (20) NOT null ); 
+
+  
+
+CREATE TABLE messagereport 
+    ( reportid INT NOT NULL AUTO_INCREMENT PRIMARY KEY , 
+     MessageId INT NOT NULL , 
+     ReasonId INT NOT null ); 
+
+ 
+
+CREATE TABLE offer 
+    ( offerid INT NOT NULL AUTO_INCREMENT  PRIMARY KEY, 
+     UserId INT NOT NULL , 
+     CategoryId INT NOT NULL , 
+     Title VARCHAR (40) NOT NULL , 
+     Description VARCHAR (250) , 
+     CreationDate DATETIME(3) NOT NULL , 
+     LastModificationDate DATETIME(3) , 
+     ExpirationDate DATETIME(3) NOT NULL , 
+     ViewCounter INT NOT null, wage DECIMAL 
+    ); 
+
+
+
+CREATE TABLE permission 
+    ( permissionid INT NOT NULL AUTO_INCREMENT  PRIMARY KEY, 
+     Name VARCHAR (25) NOT null ); 
+
+
+
+CREATE TABLE permissionuser (
+    userid         INT NOT NULL,
+    permissionid   INT NOT NULL
+);
+
+
+ALTER TABLE permissionuser ADD constraint permissionuser_pk PRIMARY KEY (UserId, PermissionId)
+    ;  
+
+CREATE TABLE reason 
+    ( reasonid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+     Name VARCHAR (20) NOT null,
+    description VARCHAR ( 150 )
+);
+
+ 
+
+CREATE TABLE PageUser 
+    ( userid INT NOT NULL AUTO_INCREMENT PRIMARY KEY , 
+     TypeId INT NOT NULL , 
+     FirstName VARCHAR (20) NOT NULL , 
+     Surname VARCHAR (30) NOT NULL , 
+     EmailAddress VARCHAR (40) NOT null, phonenumber INT 
+    ); 
+
+
+ 
+ALTER TABLE PageUser add constraint user__unv2 unique ( emailaddress );  
+
+CREATE TABLE useraddress 
+    (
+    userid   INT NOT NULL,
+    street   VARCHAR(30) NOT NULL, 
+     Number INT NOT NULL , 
+     ApartmentNumber INT , 
+     ZipCode VARCHAR (6) , 
+     City VARCHAR (30) NOT NULL 
+    );
+
+    
+
+
+CREATE unique  index useraddress__idx ON useraddress ( userid ) ;
+
+ALTER TABLE useraddress ADD constraint useraddress_pk PRIMARY KEY (UserId)
+    ;  
+
+CREATE TABLE usertype 
+    ( typeid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+     Name VARCHAR (20) NOT null ); 
+
+
+
+ALTER TABLE credentials ADD CONSTRAINT credentials_user_fk FOREIGN KEY ( userid )
+    REFERENCES PageUser 
+    ( 
+     UserId 
+    ) 
+    ON DELETE CASCADE 
+    ON UPDATE no action ;
+
+ALTER TABLE message ADD CONSTRAINT message_user_fk FOREIGN KEY ( userfromid )
+    REFERENCES PageUser
+    ( 
+     UserId 
+    ) 
+    ON DELETE NO ACTION 
+    ON UPDATE no action ;
+
+ALTER TABLE message ADD CONSTRAINT message_user_fkv2 FOREIGN KEY ( usertoid )
+    REFERENCES PageUser 
+    ( 
+     UserId 
+    ) 
+    ON DELETE NO ACTION 
+    ON UPDATE no action ;
+
+ALTER TABLE messagereport
+    ADD CONSTRAINT messagereport_message_fk FOREIGN KEY ( messageid )
+        REFERENCES message ( messageid )
+ON DELETE NO ACTION 
+    ON UPDATE no action;  
+
+ALTER TABLE messagereport
+    ADD CONSTRAINT messagereport_reason_fk FOREIGN KEY ( reasonid )
+        REFERENCES reason ( reasonid )
+ON DELETE NO ACTION 
+    ON UPDATE no action;  
+
+ALTER TABLE offer
+    ADD CONSTRAINT offer_category_fk FOREIGN KEY ( categoryid )
+        REFERENCES category ( categoryid )
+ON DELETE NO ACTION 
+    ON UPDATE no action;  
+
+ALTER TABLE offer ADD CONSTRAINT offer_user_fk FOREIGN KEY ( userid )
+    REFERENCES PageUser 
+    ( 
+     UserId 
+    ) 
+    ON DELETE CASCADE 
+    ON UPDATE no action ;
+
+ALTER TABLE permissionuser
+    ADD CONSTRAINT permissionuser_permission_fk FOREIGN KEY ( permissionid )
+        REFERENCES permission ( permissionid )
+ON DELETE NO ACTION 
+    ON UPDATE no action;  
+
+ALTER TABLE PermissionUser ADD CONSTRAINT permissionuser_user_fk FOREIGN KEY ( userid )
+    REFERENCES PageUser
+    ( 
+     UserId 
+    ) 
+    ON DELETE NO ACTION 
+    ON UPDATE no action ;
+
+ALTER TABLE PageUser
+    ADD CONSTRAINT user_usertype_fk FOREIGN KEY ( typeid )
+        REFERENCES usertype ( typeid )
+ON DELETE NO ACTION 
+    ON UPDATE no action;  
+
+ALTER TABLE useraddress ADD CONSTRAINT useraddress_user_fk FOREIGN KEY ( userid )
+    REFERENCES ""User()"" 
+    ( 
+     UserId 
+    ) 
+    ON DELETE CASCADE 
+    ON UPDATE no action ;
+
+
+
