@@ -4,17 +4,16 @@
 
 <form method="post" asp-controller="User" asp-action="Login">
     <div class="container">
-        <h1> Zarejestruj się! </h1>
+        <h1 style="margin: 10px;">Zarejestruj się!</h1>
 
         <input type="text" placeholder="Nazwa użytkownika" name="name" required> </br> </br>
 
         <input type="email" placeholder="Adres email" name="email" required> </br> </br>
 
-        <div class="input-group">
+        <div class="input-group align-items-center">
             <input id="txtPassword" type="password" placeholder="Hasło" name="password" required>
-            <div class="input-group-append">
-                <button id="show_password" class="btn btn-primary" type="button">
-                    <span class="fa fa-eye-slash icon"></span>
+            <div class="input-group-append align-items-center">
+                <button id="show_password" class="fa fa-eye-slash btn btn-primary btn-sm align-items-center" type="button">
                 </button>
             </div>
         </div>
