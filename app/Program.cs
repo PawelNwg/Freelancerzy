@@ -10,7 +10,8 @@ using Microsoft.Extensions.Logging;
 namespace Freelancerzy
 {
     public class Program
-    {
+    {   
+        //test
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();

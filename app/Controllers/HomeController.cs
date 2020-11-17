@@ -18,6 +18,11 @@ namespace app.Controllers
             _logger = logger;
         }
 
+        public IActionResult Search()
+        {
+            return View();
+        }
+
         public IActionResult Index()
         {
             return View();
