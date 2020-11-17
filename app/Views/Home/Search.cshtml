@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewData["Title"] = "Search";
+}
+
+<section class="front">
+    <div id="header">
+        <h1>Wyszukaj Zlececnia</h1>
+        <br />
+    </div>
+    <div id="filtr">
+        <input name="phrase" style="padding:3px; width:30%" placeholder="Wpisz frazę">
+        <button type="button" style="padding:7px 20px;" class="btn btn-outline-primary btn-dark text-light">Szukaj</button>
+    </div>
+    <div id="nav">
+        <h3>Kategoria</h3>
+        <select>
+            <option>Programista</option>
+            <option>Projektant Wnętrz</option>
+            <option>Architekt</option>
+            <option>Grafik</option>
+            <option>Montarzysta</option>
+            <option>Reszta</option>
+        </select>
+        <br><br />
+        <h3>Filtry:</h3>
+        <input type="checkbox" name="check1" />
+        <label for="check1">coś tam</label><br />
+        <input type="checkbox" name="check3" />
+        <label for="check2">coś tam</label><br />
+        <button type="button" style="padding:7px 15px;" class="btn btn-outline-primary btn-dark text-light">Zastosuj</button>
+    </div>
+    <div id="content">
+        <label>Sortuj według:</label>
+        <select>
+            <option>Nazwa: A-Z</option>
+            <option>Nazwa: Z-A</option>
+            <option>Stawka: od najniższej</option>
+            <option>Stawka: od najwyższej</option>
+            <option>Data dodawnia: od najnowszych</option>
+            <option>Data dodania: od najstarszych</option>
+        </select>
+        <br><br />
+        <h3>Oferty:</h3>
+    </div>
+</section>
+
+<style>
+    #header {
+        text-align: center;
+        padding: 20px;
+    }
+
+    #filtr {
+        text-align: center;
+        padding: 20px;
+    }
+
+    #nav {
+        width: 20%;
+        padding: 20px;
+        text-align: center;
+        float: left;
+        min-height: 700px;
+    }
+
+    #content {
+        width: 75%;
+        min-height: 1200px;
+        float: left;
+        padding: 20px;
+        background-color: lightgray;
+        margin-right: 5%;
+    }
+</style>
