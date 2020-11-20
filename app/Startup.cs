@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using freelancerzy.Models;
+
 namespace Freelancerzy
 {
     public class Startup
@@ -24,6 +26,7 @@ namespace Freelancerzy
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<cb2020freedbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
