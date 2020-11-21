@@ -4,10 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace freelancerzy.Models
 {
+
     public partial class cb2020freedbContext : DbContext
     {
         public cb2020freedbContext()
         {
+            
         }
 
         public cb2020freedbContext(DbContextOptions<cb2020freedbContext> options)
@@ -31,8 +33,7 @@ namespace freelancerzy.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySQL("server=212.33.90.100;port=3306;user=cb2020freeuser;password=cb2020freePASS;database=cb2020freedb");
+                
             }
         }
 

@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using freelancerzy.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Server.IISIntegration;
 
 namespace Freelancerzy
 {
@@ -25,8 +27,14 @@ namespace Freelancerzy
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            services.AddDbContext<cb2020freedbContext>();
+         //services.AddDbContext<cb2020freedbContext>(options =>  
+         //   options.UseMySQL(  
+         //       Configuration.GetConnectionString("DefaultConnection")));
+         //   services.AddDefaultIdentity<Microsoft.AspNetCore.Identity.IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+         //       .AddEntityFrameworkStores<cb2020freedbContext>();
+        services.AddControllersWithViews();  
+        services.AddRazorPages();
+        services.AddAuthentication(IISDefaults.AuthenticationScheme);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +54,7 @@ namespace Freelancerzy
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -54,6 +62,7 @@ namespace Freelancerzy
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
