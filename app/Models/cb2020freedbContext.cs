@@ -31,7 +31,6 @@ namespace freelancerzy.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseMySQL("server=212.33.90.100;port=3306;user=cb2020freeuser;password=cb2020freePASS;database=cb2020freedb");
             }
         }
