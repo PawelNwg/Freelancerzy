@@ -8,8 +8,11 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using freelancerzy.Models;
 
 using freelancerzy.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Freelancerzy
 {
@@ -26,7 +29,9 @@ namespace Freelancerzy
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<cb2020freedbContext>();
+            services.AddDbContext<cb2020freedbContext>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<ApplicationUser>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
+                
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +51,8 @@ namespace Freelancerzy
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseCookiePolicy();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

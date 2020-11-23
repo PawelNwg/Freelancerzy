@@ -2,17 +2,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using app.Models;
+using freelancerzy.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace app.Controllers
 {
     public class UserController : Controller
     {
-        private readonly ILogger<UserController> _logger;
+        private readonly cb2020freedbContext _context;
 
-        public UserController(ILogger<UserController> logger)
+        //private readonly ILogger<UserController> _logger;
+        public UserController(cb2020freedbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
+
+        //public UserController(ILogger<UserController> logger)
+        //{
+        //    _logger = logger;
+        //}
 
         public IActionResult Login()
         {
@@ -32,8 +41,31 @@ namespace app.Controllers
             return RedirectToAction("Index","Home");
         }        
         [HttpPost]
-        public IActionResult Register(string name, string email, string password) //TODO: pass user credentials
+        public async Task<IActionResult> Register(string name, string email, string password) //TODO: pass user credentials
         {
+            if (ModelState.IsValid)
+            {
+                PageUser pageUser = new PageUser() // TODO SPRAWDZIC CZY NIE MA USERA W BAZIE
+                {
+                    FirstName = name,
+                    EmailAddress = email,
+                    TypeId = 1,
+                    Surname = "kovalsky",
+                    Phonenumber = 666,
+
+                    
+                };
+                var passwordHasher = new PasswordHasher<string>();
+                Credentials credentials = new Credentials()
+                {
+                    Password = passwordHasher.HashPassword(email, password),
+                };
+                pageUser.Credentials = credentials;
+                _context.Add(pageUser);
+                _context.Add(credentials);
+                await _context.SaveChangesAsync();
+                ViewBag.message = "ok";
+            }
             
             //TODO: check user credentials
             return RedirectToAction("Index","Home");
