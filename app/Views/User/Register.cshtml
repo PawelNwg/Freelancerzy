@@ -1,25 +1,61 @@
 @{
     ViewData["Title"] = "Rejestracja";
 }
+<style>
+    .input {
+        float: left;
+        width: 300px;
+        margin: 10px;
+        padding: 10px;
+    }
+    .space {
+        float: left;
+        width: 100px;
+        margin: 10px;
+        padding: 10px;
+    }
+</style>
+
 
 <form method="post" asp-controller="User" asp-action="Register">
     <div class="container">
         <h1 style="margin: 10px;">Zarejestruj się!</h1>
 
-        <input type="text" placeholder="Nazwa użytkownika" name="name" required> </br> </br>
+        <div class="input">
+            <input type="text" placeholder="Imię" name="name" required> </br> </br>
 
-        <input type="email" placeholder="Adres email" name="email" required> </br> </br>
+            <input type="text" placeholder="Nazwisko" name="surname" required> </br> </br>
 
-        <div class="input-group align-items-center">
-            <input id="txtPassword" type="password" placeholder="Hasło" name="password" required>
-            <div class="input-group-append align-items-center">
-                <button id="show_password" class="fa fa-eye-slash btn btn-primary btn-sm align-items-center" type="button">
-                </button>
+            <input type="tel" placeholder="Numer telefonu" name="phoneNumber"> </br> </br>
+        </div>
+
+        <div class="space">
+
+        </div>
+
+        <div class="input">
+            <input type="email" placeholder="Adres email" name="email"> </br> </br>
+
+            <div class="input-group align-items-center">
+                <input id="txtPassword" type="password" placeholder="Hasło" name="password" required>
+                <div class="input-group-append align-items-center">
+                    <button id="show_password" class="fa fa-eye-slash btn btn-primary btn-sm align-items-center" type="button" style="float:left">
+                    </button>
+                </div>
+            </div>
+            </br>
+            <div class="input-group align-items-center">
+                <input id="txtPassword2" type="password" placeholder="Powrórz Hasło" name="passwordConfirmed" required>
+                <div class="input-group-append align-items-center">
+                    <button id="show_password2" class="fa fa-eye-slash btn btn-primary btn-sm align-items-center" type="button" style="float:left">
+                    </button>
+                </div>
             </div>
         </div>
-        </br>
-        <button type="submit">Zatwierdź</button> </br> </br>
 
+        <div style="clear:both"></div>
+        <label class="text-danger">@ViewData["Error"]</label></br>
+        <button type="submit">Zatwierdź</button> </br> </br>
         <label>Cieszymy się, że dołączasz do naszej społeczności!</label>
 
     </div>
@@ -28,12 +64,12 @@
 @section Scripts{
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#show_password').hover(function show() {
-            $('#txtPassword').attr('type', 'text');
+        $('#show_password, #show_password2').hover(function show() {
+            $('#txtPassword, #txtPassword2').attr('type', 'text');
             $('.icon').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
         },
             function () {
-                $('#txtPassword').attr('type', 'password');
+                $('#txtPassword, #txtPassword2').attr('type', 'password');
                 $('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
             });
     });  

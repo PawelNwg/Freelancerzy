@@ -15,6 +15,7 @@ namespace freelancerzy.Models
 
         public int Userid { get; set; }
         public int TypeId { get; set; }
+      
         public string FirstName { get; set; }
         public string Surname { get; set; }
         public string EmailAddress { get; set; }

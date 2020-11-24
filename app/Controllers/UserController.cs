@@ -41,30 +41,37 @@ namespace app.Controllers
             return RedirectToAction("Index","Home");
         }        
         [HttpPost]
-        public async Task<IActionResult> Register(string name, string email, string password) //TODO: pass user credentials
+        public async Task<IActionResult> Register(string name, string surname, int phoneNumber, string email, string password , string passwordConfirmed) //TODO: pass user credentials
         {
             if (ModelState.IsValid)
             {
                 PageUser pageUser = new PageUser() // TODO SPRAWDZIC CZY NIE MA USERA W BAZIE
                 {
                     FirstName = name,
-                    EmailAddress = email,
+                    Surname = surname,
+                    EmailAddress = email,                                    
+                    Phonenumber = phoneNumber,
                     TypeId = 1,
-                    Surname = "kovalsky",
-                    Phonenumber = 666,
-
-                    
                 };
                 var passwordHasher = new PasswordHasher<string>();
                 Credentials credentials = new Credentials()
                 {
-                    Password = passwordHasher.HashPassword(email, password),
+                    Password = passwordHasher.HashPassword(email, password),                    
                 };
-                pageUser.Credentials = credentials;
-                _context.Add(pageUser);
-                _context.Add(credentials);
-                await _context.SaveChangesAsync();
-                ViewBag.message = "ok";
+                var passwordHasherConfirmation = new PasswordHasher<string>();
+                if (passwordHasherConfirmation.VerifyHashedPassword(null,credentials.Password,passwordConfirmed) == PasswordVerificationResult.Success) // strawdzic czy nie ma takiego usera
+                {
+                    pageUser.Credentials = credentials;
+                    _context.Add(pageUser);
+                    _context.Add(credentials);
+                    await _context.SaveChangesAsync();
+                    ViewBag.message = "ok";
+                }
+                else
+                {
+                    ViewData["Error"] = "Hasla nie sa taki same";
+                    return View();
+                }
             }
             
             //TODO: check user credentials
