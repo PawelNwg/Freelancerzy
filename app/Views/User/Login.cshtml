@@ -1,7 +1,7 @@
 @{
     ViewData["Title"] = "Login";
 }
-<form method="post" asp-controller="User" asp-action="Login">
+<form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User" asp-action="Login">
     <div class="container">
         <h1 style="margin: 10px;">Zaloguj się! </h1>
 
@@ -9,6 +9,8 @@
 
 
         <input type="password" placeholder="Hasło" name="password" required> </br> </br>
+
+        <p class="text-danger">@ViewData["error"]</p>
 
         <button type="submit">Zatwierdź</button> </br> </br>
 
