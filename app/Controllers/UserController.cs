@@ -5,6 +5,11 @@ using app.Models;
 using freelancerzy.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using System.Linq;
+using System.Security.Claims;
+using System.Collections.Generic;
+using System;
 
 namespace app.Controllers
 {
@@ -23,8 +28,9 @@ namespace app.Controllers
         //    _logger = logger;
         //}
 
-        public IActionResult Login()
+        public IActionResult Login(string ReturnUrl = "/Home/Index")
         {
+            ViewData["ReturnUrl"] = ReturnUrl;
             return View();
         }
 
@@ -32,14 +38,59 @@ namespace app.Controllers
         {
             return View();
         }
-
-        [HttpPost]
-        public IActionResult Login(string email, string password) //TODO: pass user credentials
+        [HttpGet]
+        public async Task<IActionResult> Logout()
         {
-            
-            //TODO: check user credentials
-            return RedirectToAction("Index","Home");
-        }        
+            await HttpContext.SignOutAsync("CookieAuthentication");
+
+            return RedirectToAction("Login");
+        }
+        [HttpPost]
+        public async Task<IActionResult> Login(string email, string password,string ReturnUrl) //TODO: pass user credentials
+        {
+            ViewData["ReturnUrl"] = ReturnUrl;
+            var user = _context.PageUser.FirstOrDefault(user => user.EmailAddress == email);
+            if (user == null)
+            {
+                ViewData["error"] = "Podana nazwa u¿ytkownika nie istnieje";
+                return View();
+            }
+            else
+            {
+                user.Credentials = _context.Credentials.FirstOrDefault(u => u.Userid == user.Userid);
+                user.Type = _context.Usertype.FirstOrDefault(u => u.Typeid == user.TypeId);
+                if (ValideteUser(user, password))
+                {
+                    var claims = new List<Claim>()
+                    {
+                        new Claim(ClaimTypes.Name,user.EmailAddress),
+                        new Claim(ClaimTypes.Role,user.Type.Name)
+
+                    };
+                    var claimsIdentity = new ClaimsIdentity(claims, "CookieAuthentication");
+
+                    await HttpContext.SignInAsync("CookieAuthentication", new
+                    ClaimsPrincipal(claimsIdentity), new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        ExpiresUtc = DateTime.UtcNow.AddMinutes(20)
+                    });
+                    return Redirect(ReturnUrl);
+                }
+            }
+            ViewData["error"] = "Podano z³e has³o";
+            return View();
+        }
+        private bool ValideteUser(PageUser user, string password)
+        {
+
+            var hasher = new PasswordHasher<string>();
+            if (hasher.VerifyHashedPassword(user.EmailAddress, user.Credentials.Password, password) == PasswordVerificationResult.Success)
+            {
+                return true;
+            }
+            else return false;
+        }
         [HttpPost]
         public async Task<IActionResult> Register(string name, string surname, int phoneNumber, string email, string password , string passwordConfirmed) //TODO: pass user credentials
         {

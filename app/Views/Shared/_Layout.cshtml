@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="~/css/main.css">
 </head>
 
-<body>
+<body style="padding-bottom: 500px;">
     <header>
         <!--<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -48,28 +48,42 @@
                     <li class="nav-item active">
                         <button type="button" class="btn btn-primary text-dark ">
                             <a class="nav-link  text-dark  " asp-area="" asp-controller="Home" asp-action="Offert">
-                                <span>Opublikuj Ofertę</span></a>
+                                <span>Opublikuj Ofertę</span>
+                            </a>
                         </button>
                     </li>
                     <li class="nav-item ml-4 mr-5">
                         <button type="button" class="btn btn-outline-primary text-white">
                             <a class="nav-link  text-light" asp-area="" asp-controller="Home"
-                                asp-action="Search"><span>Szukaj Ofert</span></a>
+                               asp-action="Search"><span>Szukaj Ofert</span></a>
                         </button>
                     </li>
-                    <li class="nav-item ">
-                        <button type="button" class="btn bg-transparent text-white">
-                            <a class="nav-link  text-light" asp-area="" asp-controller="User"
-                                asp-action="Login"><span>Logowanie</span></a>
-                        </button>
-                    </li>
-                    <!--dodać linije jak w mockupie-->
+
+                    @if (Context.User.Identity.IsAuthenticated == true)
+                    {
                     <li class="nav-item">
-                        <button type="button" class="btn bg-transparent text-white">
-                            <a class="nav-link  text-primary" asp-area="" asp-controller="User"
-                                asp-action="Register"><span>Rejestracja</span></a>
+                    <button type="button" class="btn bg-transparent text-white">
+                        <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Logout">Wyloguj <br />@Context.User.Identity.Name</a>
                         </button>
-                    </li>
+                     </li>
+
+                    }
+                    else
+                    {
+                        <li class="nav-item ">
+                            <button type="button" class="btn bg-transparent text-white">
+                                <a class="nav-link  text-light" asp-area="" asp-controller="User"
+                                   asp-action="Login"><span>Logowanie</span></a>
+                            </button>
+                        </li>
+                        <!--dodać linije jak w mockupie-->
+                        <li class="nav-item">
+                            <button type="button" class="btn bg-transparent text-white">
+                                <a class="nav-link  text-primary" asp-area="" asp-controller="User"
+                                   asp-action="Register"><span>Rejestracja</span></a>
+                            </button>
+                        </li>
+                    }
                 </ul>
             </div>
         </nav>
