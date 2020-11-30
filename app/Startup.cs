@@ -11,7 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using freelancerzy.Models;
 
-using freelancerzy.Models;
+
 using Microsoft.AspNetCore.Http;
 
 namespace Freelancerzy
@@ -31,7 +31,16 @@ namespace Freelancerzy
             services.AddControllersWithViews();
             services.AddDbContext<cb2020freedbContext>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
             //services.AddDbContext<ApplicationUser>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
-                
+            services.AddAuthentication("CookieAuthentication")
+        .AddCookie("CookieAuthentication", config =>
+        {
+            config.Cookie.HttpOnly = true;
+            config.Cookie.SecurePolicy = CookieSecurePolicy.None;
+
+            config.Cookie.Name = "UserLoginCookie";
+            config.LoginPath = "/User/Login";
+            config.Cookie.SameSite = SameSiteMode.Strict;
+        });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
