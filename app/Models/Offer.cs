@@ -14,7 +14,7 @@ namespace freelancerzy.Models
         [MaxLength(40,ErrorMessage ="Tytuł może mieć maksymalnie 40 znaków")]
         [Required(ErrorMessage ="Tytuł jest obowiązkowy")]
         public string Title { get; set; }
-        [MaxLength(250,ErrorMessage ="Opis może mieć maksymalnie 250 znaków")]
+        [MaxLength(1500,ErrorMessage ="Opis może mieć maksymalnie 1500 znaków")]
         public string Description { get; set; }
         
         public DateTime CreationDate { get; set; }
