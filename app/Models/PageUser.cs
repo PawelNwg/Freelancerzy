@@ -20,6 +20,9 @@ namespace freelancerzy.Models
         public string Surname { get; set; }
         public string EmailAddress { get; set; }
         public int? Phonenumber { get; set; }
+        public bool emailConfirmation { get; set; }
+
+        public DateTime registrationDate { get; set; }
 
         public virtual Usertype Type { get; set; }
         public virtual Credentials Credentials { get; set; }

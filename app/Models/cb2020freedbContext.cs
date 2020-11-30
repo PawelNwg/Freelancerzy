@@ -172,7 +172,7 @@ namespace freelancerzy.Models
                 entity.Property(e => e.CreationDate).HasColumnType("datetime(3)");
 
                 entity.Property(e => e.Description)
-                    .HasMaxLength(250)
+                    .HasMaxLength(1500)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ExpirationDate).HasColumnType("datetime(3)");
@@ -238,6 +238,17 @@ namespace freelancerzy.Models
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false);
+
+                entity.Property(e => e.emailConfirmation)
+                    .IsRequired()
+                    .HasColumnType("boolean")
+                    .HasDefaultValueSql("false")
+                    ;
+                entity.Property(e => e.registrationDate)
+                    .IsRequired()
+                    .HasColumnType("datetime")
+                    .HasDefaultValue(DateTime.Now)
+                    ;
 
                 entity.Property(e => e.TypeId).HasColumnType("int(11)");
 

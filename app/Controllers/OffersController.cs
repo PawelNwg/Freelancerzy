@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using freelancerzy.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace freelancerzy.Controllers
 {
@@ -45,23 +46,32 @@ namespace freelancerzy.Controllers
             return View(offer);
         }
 
-        // GET: Offers/Create
-        public IActionResult Create()
+        // GET: Offers/NewOffer
+        [Authorize]
+        public IActionResult NewOffer()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "Categoryid", "CategoryName");
-            ViewData["UserId"] = new SelectList(_context.PageUser, "Userid", "EmailAddress");
+           
             return View();
         }
 
         // POST: Offers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Offerid,UserId,CategoryId,Title,Description,CreationDate,LastModificationDate,ExpirationDate,ViewCounter,Wage")] Offer offer)
+        public async Task<IActionResult> NewOffer( Offer offer)
         {
             if (ModelState.IsValid)
             {
+                PageUser user = await _context.PageUser.FirstOrDefaultAsync(user => user.EmailAddress == User.Identity.Name);
+                offer.User = user;
+                offer.CreationDate = DateTime.Now;
+                offer.ExpirationDate = DateTime.Now.AddDays(14);
+                offer.ViewCounter = 0;
+                if (offer.WageValue != null)
+                offer.Wage = Decimal.Parse(offer.WageValue);
                 _context.Add(offer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
