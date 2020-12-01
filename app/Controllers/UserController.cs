@@ -92,25 +92,25 @@ namespace app.Controllers
             else return false;
         }
         [HttpPost]
-        public async Task<IActionResult> Register(string name, string surname, int phoneNumber, string email, string password , string passwordConfirmed) //TODO: pass user credentials
+        public async Task<IActionResult> Register(PageUser pageuser) //TODO: pass user credentials
         {
             if (ModelState.IsValid)
             {
                 PageUser pageUser = new PageUser() // TODO SPRAWDZIC CZY NIE MA USERA W BAZIE
                 {
-                    FirstName = name,
-                    Surname = surname,
-                    EmailAddress = email,                                    
-                    Phonenumber = phoneNumber,
+                    FirstName = pageuser.FirstName,
+                    Surname = pageuser.Surname,
+                    EmailAddress = pageuser.EmailAddress,                                    
+                    Phonenumber = pageuser.Phonenumber,
                     TypeId = 1,
                 };
                 var passwordHasher = new PasswordHasher<string>();
                 Credentials credentials = new Credentials()
                 {
-                    Password = passwordHasher.HashPassword(email, password),                    
+                    Password = passwordHasher.HashPassword(pageuser.EmailAddress, pageuser.Credentials.Password),                    
                 };
                 var passwordHasherConfirmation = new PasswordHasher<string>();
-                if (passwordHasherConfirmation.VerifyHashedPassword(null,credentials.Password,passwordConfirmed) == PasswordVerificationResult.Success) // strawdzic czy nie ma takiego usera
+                if (passwordHasherConfirmation.VerifyHashedPassword(null,credentials.Password,pageuser.Credentials.PasswordConfirmed) == PasswordVerificationResult.Success) // strawdzic czy nie ma takiego usera
                 {
                     pageUser.Credentials = credentials;
                     _context.Add(pageUser);

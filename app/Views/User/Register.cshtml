@@ -1,3 +1,5 @@
+@model freelancerzy.Models.PageUser
+
 @{
     ViewData["Title"] = "Rejestracja";
 }
@@ -8,6 +10,7 @@
         margin: 10px;
         padding: 10px;
     }
+
     .space {
         float: left;
         width: 100px;
@@ -22,11 +25,19 @@
         <h1 style="margin: 10px;">Zarejestruj się!</h1>
 
         <div class="input">
-            <input type="text" placeholder="Imię" name="name" required> </br> </br>
 
-            <input type="text" placeholder="Nazwisko" name="surname" required> </br> </br>
+            <input asp-for="FirstName" placeholder="@Html.DisplayNameFor(model => model.FirstName)"/>
+            <span asp-validation-for="FirstName" class="text-danger" style="font-size: small;"></span>
+            </br> </br>
 
-            <input type="tel" placeholder="Numer telefonu" name="phoneNumber"> </br> </br>
+            <input asp-for="Surname" placeholder="@Html.DisplayNameFor(model => model.Surname)">
+            <span asp-validation-for="Surname" class="text-danger" style="font-size: small;"></span>
+            </br> </br>
+
+            <input asp-for="Phonenumber" placeholder="@Html.DisplayNameFor(model => model.Phonenumber)">
+            <span asp-validation-for="Phonenumber" class="text-danger" style="font-size: small;"></span>
+            </br> </br>
+
         </div>
 
         <div class="space">
@@ -34,22 +45,37 @@
         </div>
 
         <div class="input">
-            <input type="email" placeholder="Adres email" name="email"> </br> </br>
+
+            <input asp-for="EmailAddress" placeholder="@Html.DisplayNameFor(model => model.EmailAddress)">
+            <span asp-validation-for="EmailAddress" class="text-danger" style="font-size: small;"></span>
+            </br> </br>
 
             <div class="input-group align-items-center">
-                <input id="txtPassword" type="password" placeholder="Hasło" name="password" required>
+
+                <input asp-for="Credentials.Password" id="txtPassword" placeholder="@Html.DisplayNameFor(model => model.Credentials.Password)">
+
                 <div class="input-group-append align-items-center">
                     <button id="show_password" class="fa fa-eye-slash btn btn-primary btn-sm align-items-center" type="button" style="float:left">
                     </button>
                 </div>
+
+                <span asp-validation-for="Credentials.Password" class="text-danger" style="font-size: small;"></span>
+
             </div>
+
             </br>
+
             <div class="input-group align-items-center">
-                <input id="txtPassword2" type="password" placeholder="Powrórz Hasło" name="passwordConfirmed" required>
+
+                <input asp-for="Credentials.PasswordConfirmed" id="txtPassword2" placeholder="@Html.DisplayNameFor(model => model.Credentials.PasswordConfirmed)">
+
                 <div class="input-group-append align-items-center">
                     <button id="show_password2" class="fa fa-eye-slash btn btn-primary btn-sm align-items-center" type="button" style="float:left">
                     </button>
                 </div>
+
+                <span asp-validation-for="Credentials.PasswordConfirmed" class="text-danger" style="font-size: small;"></span>
+
             </div>
         </div>
 
@@ -62,16 +88,18 @@
 </form>
 
 @section Scripts{
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#show_password, #show_password2').hover(function show() {
-            $('#txtPassword, #txtPassword2').attr('type', 'text');
-            $('.icon').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
-        },
-            function () {
-                $('#txtPassword, #txtPassword2').attr('type', 'password');
-                $('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
-            });
-    });  
-</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#show_password, #show_password2').hover(function show() {
+                $('#txtPassword, #txtPassword2').attr('type', 'text');
+                $('.icon').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+            },
+                function () {
+                    $('#txtPassword, #txtPassword2').attr('type', 'password');
+                    $('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+                });
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
