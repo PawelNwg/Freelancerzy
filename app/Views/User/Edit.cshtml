@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewData["Title"] = "Edytuj dane";
+}
+
+<h1 class="text-center" style=" padding:20px">Edytuj dane:</h1>
+<section class="front">   
+    <div class="text-center w-50" style="background-color:lightgray; margin-right: 25%; margin-left: 25%; margin-bottom: 16px; padding-bottom:40px">
+        <div>
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active" style="width:25%"><a style="color:black; padding:5px" href="#ogolne" role="tab" data-toggle="tab">Ogólne</a></li>
+                <li style="width:25%"><a href="#adres" style="color:black; padding:5px" role="tab" data-toggle="tab">Adres</a></li>
+                <li style="width:25%"><a style="color:black; padding:5px" href="#email" role="tab" data-toggle="tab">Email</a></li>
+                <li style="width:25%"><a style="color:black; padding:5px" href="#haslo" role="tab" data-toggle="tab">Hasło</a></li>
+            </ul>
+        </div>
+        <br />
+
+        <div class="tab-content">
+
+            <div class="tab-pane active" id="ogolne">
+                <input style="padding: 3px; width: 70%" placeholder="Imię">
+                <br />
+                <br />
+                <input style="padding:3px; width:70%" placeholder="Nazwisko">
+                <br />
+                <br />
+                <input style="padding:3px; width:70%" placeholder="Telefon">
+                <br />
+                <br />
+                <div class="text-center">
+                    <input type="submit" style="padding:15px 50px;font-size:large;" class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
+                </div>
+            </div>
+
+            <div class="tab-pane" id="adres">
+                <input style="padding:3px; width:70%" placeholder="Ulica">
+                <br />
+                <br />
+                <input style="padding:3px; width:70%" placeholder="Numer domu">
+                <br />
+                <br />
+                <input style="padding:3px; width:70%" placeholder="Numer mieszkania">
+                <br />
+                <br />
+                <input style="padding:3px; width:70%" placeholder="Kod pocztowy">
+                <br />
+                <br />
+                <input style="padding:3px; width:70%" placeholder="Miasto">
+                <br />
+                <br />
+                <div class="text-center">
+                    <input type="submit" style="padding:15px 50px;font-size:large;" class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
+                </div>
+            </div>
+
+            <div class="tab-pane" id="email">
+                <input style="padding:3px; width:70%" placeholder="Nowy email">
+                <br />
+                <br />
+                <input style="padding:3px; width:70%" placeholder="Powtórz email">
+                <br />
+                <br />
+                <div class="text-center">
+                    <input type="submit" style="padding:15px 50px;font-size:large;" class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
+                </div>
+            </div>
+
+            <div class="tab-pane" id="haslo">
+                <input type="password" style="padding:3px; width:70%" placeholder="Stare hasło">
+                <br />
+                <br />
+                <input type="password" style="padding:3px; width:70%" placeholder="Nowe hasło">
+                <br />
+                <br />
+                <input type="password" style="padding:3px; width:70%" placeholder="Powtórz hasło">
+                <br />
+                <br />
+                <div class="text-center">
+                    <input type="submit" style="padding:15px 50px;font-size:large;" class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
+                </div>
+
+            </div>
+        </div>  
+    </div>
+</section>
