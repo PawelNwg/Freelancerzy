@@ -50,13 +50,13 @@ namespace app.Controllers
             return RedirectToAction("Login");
         }
         [HttpPost]
-        public async Task<IActionResult> Login(string email, string password,string ReturnUrl) //TODO: pass user credentials
+        public async Task<IActionResult> Login(string email, string password, string ReturnUrl) //TODO: pass user credentials
         {
             ViewData["ReturnUrl"] = ReturnUrl;
             var user = _context.PageUser.FirstOrDefault(user => user.EmailAddress == email);
             if (user == null)
             {
-                ViewData["error"] = "Podana nazwa u¿ytkownika nie istnieje";
+                ViewData["error"] = "Podana nazwa uï¿½ytkownika nie istnieje";
                 return View();
             }
             else
@@ -69,7 +69,7 @@ namespace app.Controllers
                     {
                         new Claim(ClaimTypes.Name,user.EmailAddress),
                         new Claim(ClaimTypes.Role,user.Type.Name),
-                       
+
                     };
                     var claimsIdentity = new ClaimsIdentity(claims, "CookieAuthentication");
 
@@ -82,7 +82,7 @@ namespace app.Controllers
                     return Redirect(ReturnUrl);
                 }
             }
-            ViewData["error"] = "Podano z³e has³o";
+            ViewData["error"] = "Podano zï¿½e hasï¿½o";
             return View();
         }
         private bool ValideteUser(PageUser user, string password)
@@ -104,17 +104,17 @@ namespace app.Controllers
                 {
                     FirstName = pageuser.FirstName,
                     Surname = pageuser.Surname,
-                    EmailAddress = pageuser.EmailAddress,                                    
+                    EmailAddress = pageuser.EmailAddress,
                     Phonenumber = pageuser.Phonenumber,
                     TypeId = 1,
                 };
                 var passwordHasher = new PasswordHasher<string>();
                 Credentials credentials = new Credentials()
                 {
-                    Password = passwordHasher.HashPassword(pageuser.EmailAddress, pageuser.Credentials.Password),                    
+                    Password = passwordHasher.HashPassword(pageuser.EmailAddress, pageuser.Credentials.Password),
                 };
                 var passwordHasherConfirmation = new PasswordHasher<string>();
-                if (passwordHasherConfirmation.VerifyHashedPassword(null,credentials.Password,pageuser.Credentials.PasswordConfirmed) == PasswordVerificationResult.Success) // strawdzic czy nie ma takiego usera
+                if (passwordHasherConfirmation.VerifyHashedPassword(null, credentials.Password, pageuser.Credentials.PasswordConfirmed) == PasswordVerificationResult.Success) // strawdzic czy nie ma takiego usera
                 {
                     pageUser.Credentials = credentials;
                     _context.Add(pageUser);
@@ -128,9 +128,26 @@ namespace app.Controllers
                     return View();
                 }
             }
-            
+
             //TODO: check user credentials
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(PageUser user) //TODO: dodaÄ‡ userId
+        {
+            if (ModelState.IsValid)
+            {
+                PageUser editUser = new PageUser() //TODO: wyszukaÄ‡ uÅ¼ytkownika w bazie i zmieniÄ‡ jego dane
+                {
+                    FirstName = user.FirstName,
+                    Surname = user.Surname,
+                    Phonenumber = user.Phonenumber
+                };
+                Console.WriteLine(user.FirstName + " " + user.Surname + " " + user.Phonenumber);
+                return View();
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
