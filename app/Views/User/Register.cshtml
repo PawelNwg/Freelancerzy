@@ -7,6 +7,7 @@
         width: 300px;
         margin: 10px;
         padding: 10px;
+        
     }
     .space {
         float: left;
@@ -16,28 +17,33 @@
     }
 </style>
 
+<form method="post" asp-controller="User" asp-action="Register" style="height: 60em; width: 40em; margin:auto; margin-top: 8em; ">
+    <div class="container bg-white border border-primary rounded">
+        <div class="container " style="width:80%;
+                                        height:50%;
+                                        ">
+         <h1 class="display-3 text-center mt-5 mb-5">Zarejestruj się!</h1>
 
-<form method="post" asp-controller="User" asp-action="Register">
-    <div class="container">
-        <h1 style="margin: 10px;">Zarejestruj się!</h1>
+<span >
+        <div>
+            <input class="form-control border border-primary" type="text" placeholder="Imię" name="name" required> </br> </br>
 
-        <div class="input">
-            <input type="text" placeholder="Imię" name="name" required> </br> </br>
+            <input class="form-control border border-primary" type="text" placeholder="Nazwisko" name="surname" required> </br> </br>
 
-            <input type="text" placeholder="Nazwisko" name="surname" required> </br> </br>
-
-            <input type="tel" placeholder="Numer telefonu" name="phoneNumber"> </br> </br>
+            <input class="form-control border border-primary" type="tel" placeholder="Numer telefonu" name="phoneNumber"> </br> </br>
         </div>
+</span>
+
+        
 
         <div class="space">
-
         </div>
 
-        <div class="input">
-            <input type="email" placeholder="Adres email" name="email"> </br> </br>
+        <div >
+            <input class="form-control border border-primary" type="email" placeholder="Adres email" name="email"> </br> </br>
 
             <div class="input-group align-items-center">
-                <input id="txtPassword" type="password" placeholder="Hasło" name="password" required>
+                <input class="form-control border border-primary" id="txtPassword" type="password" placeholder="Hasło" name="password" required>
                 <div class="input-group-append align-items-center">
                     <button id="show_password" class="fa fa-eye-slash btn btn-primary btn-sm align-items-center" type="button" style="float:left">
                     </button>
@@ -45,7 +51,7 @@
             </div>
             </br>
             <div class="input-group align-items-center">
-                <input id="txtPassword2" type="password" placeholder="Powrórz Hasło" name="passwordConfirmed" required>
+                <input class="form-control border border-primary" id="txtPassword2" type="password" placeholder="Powrórz Hasło" name="passwordConfirmed" required>
                 <div class="input-group-append align-items-center">
                     <button id="show_password2" class="fa fa-eye-slash btn btn-primary btn-sm align-items-center" type="button" style="float:left">
                     </button>
@@ -55,9 +61,9 @@
 
         <div style="clear:both"></div>
         <label class="text-danger">@ViewData["Error"]</label></br>
-        <button type="submit">Zatwierdź</button> </br> </br>
-        <label>Cieszymy się, że dołączasz do naszej społeczności!</label>
-
+        <button class="btn btn-primary btn-block" type="submit">Zatwierdź</button> </br> </br>
+        <label class="nav-link text-dark font-weight-normal">Cieszymy się, że dołączasz do naszej społeczności!</label>
+        </div>
     </div>
 </form>
 
