@@ -108,11 +108,13 @@ namespace app.Controllers
                     Phonenumber = pageuser.Phonenumber,
                     TypeId = 1,
                 };
+
                 var passwordHasher = new PasswordHasher<string>();
                 Credentials credentials = new Credentials()
                 {
                     Password = passwordHasher.HashPassword(pageuser.EmailAddress, pageuser.Credentials.Password),                    
                 };
+               
                 var passwordHasherConfirmation = new PasswordHasher<string>();
                 if (passwordHasherConfirmation.VerifyHashedPassword(null,credentials.Password,pageuser.Credentials.PasswordConfirmed) == PasswordVerificationResult.Success) // strawdzic czy nie ma takiego usera
                 {
@@ -120,7 +122,7 @@ namespace app.Controllers
                     _context.Add(pageUser);
                     _context.Add(credentials);
                     await _context.SaveChangesAsync();
-                    ViewBag.message = "ok";
+                    ViewBag.message = "ok";                
                 }
                 else
                 {
