@@ -26,8 +26,15 @@
 
             <div class="tab-pane active" id="ogolne">
                 <form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
-                    asp-action="Edit">
+                    asp-action="EditGeneral">
                     <div class="input">
+                        <input type="hidden" asp-for="EmailAddress"/>
+                        <input type="hidden" asp-for="registrationDate"/>
+                        <input type="hidden" asp-for="emailConfirmation"/>
+                        <input type="hidden" asp-for="TypeId"/>
+                        <input type="hidden" asp-for="Credentials.Password"/>
+                        <input type="hidden" asp-for="Useraddress"/>
+                        <input type="hidden" asp-for="Userid"/> <!-- Poprawić przekazywanie hidden -->
                         <input style="padding:3px; width:70%" asp-for="FirstName"
                             placeholder="@Html.DisplayNameFor(model => model.FirstName)"/>
                         <span asp-validation-for="FirstName" class="text-danger" style="font-size: small;"></span>
@@ -55,7 +62,7 @@
 
             <div class="tab-pane" id="adres">
                 <form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
-                    asp-action="Edit">
+                    asp-action="EditAddress">
                     <input style="padding:3px; width:70%" asp-for="Useraddress.Street"
                             placeholder="@Html.DisplayNameFor(model => model.Useraddress.Street)"/>
                     <span asp-validation-for="Useraddress.Street" class="text-danger" style="font-size: small;"></span>
@@ -90,7 +97,7 @@
 
             <div class="tab-pane" id="email">
                 <form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
-                    asp-action="Edit">
+                    asp-action="EditEmail">
                     <input asp-for="EmailAddress" style="padding:3px; width:70%" placeholder="Nowy email">
                     <span asp-validation-for="EmailAddress" class="text-danger" style="font-size: small;"></span>
                     <br />
@@ -109,7 +116,7 @@
 
             <div class="tab-pane" id="haslo">
                 <form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
-                    asp-action="Edit">
+                    asp-action="EditCredentials">
                     <!-- TODO: rozdzielić pola z hasłami -->
                     <input style="padding:3px; width:70%" placeholder="Stare hasło" asp-for="Credentials.Password" style="padding:3px; width:70%" placeholder="Nowy email">
                     <span asp-validation-for="Credentials.Password" class="text-danger" style="font-size: small;"></span>

@@ -10,6 +10,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Collections.Generic;
 using System;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace app.Controllers
 {
@@ -34,9 +36,17 @@ namespace app.Controllers
             return View();
         }
 
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit()
         {
-            return View();
+            //TODO: error handling
+            String email = this.User.Identity.Name;
+            if (email == null) return NotFound();
+            var user = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
         }
         public IActionResult Register()
         {
@@ -134,8 +144,9 @@ namespace app.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(PageUser user) //TODO: dodać userId
+        public async Task<IActionResult> EditGeneral(PageUser user) //TODO: dodać userId
         {
+            //if (user.EmailAddress == null) user.EmailAddress = this.User.Identity.Name;
             if (ModelState.IsValid)
             {
                 PageUser editUser = new PageUser() //TODO: wyszukać użytkownika w bazie i zmienić jego dane
@@ -144,12 +155,41 @@ namespace app.Controllers
                     Surname = user.Surname,
                     Phonenumber = user.Phonenumber
                 };
-                Console.WriteLine(user.FirstName + " " + user.Surname + " " + user.Phonenumber);
+                return View();
+            }
+            var errors = ModelState
+            .Where(x => x.Value.Errors.Count > 0)
+            .Select(x => new { x.Key, x.Value.Errors })
+            .ToArray();
+            return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditAddress()
+        {
+            if (ModelState.IsValid)
+            {
                 return View();
             }
             return RedirectToAction("Index", "Home");
         }
-
+        [HttpPost]
+        public async Task<IActionResult> EditEmail()
+        {
+            if (ModelState.IsValid)
+            {
+                return View();
+            }
+            return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditCredentials()
+        {
+            if (ModelState.IsValid)
+            {
+                return View();
+            }
+            return RedirectToAction("Index", "Home");
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
