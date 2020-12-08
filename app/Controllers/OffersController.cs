@@ -20,10 +20,11 @@ namespace freelancerzy.Controllers
         }
 
         // GET: Offers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Search()
         {
             var cb2020freedbContext = _context.Offer.Include(o => o.Category).Include(o => o.User);
             return View(await cb2020freedbContext.ToListAsync());
+            
         }
 
         // GET: Offers/Details/5

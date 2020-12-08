@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<freelancerzy.Models.Offer>
 @{
     ViewData["Title"] = "Search";
 }
@@ -42,6 +42,57 @@
         </select>
         <br><br />
         <h3>Oferty:</h3>
+        @foreach (var offer in Model)
+        {
+            <div class="m-1 border rounded border-dark ">
+                <table class="table table-borderless" style="border:none">
+                    <tbody>
+                        <tr>
+                            <td width="70%">
+                                <h4 class="p-1">@offer.Title</h4>
+                            </td>
+                            <td width="30%" class="text-center">
+                                @if (offer.Wage != null)
+                                {
+                                    <h4>@Html.DisplayFor(modelItem => offer.Wage)</h4>
+                                }
+                                else
+                                {
+                                    <h4>Nieokreślona stawka</h4>
+                                }
+                            </td>
+                        </tr>
+                        <tr >
+                            <td width="70%" class="mb-0 pb-0">
+                            
+                                @if (offer.Description?.Length > 300)
+                                {
+                                    <p class="p-1">@offer.Description.Substring(0, 300)...</p>
+                                }
+                                else
+                                {
+                                    <p class="p-1">@offer.Description</p>
+                                }
+                            </td>
+                            <td class="text-center align-bottom">
+                                <a class="btn btn-primary" asp-action="Details" asp-route-id="@offer.Offerid">Szczegóły</a>
+                            </td>
+                            
+                        </tr>
+
+
+                       
+
+
+
+                        
+                    </tbody>
+                </table>
+                
+                        
+               
+            </div>
+        }
     </div>
 </section>
 
@@ -54,6 +105,10 @@
     #filtr {
         text-align: center;
         padding: 20px;
+    }
+
+    .border {
+        border-width: 10px !important;
     }
 
     #nav {
