@@ -1,4 +1,4 @@
-.gold{
+.gold {
     background-color: red;
     color: goldenrod;
 }
@@ -22,31 +22,28 @@
     /* background: linear-gradient(rgba(29, 38, 113, 0.8), rgba(195, 55, 100, 0.8)), url("https://bit.ly/2rlzaXi"); The least supported option. */
 }
 
-.swipe
-{
-    overflow:auto;
-    white-space:nowrap;
+.swipe {
+    overflow: auto;
+    white-space: nowrap;
 }
+
 .vertical-center {
     margin: 5%;
     position: absolute;
     top: 50%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
-  }
-  .parallax {
+}
+
+.parallax {
     /* The image used */
-   
-  }
+}
 
-
-  span{
-    font-size:120%;   
+span {
+    font-size: 120%;
     font-weight: 600;
     font-kerning: auto;
-
-  }
-
+}
 
 .icon {
     width: 25%;
