@@ -1,21 +1,36 @@
 @{
     ViewData["Title"] = "Login";
 }
-<form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User" asp-action="Login">
-    <div class="container">
-        <h1 style="margin: 10px;">Zaloguj się! </h1>
-
-        <input type="email" placeholder="Adres email" name="email" required> </br> </br>
 
 
-        <input type="password" placeholder="Hasło" name="password" required> </br> </br>
+<form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
+    asp-action="Login" style="height: 60em; width: 32em; margin:auto; margin-top: 8em; ">
+    <div class="container bg-white border border-primary rounded">
+        <div class="container " style="width:80%;
+                                        height:50%;
+                                        ">
 
-        <p class="text-danger">@ViewData["error"]</p>
+            <h1 class="display-3 text-center mt-5 mb-5">Zaloguj się!</h1>
+            <span class="mt-5 ">
+                <input type="email" placeholder="Adres email" name="email" required
+                    class="form-control border border-primary">
 
-        <button type="submit">Zatwierdź</button> </br> </br>
+                </br> </br>
 
-        <a class="nav-link text-secondary" asp-area="" asp-controller="User">Nie pamiętam hasła
-        </a>
-        <a class="nav-link text-secondary" asp-area="" asp-controller="User" asp-action="Register">Rejestracja</a>
+
+                <input class="form-control" type="password" placeholder="Hasło" name="password" required> </br> </br>
+
+                <p class="text-danger">@ViewData["error"]</p>
+
+                <button class="btn btn-primary btn-block" type="submit">Zatwierdź</button> </br> </br>
+
+                <a class="nav-link text-dark" asp-area="" asp-controller="User">Nie pamiętam hasła
+                </a>
+                <a class="nav-link text-dark mb-5" asp-area="" asp-controller="User"
+                    asp-action="Register">Rejestracja</a>
+            </span>
+
+        </div>
+
     </div>
 </form>
