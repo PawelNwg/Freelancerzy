@@ -18,14 +18,14 @@ namespace freelancerzy.Models
         public int TypeId { get; set; }
 
         [Required(ErrorMessage = "Imie jest wymagane")]
-        [RegularExpression("^[A-Z][a-zA-Z ]*$", ErrorMessage = "Imie może zawierać tylko litery")]
         [MaxLength(20, ErrorMessage = "Imie nie może być dłuższe niż 20 znaków")]
+        [RegularExpression(@"^([A-Za-z]+)$", ErrorMessage = "Niepoprawne imię")] //TODO: zmienić komunikaty
         [Display(Name = "Imię")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "Nazwisko jest wymagane")]
-        [RegularExpression("^[A-Z][a-zA-Z ]*$", ErrorMessage = "Nazwisko może zawierać tylko litery")]
         [MaxLength(30, ErrorMessage = "Nazwisko nie może być dłuższe niż 30 znaków")]
+        [RegularExpression(@"^([A-Za-z]+)$", ErrorMessage = "Niepoprawna forma nazwiska")]
         [Display(Name = "Nazwisko")]
         public string Surname { get; set; }
 
@@ -36,13 +36,13 @@ namespace freelancerzy.Models
         public string EmailAddress { get; set; }
 
         [Display(Name = "Numer telefonu")]
-        //TODO: poprawić walidację numeru telefonu i wartości liczb
-        [Phone(ErrorMessage = "Niepoprawny numer")]
-        //[DataType(DataType.PhoneNumber, ErrorMessage = "Niepoprawny numer")]
+        [Phone]
+        [RegularExpression(@"^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$", ErrorMessage = "Niepoprawny numer")]
         public int? Phonenumber { get; set; }
         public bool emailConfirmation { get; set; }
 
         public DateTime registrationDate { get; set; }
+
 
         public virtual Usertype Type { get; set; }
         public virtual Credentials Credentials { get; set; }
