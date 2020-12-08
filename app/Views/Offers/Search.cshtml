@@ -44,7 +44,7 @@
         <h3>Oferty:</h3>
         @foreach (var offer in Model)
         {
-            <div class="m-1 border rounded border-dark ">
+            <div class="m-1 border rounded border-dark offer">
                 <table class="table table-borderless" style="border:none">
                     <tbody>
                         <tr>
@@ -97,6 +97,11 @@
 </section>
 
 <style>
+
+    div.offer:hover{
+        background-color: dimgray;
+    }
+
     #header {
         text-align: center;
         padding: 20px;
