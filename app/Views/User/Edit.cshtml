@@ -14,8 +14,8 @@
                         data-toggle="tab">Ogólne</a></li>
                 <li style="width:25%"><a href="#adres" style="color:black; padding:5px" role="tab"
                         data-toggle="tab">Adres</a></li>
-                <li style="width:25%"><a style="color:black; padding:5px" href="#email" role="tab"
-                        data-toggle="tab">Email</a></li>
+                <!--<li style="width:25%"><a style="color:black; padding:5px" href="#email" role="tab"
+                        data-toggle="tab">Email</a></li>-->
                 <li style="width:25%"><a style="color:black; padding:5px" href="#haslo" role="tab"
                         data-toggle="tab">Hasło</a></li>
             </ul>
@@ -29,11 +29,6 @@
                     asp-action="EditGeneral">
                     <div class="input">
                         <input type="hidden" asp-for="EmailAddress"/>
-                        <input type="hidden" asp-for="registrationDate"/>
-                        <input type="hidden" asp-for="emailConfirmation"/>
-                        <input type="hidden" asp-for="TypeId"/>
-                        <input type="hidden" asp-for="Credentials.Password"/>
-                        <input type="hidden" asp-for="Useraddress"/>
                         <input type="hidden" asp-for="Userid"/> <!-- Poprawić przekazywanie hidden -->
                         <input style="padding:3px; width:70%" asp-for="FirstName"
                             placeholder="@Html.DisplayNameFor(model => model.FirstName)"/>
@@ -58,11 +53,12 @@
                 </form>
             </div>
 
-
-
             <div class="tab-pane" id="adres">
                 <form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
                     asp-action="EditAddress">
+                    <input type="hidden" asp-for="Userid"/>
+                    <input type="hidden" asp-for="Useraddress"/>
+                    <input type="hidden" asp-for="Useraddress.Userid"/>
                     <input style="padding:3px; width:70%" asp-for="Useraddress.Street"
                             placeholder="@Html.DisplayNameFor(model => model.Useraddress.Street)"/>
                     <span asp-validation-for="Useraddress.Street" class="text-danger" style="font-size: small;"></span>
@@ -95,6 +91,7 @@
                 </form>
             </div>
 
+            <!-- TODO: Mail jest Unique, więc trzeba sprawdzić
             <div class="tab-pane" id="email">
                 <form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
                     asp-action="EditEmail">
@@ -102,7 +99,6 @@
                     <span asp-validation-for="EmailAddress" class="text-danger" style="font-size: small;"></span>
                     <br />
                     <br />
-                    <!-- TODO: rozdzielić pola z mailami -->
                     <input style="padding:3px; width:70%" placeholder="Powtórz email" asp-for="EmailAddress">
                     <span asp-validation-for="EmailAddress" class="text-danger" style="font-size: small;"></span>
                     <br />
@@ -112,7 +108,7 @@
                             class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
                     </div>
                 </form>
-            </div>
+            </div> -->
 
             <div class="tab-pane" id="haslo">
                 <form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"

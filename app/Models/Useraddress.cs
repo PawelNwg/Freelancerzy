@@ -19,6 +19,7 @@ namespace freelancerzy.Models
         public int? ApartmentNumber { get; set; }
         [Display(Name = "Kod pocztowy")] //TODO: regex do kodu pocztowego
         public string ZipCode { get; set; }
+        [Required]
         [Display(Name = "Miejscowość")]
         [RegularExpression("^[A-Z][a-zA-Z ]*$", ErrorMessage = "Nazwa miejscowości może zawierać tylko litery")]
         public string City { get; set; }

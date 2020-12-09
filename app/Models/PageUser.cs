@@ -36,7 +36,7 @@ namespace freelancerzy.Models
         public string EmailAddress { get; set; }
 
         [Display(Name = "Numer telefonu")]
-        [Phone]
+        //[Phone]
         [RegularExpression(@"^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$", ErrorMessage = "Niepoprawny numer")]
         public int? Phonenumber { get; set; }
         public bool emailConfirmation { get; set; }

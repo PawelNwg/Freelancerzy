@@ -92,7 +92,7 @@ namespace app.Controllers
                     return Redirect(ReturnUrl);
                 }
             }
-            ViewData["error"] = "Podano z�e has�o";
+            ViewData["error"] = "Podano złe hasło";
             return View();
         }
         private bool ValideteUser(PageUser user, string password)
@@ -147,29 +147,47 @@ namespace app.Controllers
         public async Task<IActionResult> EditGeneral(PageUser user) //TODO: dodać userId
         {
             //if (user.EmailAddress == null) user.EmailAddress = this.User.Identity.Name;
-            if (ModelState.IsValid)
-            {
-                PageUser editUser = new PageUser() //TODO: wyszukać użytkownika w bazie i zmienić jego dane
-                {
-                    FirstName = user.FirstName,
-                    Surname = user.Surname,
-                    Phonenumber = user.Phonenumber
-                };
-                return View();
-            }
-            var errors = ModelState
-            .Where(x => x.Value.Errors.Count > 0)
-            .Select(x => new { x.Key, x.Value.Errors })
-            .ToArray();
+            if (user.EmailAddress == null) return NotFound();
+            //TODO: dodać walidacje po stronie serwera
+            _context.PageUser.Attach(user);
+            _context.Entry(user).Property(u => u.FirstName).IsModified = true;
+            _context.Entry(user).Property(u => u.Surname).IsModified = true;
+            _context.Entry(user).Property(u => u.Phonenumber).IsModified = true;
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Index", "Home");
         }
         [HttpPost]
-        public async Task<IActionResult> EditAddress()
+        public async Task<IActionResult> EditAddress(PageUser user)
         {
-            if (ModelState.IsValid)
+            //TODO: dodać polskie znaki do nazw w adresie
+            if (user.Userid == null) return NotFound();
+            var adress = _context.Useraddress.FirstOrDefault(a => a.Userid == user.Userid);
+            Useraddress address = user.Useraddress;
+            address.Userid = user.Userid;
+
+            if (adress == null)
             {
-                return View();
+                _context.Add(address);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Home");
             }
+
+            //TODO: dodać walidacje po stronie serwera
+            _context.Entry(adress).State = EntityState.Detached;
+            _context.Useraddress.Attach(address);
+
+            _context.Entry(address).Property(u => u.Street).IsModified = true;
+            _context.Entry(address).Property(u => u.Number).IsModified = true;
+            _context.Entry(address).Property(u => u.ApartmentNumber).IsModified = true;
+            _context.Entry(address).Property(u => u.ZipCode).IsModified = true;
+            _context.Entry(address).Property(u => u.City).IsModified = true;
+            await _context.SaveChangesAsync();
+            
+            // if (ModelState.IsValid)
+            // {
+            //     return View();
+            // }
             return RedirectToAction("Index", "Home");
         }
         [HttpPost]
