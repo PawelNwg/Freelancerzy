@@ -20,13 +20,20 @@ namespace freelancerzy.Controllers
         }
 
         // GET: Offers
-        public async Task<IActionResult> Search()
+        public  IActionResult Search()
         {
-            var cb2020freedbContext = _context.Offer.Include(o => o.Category).Include(o => o.User);
-            return View(await cb2020freedbContext.ToListAsync());
+            
+            return View();
             
         }
-
+        
+        public async Task<PartialViewResult> OfferListPartial(int? pageNumber)
+        {
+            var cb2020freedbContext = _context.Offer.Include(o => o.Category).Include(o => o.User).OrderBy(o => o.Title);
+            int pageSize = 15;
+            return PartialView("_OfferList", await PaginatedList<Offer>.CreateAsync(cb2020freedbContext, pageNumber ?? 1, pageSize));
+            
+        }
         // GET: Offers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
