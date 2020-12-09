@@ -82,7 +82,7 @@ namespace freelancerzy.Controllers
                 offer.Wage = Decimal.Parse(offer.WageValue);
                 _context.Add(offer);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Search));
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Categoryid", "CategoryName", offer.CategoryId);
             ViewData["UserId"] = new SelectList(_context.PageUser, "Userid", "EmailAddress", offer.UserId);
