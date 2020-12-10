@@ -27,12 +27,32 @@ namespace freelancerzy.Controllers
             
         }
         
-        public async Task<PartialViewResult> OfferListPartial(int? pageNumber)
+        public async Task<PartialViewResult> OfferListPartial(int? pageNumber, string order)
         {
-            var cb2020freedbContext = _context.Offer.Include(o => o.Category).Include(o => o.User).OrderBy(o => o.Title);
+            var cb2020freedbContext = SortedList(order);
             int pageSize = 15;
             return PartialView("_OfferList", await PaginatedList<Offer>.CreateAsync(cb2020freedbContext, pageNumber ?? 1, pageSize));
             
+        }
+        private IQueryable<Offer> SortedList(string order)
+        {
+            switch(order)
+            {
+                case "nameAsc":
+                    return _context.Offer.Include(o => o.Category).OrderBy(o => o.Title);
+                case "nameDesc":
+                    return _context.Offer.Include(o => o.Category).OrderByDescending(o => o.Title);
+                case "wageAsc":
+                    return _context.Offer.Include(o => o.Category).OrderBy(o => o.Wage);
+                case "wageDesc":
+                    return _context.Offer.Include(o => o.Category).OrderByDescending(o => o.Wage);
+                case "dateAsc":
+                    return _context.Offer.Include(o => o.Category).OrderBy(o => o.CreationDate);
+                case "dateDesc":
+                    return _context.Offer.Include(o => o.Category).OrderByDescending(o => o.CreationDate);
+                default:
+                    return _context.Offer.Include(o => o.Category).OrderBy(o => o.Title);
+            }
         }
         // GET: Offers/Details/5
         public async Task<IActionResult> Details(int? id)
