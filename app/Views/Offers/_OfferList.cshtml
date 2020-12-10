@@ -58,7 +58,7 @@
 
 <div>
     <div style="width:50%" class="d-inline-block ">
-        Jesteś na stronie: <input type="number" value="@Model.PageIndex" id="page" style="width:50px;"/> z @Model.TotalPages <button class="btn btn-default" id="goToPage">Przejdź</button>
+        Jesteś na stronie: <input min="1" max="@Model.TotalPages" type="number" value="@Model.PageIndex" id="page" style="width:50px;"/> z @Model.TotalPages <button class="btn btn-default" id="goToPage">Przejdź</button>
 
     </div>
     <div style="float:right">

@@ -32,13 +32,13 @@
     </div>
     <div id="content">
         <label>Sortuj według:</label>
-        <select>
-            <option>Nazwa: A-Z</option>
-            <option>Nazwa: Z-A</option>
-            <option>Stawka: od najniższej</option>
-            <option>Stawka: od najwyższej</option>
-            <option>Data dodawnia: od najnowszych</option>
-            <option>Data dodania: od najstarszych</option>
+        <select id="sort" >
+            <option value="nameAsc">Nazwa: A-Z</option>
+            <option value="nameDesc">Nazwa: Z-A</option>
+            <option value="wageAsc">Stawka: od najniższej</option>
+            <option value="wageDesc">Stawka: od najwyższej</option>
+            <option value="dateDesc">Data dodania: od najnowszych</option>
+            <option value="dateAsc">Data dodania: od najstarszych</option>
         </select>
         <br><br />
         <h3>Oferty:</h3>
@@ -113,12 +113,14 @@
     <script>
         $(function() {
             var pageId = 1;
+            var sortorder = $('#sort').val();
+            
 
             var loadTable = function (pageId) {
                 $('#offers').empty();
                 $('#loader').addClass("loader");
-                
-                $('#offers').load('/Offers/OfferListPartial?pageNumber=' + pageId, null, function () {
+
+                $('#offers').load('/Offers/OfferListPartial?pageNumber=' + pageId + '&order=' + sortorder, null, function () {
                     $('#loader').removeClass("loader");
                    
                 });
@@ -141,6 +143,12 @@
             $(document).on('click', '#next', null, function () { loadTable(++pageId); });
 
             $(document).on('click', '#prev', null, function () { loadTable(--pageId); });
+
+            $(document).on('change', '#sort', null, function () {
+                sortorder = $('#sort').val();
+                pageId = 1;
+                loadTable(pageId)
+            })
         });
     </script>
 }
