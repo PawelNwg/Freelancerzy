@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using freelancerzy.Models;
 using Microsoft.AspNetCore.Authorization;
+using NinjaNye.SearchExtensions;
 
 namespace freelancerzy.Controllers
 {
@@ -27,11 +28,29 @@ namespace freelancerzy.Controllers
             
         }
         
-        public async Task<PartialViewResult> OfferListPartial(int? pageNumber, string order)
+        public async Task<PartialViewResult> OfferListPartial(int? pageNumber, string order, string searchString)
         {
-            var cb2020freedbContext = SortedList(order);
+            var Offers = SortedList(order);
+            if(searchString != null)
+            {
+                searchString = searchString.TrimEnd(); // uciecie nadmiaru spacji na koncu
+
+                var wordList = searchString.ToLower().Split(' ').ToList();
+                wordList.RemoveAll(o => o == ""); //usumoecie z listy pustych strignow
+                for(int i =0; i< wordList.Count; i++) // usuwanie końcówek
+                {
+                    
+                    if (wordList[i].Length > 4) wordList[i] = wordList[i].Substring(0, wordList[i].Length - 2);
+                }
+                var words = wordList.ToArray();
+                if(words.Count() >=2 ) // jesli wiecej niz dwa slowa musza pasowac conajmniej  2
+                {
+                    Offers = Offers.Search(o => o.Title.ToLower(), o => o.Description.ToLower()).Containing(words).ToRanked().Where(o=>o.Hits>=2).Select(o=> o.Item);
+                }
+                Offers = Offers.Search(o => o.Title,o=>o.Description).Containing(words); //https://ninjanye.github.io/SearchExtensions/
+            }
             int pageSize = 15;
-            return PartialView("_OfferList", await PaginatedList<Offer>.CreateAsync(cb2020freedbContext, pageNumber ?? 1, pageSize));
+            return PartialView("_OfferList", await PaginatedList<Offer>.CreateAsync(Offers, pageNumber ?? 1, pageSize));
             
         }
         private IQueryable<Offer> SortedList(string order)

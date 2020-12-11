@@ -26,6 +26,7 @@
     
     <PackageReference Include="MySql.Data" Version="8.0.20" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.20" />
+    <PackageReference Include="NinjaNye.SearchExtensions" Version="3.0.1" />
   </ItemGroup>
 
   <ItemGroup>
