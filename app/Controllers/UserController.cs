@@ -97,7 +97,6 @@ namespace app.Controllers
         }
         private bool ValideteUser(PageUser user, string password)
         {
-
             var hasher = new PasswordHasher<string>();
             if (hasher.VerifyHashedPassword(user.EmailAddress, user.Credentials.Password, password) == PasswordVerificationResult.Success)
             {
@@ -147,6 +146,9 @@ namespace app.Controllers
         public async Task<IActionResult> EditGeneral(PageUser user) //TODO: dodać userId
         {
             //if (user.EmailAddress == null) user.EmailAddress = this.User.Identity.Name;
+            // if (!ModelState.IsValid){
+            //     return View("Edit",user);
+            // }
             if (user.EmailAddress == null) return NotFound();
             //TODO: dodać walidacje po stronie serwera
             _context.PageUser.Attach(user);
@@ -157,6 +159,7 @@ namespace app.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+        
         [HttpPost]
         public async Task<IActionResult> EditAddress(PageUser user)
         {
@@ -190,22 +193,21 @@ namespace app.Controllers
             // }
             return RedirectToAction("Index", "Home");
         }
+
         [HttpPost]
-        public async Task<IActionResult> EditEmail()
+        public async Task<IActionResult> EditCredentials(PageUser user)
         {
-            if (ModelState.IsValid)
-            {
-                return View();
-            }
-            return RedirectToAction("Index", "Home");
-        }
-        [HttpPost]
-        public async Task<IActionResult> EditCredentials()
-        {
-            if (ModelState.IsValid)
-            {
-                return View();
-            }
+            if (user.Userid == null) return NotFound();
+            //TODO: sprawdzenie czy stare hasło jest zgodne z bazą
+            _context.Credentials.Attach(user.Credentials);
+
+            Credentials credentials = user.Credentials;
+            var passwordHasher = new PasswordHasher<string>();
+            credentials.Password = passwordHasher.HashPassword(user.EmailAddress, credentials.Password);
+            _context.Entry(user.Credentials).Property(u => u.Password).IsModified = true;
+
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Index", "Home");
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
