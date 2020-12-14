@@ -9,8 +9,8 @@
         <br />
     </div>
     <div id="filtr">
-        <input name="phrase" style="padding:3px; width:30%" placeholder="Wpisz frazę">
-        <button type="button" style="padding:7px 20px;" class="btn btn-outline-primary btn-dark text-light">Szukaj</button>
+        <input id="phrase" style="padding:3px; width:30%" placeholder="Wpisz frazę">
+        <button id="searchBtn" type="button" style="padding:7px 20px;" class="btn btn-outline-primary btn-dark text-light">Szukaj</button>
     </div>
     <div id="nav">
         <h3>Kategoria</h3>
@@ -120,7 +120,14 @@
                 $('#offers').empty();
                 $('#loader').addClass("loader");
 
-                $('#offers').load('/Offers/OfferListPartial?pageNumber=' + pageId + '&order=' + sortorder, null, function () {
+                var searchvalue = $('#phrase').val().replaceAll(' ', '+');
+                
+                
+                var searchstring = searchvalue == '' ? '' : '&searchString=' + searchvalue ;
+
+                
+
+                $('#offers').load('/Offers/OfferListPartial?pageNumber=' + pageId + '&order=' + sortorder + searchstring, null, function () {
                     $('#loader').removeClass("loader");
                    
                 });
@@ -139,7 +146,9 @@
                 
                 loadTable(pageId);
             })
-            
+
+            $(document).on('click', '#searchBtn', function () { loadTable(pageId) });
+
             $(document).on('click', '#next', null, function () { loadTable(++pageId); });
 
             $(document).on('click', '#prev', null, function () { loadTable(--pageId); });
