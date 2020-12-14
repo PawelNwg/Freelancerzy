@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using freelancerzy.Models;
 using Microsoft.AspNetCore.Authorization;
 using NinjaNye.SearchExtensions;
+using System.Collections;
 
 namespace freelancerzy.Controllers
 {
@@ -23,14 +24,19 @@ namespace freelancerzy.Controllers
         // GET: Offers
         public  IActionResult Search()
         {
-            
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Categoryid", "CategoryName");
             return View();
             
         }
         
-        public async Task<PartialViewResult> OfferListPartial(int? pageNumber, string order, string searchString)
+        public async Task<PartialViewResult> OfferListPartial(int? pageNumber, string order, string searchString, int categoryId, Filter Filter)
         {
             var Offers = SortedList(order);
+            if(categoryId != 0)
+            {
+                Offers = Offers.Where(o => o.CategoryId == categoryId);
+            }
+            Offers = Filters(Offers, Filter);
             if(searchString != null)
             {
                 searchString = searchString.TrimEnd(); // uciecie nadmiaru spacji na koncu
@@ -52,6 +58,11 @@ namespace freelancerzy.Controllers
             int pageSize = 15;
             return PartialView("_OfferList", await PaginatedList<Offer>.CreateAsync(Offers, pageNumber ?? 1, pageSize));
             
+        }
+        private IQueryable<Offer> Filters(IQueryable<Offer> offers, Filter filter)
+        {
+            return offers.Where(o => o.Wage >= (filter.WageLow == null ? 0 : filter.WageLow) && o.Wage <= (filter.WageUp == null ? Int32.MaxValue : filter.WageUp))
+                .Where(o => o.CreationDate >= (filter.DateLow == null ? DateTime.MinValue : filter.DateLow) && o.CreationDate <= (filter.DateUp == null ? DateTime.MaxValue : filter.DateUp));
         }
         private IQueryable<Offer> SortedList(string order)
         {
@@ -217,6 +228,14 @@ namespace freelancerzy.Controllers
         private bool OfferExists(int id)
         {
             return _context.Offer.Any(e => e.Offerid == id);
+        }
+        public class Filter
+        {
+            public int? WageLow { get; set; }
+            public int? WageUp { get; set; }
+            public DateTime? DateLow { get; set; }
+            public DateTime? DateUp { get; set; }
+
         }
     }
 }
