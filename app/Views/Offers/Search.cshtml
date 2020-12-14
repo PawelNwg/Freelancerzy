@@ -14,43 +14,49 @@
     </div>
     <div id="nav">
         <h3>Kategoria</h3>
-        <select>
-            <option>Programista</option>
-            <option>Projektant Wnętrz</option>
-            <option>Architekt</option>
-            <option>Grafik</option>
-            <option>Montarzysta</option>
-            <option>Reszta</option>
+        <select asp-items="ViewBag.CategoryId" id="CategoryFilter">
+            <option value="0"></option>
         </select>
         <br><br />
         <h3>Filtry:</h3>
-        <input type="checkbox" name="check1" />
-        <label for="check1">coś tam</label><br />
-        <input type="checkbox" name="check3" />
-        <label for="check2">coś tam</label><br />
-        <button type="button" style="padding:7px 15px;" class="btn btn-outline-primary btn-dark text-light">Zastosuj</button>
-    </div>
-    <div id="content">
-        <label>Sortuj według:</label>
-        <select id="sort" >
-            <option value="nameAsc">Nazwa: A-Z</option>
-            <option value="nameDesc">Nazwa: Z-A</option>
-            <option value="wageAsc">Stawka: od najniższej</option>
-            <option value="wageDesc">Stawka: od najwyższej</option>
-            <option value="dateDesc">Data dodania: od najnowszych</option>
-            <option value="dateAsc">Data dodania: od najstarszych</option>
-        </select>
-        <br><br />
-        <h3>Oferty:</h3>
-        <div id="loader">
-
+        <label for="check1">Stawka</label><br />
+        <div class="m-auto">
+            <input type="number" style="width: 90px;" name="check1" id="wageLower" min="0" placeholder="od" /> -
+            <input type="number" style="width: 90px;" name="check1" id="wageUpper" min="0" placeholder="do" />
         </div>
-        <div id="offers">
-
-
+        <label for="check2">Data dodania od</label><br />
+        <div class="m-auto form-group">
+            <input type="date" name="check2" id="dateLower" placeholder="od" />
+        </div>
+        <label for="check3">Data dodania do</label><br />
+        <div class="m-auto form-group">
+        <input type="date" name="check3" id="dateUpper" placeholder="do" />
         </div>
 
+        <br />
+        <button type="button" style="padding:7px 15px;" class="btn btn-outline-primary btn-dark text-light" id="FilterButton">Zastosuj</button>
     </div>
+        <div id="content">
+            <label>Sortuj według:</label>
+            <select id="sort">
+                <option value="nameAsc">Nazwa: A-Z</option>
+                <option value="nameDesc">Nazwa: Z-A</option>
+                <option value="wageAsc">Stawka: od najniższej</option>
+                <option value="wageDesc">Stawka: od najwyższej</option>
+                <option value="dateDesc">Data dodania: od najnowszych</option>
+                <option value="dateAsc">Data dodania: od najstarszych</option>
+            </select>
+            <br><br />
+            <h3>Oferty:</h3>
+            <div id="loader">
+
+            </div>
+            <div id="offers">
+
+
+            </div>
+
+        </div>
 </section>
 
 <style>
@@ -113,6 +119,7 @@
     <script>
         $(function() {
             var pageId = 1;
+            var categotyId = 0;
             var sortorder = $('#sort').val();
             
 
@@ -121,13 +128,19 @@
                 $('#loader').addClass("loader");
 
                 var searchvalue = $('#phrase').val().replaceAll(' ', '+');
+                var WageLow = $('#wageLower').val();
+                var WageUp = $('#wageUpper').val();
+                var DateLow = $('#dateLower').val();
+                var DateUp = $('#dateUpper').val();
                 
-                
-                var searchstring = searchvalue == '' ? '' : '&searchString=' + searchvalue ;
+                var searchstring = searchvalue == '' ? '' : '&searchString=' + searchvalue;
+                categotyId = $('#CategoryFilter').val();
+                console.log(categotyId)
 
-                
-
-                $('#offers').load('/Offers/OfferListPartial?pageNumber=' + pageId + '&order=' + sortorder + searchstring, null, function () {
+                $('#offers').load('/Offers/OfferListPartial?pageNumber=' + pageId + '&order=' + sortorder + searchstring + '&categoryId=' + categotyId,
+                    {
+                        Filter: { WageLow: WageLow, WageUp: WageUp, DateLow: DateLow, DateUp: DateUp }
+                    }, function () {
                     $('#loader').removeClass("loader");
                    
                 });
@@ -148,6 +161,8 @@
             })
 
             $(document).on('click', '#searchBtn', function () { loadTable(pageId) });
+
+            $(document).on('click', '#FilterButton', function () { loadTable(pageId) });
 
             $(document).on('click', '#next', null, function () { loadTable(++pageId); });
 
