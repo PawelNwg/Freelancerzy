@@ -19,13 +19,13 @@ namespace freelancerzy.Models
 
         [Required(ErrorMessage = "Imie jest wymagane")]
         [MaxLength(20, ErrorMessage = "Imie nie może być dłuższe niż 20 znaków")]
-        [RegularExpression(@"^([A-Za-z]+)$", ErrorMessage = "Niepoprawne imię")] //TODO: zmienić komunikaty
+        [RegularExpression(@"^([A-Za-zzżźćńółęąśŻŹĆĄŚĘŁÓŃ]+)$", ErrorMessage = "Niepoprawne imię")] //TODO: zmienić komunikaty
         [Display(Name = "Imię")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "Nazwisko jest wymagane")]
         [MaxLength(30, ErrorMessage = "Nazwisko nie może być dłuższe niż 30 znaków")]
-        [RegularExpression(@"^([A-Za-z]+)$", ErrorMessage = "Niepoprawna forma nazwiska")]
+        [RegularExpression(@"^([A-Za-zzżźćńółęąśŻŹĆĄŚĘŁÓŃ]+)$", ErrorMessage = "Niepoprawna forma nazwiska")]
         [Display(Name = "Nazwisko")]
         public string Surname { get; set; }
 
@@ -36,8 +36,8 @@ namespace freelancerzy.Models
         public string EmailAddress { get; set; }
 
         [Display(Name = "Numer telefonu")]
-        [DataType(DataType.PhoneNumber, ErrorMessage = "Niepoprawny numer2")]
-        //[RegularExpression(@"^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$", ErrorMessage = "Niepoprawny numer")]
+        [Phone(ErrorMessage = "Niepoprawny format numeru telefonu")]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Niepoprawny numer telefonu")]
         public int? Phonenumber { get; set; }
         public bool emailConfirmation { get; set; }
 

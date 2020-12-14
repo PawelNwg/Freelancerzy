@@ -22,7 +22,12 @@ namespace freelancerzy.Models
         [Compare("Password", ErrorMessage ="Hasła nie są identyczne")]
         [Display(Name = "Powtórz hasło")]
         public string PasswordConfirmed { get; set; }
-
+        
+        [NotMapped]
+        [Required(ErrorMessage = "Stare hasła jest wymagane")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Stare hasło")]
+        public string OldPassword{ get; set; }
         public virtual PageUser User { get; set; }
     }
 }

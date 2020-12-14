@@ -73,7 +73,7 @@ namespace app.Controllers
             {
                 user.Credentials = _context.Credentials.FirstOrDefault(u => u.Userid == user.Userid);
                 user.Type = _context.Usertype.FirstOrDefault(u => u.Typeid == user.TypeId);
-                if (ValideteUser(user, password))
+                if (ValidateUser(user, password))
                 {
                     var claims = new List<Claim>()
                     {
@@ -95,7 +95,7 @@ namespace app.Controllers
             ViewData["error"] = "Podano złe hasło";
             return View();
         }
-        private bool ValideteUser(PageUser user, string password)
+        private bool ValidateUser(PageUser user, string password)
         {
             var hasher = new PasswordHasher<string>();
             if (hasher.VerifyHashedPassword(user.EmailAddress, user.Credentials.Password, password) == PasswordVerificationResult.Success)
@@ -145,27 +145,29 @@ namespace app.Controllers
         [HttpPost]
         public async Task<IActionResult> EditGeneral(PageUser user) //TODO: dodać userId
         {
-            //if (user.EmailAddress == null) user.EmailAddress = this.User.Identity.Name;
-            // if (!ModelState.IsValid){
-            //     return View("Edit",user);
-            // }
             if (user.EmailAddress == null) return NotFound();
-            //TODO: dodać walidacje po stronie serwera
+
             _context.PageUser.Attach(user);
             _context.Entry(user).Property(u => u.FirstName).IsModified = true;
             _context.Entry(user).Property(u => u.Surname).IsModified = true;
+            if (user.Phonenumber == null) //TODO: zwrócić wiadomość hasło niepoprawny numer telefonu
+            {
+                var dbUser = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == user.EmailAddress);
+                return View("Edit", dbUser);
+            }
             _context.Entry(user).Property(u => u.Phonenumber).IsModified = true;
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> EditAddress(PageUser user)
         {
-            //TODO: dodać polskie znaki do nazw w adresie
             if (user.Userid == null) return NotFound();
+            //to check if adress exists in DB
             var adress = _context.Useraddress.FirstOrDefault(a => a.Userid == user.Userid);
+            //only address entity
             Useraddress address = user.Useraddress;
             address.Userid = user.Userid;
 
@@ -186,23 +188,30 @@ namespace app.Controllers
             _context.Entry(address).Property(u => u.ZipCode).IsModified = true;
             _context.Entry(address).Property(u => u.City).IsModified = true;
             await _context.SaveChangesAsync();
-            
-            // if (ModelState.IsValid)
-            // {
-            //     return View();
-            // }
+
             return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
         public async Task<IActionResult> EditCredentials(PageUser user)
         {
-            if (user.Userid == null) return NotFound();
-            //TODO: sprawdzenie czy stare hasło jest zgodne z bazą
-            _context.Credentials.Attach(user.Credentials);
+            if (user.EmailAddress == null) return NotFound();
 
             Credentials credentials = user.Credentials;
+            PageUser dbUser = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == user.EmailAddress);
+
+            if (!ValidateUser(dbUser, credentials.OldPassword)) //TODO: zwrócić wiadomość hasło nie pasuje do loginu
+            {
+                return View("Edit", dbUser);
+            }
+            _context.Entry(dbUser).State = EntityState.Detached;
+            _context.Credentials.Attach(user.Credentials);
             var passwordHasher = new PasswordHasher<string>();
+            //TODO: zwrócić wiadomość że nowe hasło jest takie same jak stare hasło
+            if (passwordHasher.VerifyHashedPassword(dbUser.EmailAddress, dbUser.Credentials.Password, user.Credentials.Password) == PasswordVerificationResult.Success)
+            {
+                return View("Edit", dbUser);
+            }
             credentials.Password = passwordHasher.HashPassword(user.EmailAddress, credentials.Password);
             _context.Entry(user.Credentials).Property(u => u.Password).IsModified = true;
 
@@ -210,6 +219,7 @@ namespace app.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

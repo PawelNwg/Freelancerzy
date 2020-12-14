@@ -8,20 +8,19 @@ namespace freelancerzy.Models
     {
         public int Userid { get; set; }
         [Display(Name = "Ulica")]
-        [RegularExpression("^[A-Z][a-zA-Z ]*$", ErrorMessage = "Nazwa ulicy może zawierać tylko litery")]
+        [RegularExpression("^[a-zA-ZzżźćńółęąśŻŹĆĄŚĘŁÓŃ0-9]*$", ErrorMessage = "Niepoprawna nazwa ulicy")]
         public string Street { get; set; }
         [Display(Name = "Numer")]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "Numer może zawierać tylko cyfry")]
+        [RegularExpression("^[0-9]*[a-zA-Z]*$", ErrorMessage = "Niepoprawny numer ulicy")] //TODO: zmienić typ w bazie danych bo może być adres np 11C
         public int Number { get; set; }
         [Display(Name = "Numer mieszkania")]
-        [Range(0, 100000, 
-        ErrorMessage = "Numer mieszkania może zawierać tylko cyfry")]
+        [RegularExpression("^[0-9]*[a-zA-Z]*$", ErrorMessage = "Niepoprawny numer mieszkania")] //TODO: zmienić typ w bazie danych bo może być adres np 11C
         public int? ApartmentNumber { get; set; }
         [Display(Name = "Kod pocztowy")] //TODO: regex do kodu pocztowego
         public string ZipCode { get; set; }
         [Required]
         [Display(Name = "Miejscowość")]
-        [RegularExpression("^[A-Z][a-zA-Z ]*$", ErrorMessage = "Nazwa miejscowości może zawierać tylko litery")]
+        [RegularExpression("^[a-zA-ZzżźćńółęąśŻŹĆĄŚĘŁÓŃ]*$", ErrorMessage = "Nazwa miejscowości może zawierać tylko litery")]
         public string City { get; set; }
 
         public virtual PageUser User { get; set; }

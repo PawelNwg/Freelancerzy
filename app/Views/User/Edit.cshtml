@@ -29,7 +29,7 @@
                     asp-action="EditGeneral">
                     <div class="input">
                         <input type="hidden" asp-for="EmailAddress"/>
-                        <input type="hidden" asp-for="Userid"/> <!-- Poprawić przekazywanie hidden -->
+                        <input type="hidden" asp-for="Userid"/>
                         <input style="padding:3px; width:70%" asp-for="FirstName"
                             placeholder="@Html.DisplayNameFor(model => model.FirstName)"/> <br/>
                         <span asp-validation-for="FirstName" class="text-danger" style="font-size: small;"></span>
@@ -55,7 +55,6 @@
                 <form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
                     asp-action="EditAddress">
                     <input type="hidden" asp-for="Userid"/>
-                    <input type="hidden" asp-for="Useraddress"/>
                     <input type="hidden" asp-for="Useraddress.Userid"/>
                     <input style="padding:3px; width:70%" asp-for="Useraddress.Street"
                             placeholder="@Html.DisplayNameFor(model => model.Useraddress.Street)"/><br />
@@ -108,10 +107,10 @@
                 <form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
                     asp-action="EditCredentials">
                     <!-- TODO: rozdzielić pola z hasłami -->
-                    <input type="hidden" asp-for="Userid"/>
-                    <input type="hidden" asp-for="Credentials"/>
+                    <input type="hidden" asp-for="EmailAddress"/>
                     <input type="hidden" asp-for="Credentials.Userid"/>
-                    <input style="padding:3px; width:70%" placeholder="Stare hasło"> <br />   
+                    <input style="padding:3px; width:70%" placeholder="Stare hasło" asp-for="Credentials.OldPassword"> <br />
+                    <span asp-validation-for="Credentials.OldPassword" class="text-danger" style="font-size: small;"></span>
                     <br />
                     <input style="padding:3px; width:70%" placeholder="Nowe hasło" asp-for="Credentials.Password"> <br />
                     <span asp-validation-for="Credentials.Password" class="text-danger" style="font-size: small;"></span>
