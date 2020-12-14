@@ -32,6 +32,7 @@ namespace freelancerzy.Controllers
         public async Task<PartialViewResult> OfferListPartial(int? pageNumber, string order, string searchString, int categoryId, Filter Filter)
         {
             var Offers = SortedList(order);
+            Offers = Offers.Where(o => o.ExpirationDate >= DateTime.Now);
             if(categoryId != 0)
             {
                 Offers = Offers.Where(o => o.CategoryId == categoryId);
@@ -61,8 +62,16 @@ namespace freelancerzy.Controllers
         }
         private IQueryable<Offer> Filters(IQueryable<Offer> offers, Filter filter)
         {
-            return offers.Where(o => o.Wage >= (filter.WageLow == null ? 0 : filter.WageLow) && o.Wage <= (filter.WageUp == null ? Int32.MaxValue : filter.WageUp))
-                .Where(o => o.CreationDate >= (filter.DateLow == null ? DateTime.MinValue : filter.DateLow) && o.CreationDate <= (filter.DateUp == null ? DateTime.MaxValue : filter.DateUp));
+            var offerList = offers;
+            if(filter.WageLow != null || filter.WageUp != null)
+            {
+                offerList = offerList.Where(o => o.Wage >= (filter.WageLow == null ? 0 : filter.WageLow) && o.Wage <= (filter.WageUp == null ? Int32.MaxValue : filter.WageUp));
+            }
+            if(filter.DateLow != null || filter.DateUp != null)
+            {
+                offerList = offerList.Where(o => o.CreationDate >= (filter.DateLow == null ? DateTime.MinValue : filter.DateLow) && o.CreationDate <= (filter.DateUp == null ? DateTime.MaxValue : filter.DateUp));
+            }
+            return offerList;
         }
         private IQueryable<Offer> SortedList(string order)
         {
