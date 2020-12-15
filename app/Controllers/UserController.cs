@@ -143,15 +143,16 @@ namespace app.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditGeneral(PageUser user) //TODO: dodać userId
+        public async Task<IActionResult> EditGeneral(PageUser user) 
         {
             if (user.EmailAddress == null) return NotFound();
 
             _context.PageUser.Attach(user);
             _context.Entry(user).Property(u => u.FirstName).IsModified = true;
             _context.Entry(user).Property(u => u.Surname).IsModified = true;
-            if (user.Phonenumber == null) //TODO: zwrócić wiadomość hasło niepoprawny numer telefonu
+            if (user.Phonenumber == null) 
             {
+                ViewBag.Message = "Podano nieprawidłowy numer telefonu";
                 var dbUser = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == user.EmailAddress);
                 return View("Edit", dbUser);
             }
@@ -178,7 +179,6 @@ namespace app.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            //TODO: dodać walidacje po stronie serwera
             _context.Entry(adress).State = EntityState.Detached;
             _context.Useraddress.Attach(address);
 
@@ -200,16 +200,18 @@ namespace app.Controllers
             Credentials credentials = user.Credentials;
             PageUser dbUser = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == user.EmailAddress);
 
-            if (!ValidateUser(dbUser, credentials.OldPassword)) //TODO: zwrócić wiadomość hasło nie pasuje do loginu
+            if (!ValidateUser(dbUser, credentials.OldPassword)) 
             {
+                ViewBag.Message = "Podano nieprawidlowe haslo";
                 return View("Edit", dbUser);
             }
             _context.Entry(dbUser).State = EntityState.Detached;
             _context.Credentials.Attach(user.Credentials);
             var passwordHasher = new PasswordHasher<string>();
-            //TODO: zwrócić wiadomość że nowe hasło jest takie same jak stare hasło
+
             if (passwordHasher.VerifyHashedPassword(dbUser.EmailAddress, dbUser.Credentials.Password, user.Credentials.Password) == PasswordVerificationResult.Success)
             {
+                ViewBag.Message = "Haslo jest identyczne jak stare haslo";
                 return View("Edit", dbUser);
             }
             credentials.Password = passwordHasher.HashPassword(user.EmailAddress, credentials.Password);
