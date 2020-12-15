@@ -1,26 +1,37 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
-using app.Models;
-using freelancerzy.Models;
-using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using freelancerzy.Models;
+using Microsoft.AspNetCore.Mvc;
+using TokenGenerator.Managers.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using System.Collections.Generic;
-using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using app.Models;
+using System.Net.Mail;
+using System.Diagnostics;
 
 namespace app.Controllers
 {
     public class UserController : Controller
     {
+        private readonly IConfiguration _config;
+
         private readonly cb2020freedbContext _context;
 
+        private readonly ITokenManager _tokenManager;
+
         //private readonly ILogger<UserController> _logger;
-        public UserController(cb2020freedbContext context)
+        public UserController(cb2020freedbContext context, IConfiguration config, ITokenManager tokenManager)
         {
             _context = context;
+            _config = config;
+            _tokenManager = tokenManager;
         }
 
         //public UserController(ILogger<UserController> logger)
@@ -50,7 +61,7 @@ namespace app.Controllers
             return RedirectToAction("Login");
         }
         [HttpPost]
-        public async Task<IActionResult> Login(string email, string password,string ReturnUrl) //TODO: pass user credentials
+        public async Task<IActionResult> Login(string email, string password, string ReturnUrl) //TODO: pass user credentials
         {
             ViewData["ReturnUrl"] = ReturnUrl;
             var user = _context.PageUser.FirstOrDefault(user => user.EmailAddress == email);
@@ -63,13 +74,18 @@ namespace app.Controllers
             {
                 user.Credentials = _context.Credentials.FirstOrDefault(u => u.Userid == user.Userid);
                 user.Type = _context.Usertype.FirstOrDefault(u => u.Typeid == user.TypeId);
+                if(user.emailConfirmation != true)
+                {
+                    ViewData["error"] = "Email nie zosta³ potwierdzony";
+                    return View();
+                }
                 if (ValideteUser(user, password))
                 {
                     var claims = new List<Claim>()
                     {
                         new Claim(ClaimTypes.Name,user.EmailAddress),
                         new Claim(ClaimTypes.Role,user.Type.Name),
-                       
+
                     };
                     var claimsIdentity = new ClaimsIdentity(claims, "CookieAuthentication");
 
@@ -104,7 +120,7 @@ namespace app.Controllers
                 {
                     FirstName = pageuser.FirstName,
                     Surname = pageuser.Surname,
-                    EmailAddress = pageuser.EmailAddress,                                    
+                    EmailAddress = pageuser.EmailAddress,
                     Phonenumber = pageuser.Phonenumber,
                     TypeId = 1,
                 };
@@ -112,17 +128,18 @@ namespace app.Controllers
                 var passwordHasher = new PasswordHasher<string>();
                 Credentials credentials = new Credentials()
                 {
-                    Password = passwordHasher.HashPassword(pageuser.EmailAddress, pageuser.Credentials.Password),                    
+                    Password = passwordHasher.HashPassword(pageuser.EmailAddress, pageuser.Credentials.Password),
                 };
-               
+
                 var passwordHasherConfirmation = new PasswordHasher<string>();
-                if (passwordHasherConfirmation.VerifyHashedPassword(null,credentials.Password,pageuser.Credentials.PasswordConfirmed) == PasswordVerificationResult.Success) // strawdzic czy nie ma takiego usera
+                if (passwordHasherConfirmation.VerifyHashedPassword(null, credentials.Password, pageuser.Credentials.PasswordConfirmed) == PasswordVerificationResult.Success) // strawdzic czy nie ma takiego usera
                 {
                     pageUser.Credentials = credentials;
                     _context.Add(pageUser);
                     _context.Add(credentials);
                     await _context.SaveChangesAsync();
-                    ViewBag.message = "ok";                
+                    EmailAsync(pageuser);
+                    ViewBag.message = "ok";
                 }
                 else
                 {
@@ -130,9 +147,9 @@ namespace app.Controllers
                     return View();
                 }
             }
-            
+
             //TODO: check user credentials
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -140,5 +157,84 @@ namespace app.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-    }
+
+        private void EmailAsync(PageUser pageuser)
+        {
+
+            Mail mailInfo = new Mail();
+            MailMessage mail = new MailMessage();
+            mail.To.Add(pageuser.EmailAddress);
+            mail.From = new MailAddress(mailInfo.SmtpEmailAdress);
+            mail.Subject = mailInfo.EmailSubject;
+            var token = generateToken(pageuser);
+            string Body = "https://localhost:44326/User/ConfirmEmail?" + "token=" + token;
+            mail.Body = Body;
+            mail.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = mailInfo.SmtpHost;
+            smtp.Port = mailInfo.SmtpPort;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new System.Net.NetworkCredential(_config.GetValue<String>("SmtpServers:login"), _config.GetValue<String>("SmtpServers:password"));
+            smtp.EnableSsl = true;
+            smtp.Send(mail);
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string token)
+        {
+            if (token == null)
+            {
+                ViewData["Data"] = "B£¥D";
+                return View(); // TODO widok errora
+            }
+
+            var claims = _tokenManager.GetClaims(token);
+
+            if (claims != null)
+            {
+                var userId = claims["userId"];
+                var email = claims["userEmail"];
+                DateTime date = DateTime.Parse((claims["nameAndSurname"] as string));
+
+
+                var user = _context.PageUser.FirstOrDefault(u => u.EmailAddress == email);
+                if (user == null)
+                {
+                    ViewData["Data"] = "B£¥D";
+                    return View(); // TODO widok errora
+                }
+                else if (DateTime.Compare(DateTime.Now, date.AddMinutes(15)) > 0)
+                {
+                    ViewData["Data"] = "token wygasl";
+                    return View();
+                }
+                user.emailConfirmation = true;
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+                ViewData["Data"] = "Zarejestrowano pomyœlnie :)";
+                ViewData["Wynik"] = true;
+                return View();
+            }
+            ViewData["Data"] = "token wygasl";
+            return View();
+        }
+
+        public string generateToken(PageUser pageuser)
+        {
+            var token = _tokenManager.GenerateToken(new Dictionary<string, object>
+            {
+                {
+                    "userId", pageuser.Userid
+                },
+                {
+                    "userEmail", pageuser.EmailAddress
+                },
+                {
+                    "nameAndSurname", DateTime.Now.ToString()
+                }
+            }); 
+            return token;
+        }
+    } 
 }
