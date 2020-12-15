@@ -13,6 +13,8 @@ using freelancerzy.Models;
 
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using TokenGenerator.Extensions;
 
 namespace Freelancerzy
 {
@@ -30,7 +32,7 @@ namespace Freelancerzy
         {
             services.AddControllersWithViews();
             services.AddDbContext<cb2020freedbContext>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
-            //services.AddDbContext<ApplicationUser>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTokenGenerator(Configuration);
             services.AddAuthentication("CookieAuthentication")
         .AddCookie("CookieAuthentication", config =>
         {
@@ -58,7 +60,7 @@ namespace Freelancerzy
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseTokenGenerator();
             app.UseRouting();
             app.UseCookiePolicy();
             app.UseAuthentication();
