@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Identity;
 using app.Models;
 using System.Net.Mail;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace app.Controllers
 {
@@ -45,9 +47,17 @@ namespace app.Controllers
             return View();
         }
 
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit()
         {
-            return View();
+            //TODO: error handling
+            String email = this.User.Identity.Name;
+            if (email == null) return NotFound();
+            var user = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
         }
         public IActionResult Register()
         {
@@ -67,19 +77,21 @@ namespace app.Controllers
             var user = _context.PageUser.FirstOrDefault(user => user.EmailAddress == email);
             if (user == null)
             {
-                ViewData["error"] = "Podana nazwa uøytkownika nie istnieje";
+                ViewData["error"] = "Podana nazwa uÔøΩytkownika nie istnieje";
                 return View();
             }
             else
             {
                 user.Credentials = _context.Credentials.FirstOrDefault(u => u.Userid == user.Userid);
                 user.Type = _context.Usertype.FirstOrDefault(u => u.Typeid == user.TypeId);
+
                 if(user.emailConfirmation != true)
                 {
                     ViewData["error"] = "Email nie zosta≥ potwierdzony";
                     return View();
                 }
-                if (ValideteUser(user, password))
+
+                if (ValidateUser(user, password))
                 {
                     var claims = new List<Claim>()
                     {
@@ -98,12 +110,11 @@ namespace app.Controllers
                     return Redirect(ReturnUrl);
                 }
             }
-            ViewData["error"] = "Podano z≥e has≥o";
+            ViewData["error"] = "Podano z≈Çe has≈Ço";
             return View();
         }
-        private bool ValideteUser(PageUser user, string password)
+        private bool ValidateUser(PageUser user, string password)
         {
-
             var hasher = new PasswordHasher<string>();
             if (hasher.VerifyHashedPassword(user.EmailAddress, user.Credentials.Password, password) == PasswordVerificationResult.Success)
             {
@@ -149,6 +160,86 @@ namespace app.Controllers
             }
 
             //TODO: check user credentials
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditGeneral(PageUser user) 
+        {
+            if (user.EmailAddress == null) return NotFound();
+
+            _context.PageUser.Attach(user);
+            _context.Entry(user).Property(u => u.FirstName).IsModified = true;
+            _context.Entry(user).Property(u => u.Surname).IsModified = true;
+            if (user.Phonenumber == null) 
+            {
+                ViewBag.Message = "Podano nieprawid≈Çowy numer telefonu";
+                var dbUser = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == user.EmailAddress);
+                return View("Edit", dbUser);
+            }
+            _context.Entry(user).Property(u => u.Phonenumber).IsModified = true;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditAddress(PageUser user)
+        {
+            if (user.Userid == null) return NotFound();
+            //to check if adress exists in DB
+            var adress = _context.Useraddress.FirstOrDefault(a => a.Userid == user.Userid);
+            //only address entity
+            Useraddress address = user.Useraddress;
+            address.Userid = user.Userid;
+
+            if (adress == null)
+            {
+                _context.Add(address);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Home");
+            }
+
+            _context.Entry(adress).State = EntityState.Detached;
+            _context.Useraddress.Attach(address);
+
+            _context.Entry(address).Property(u => u.Street).IsModified = true;
+            _context.Entry(address).Property(u => u.Number).IsModified = true;
+            _context.Entry(address).Property(u => u.ApartmentNumber).IsModified = true;
+            _context.Entry(address).Property(u => u.ZipCode).IsModified = true;
+            _context.Entry(address).Property(u => u.City).IsModified = true;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditCredentials(PageUser user)
+        {
+            if (user.EmailAddress == null) return NotFound();
+
+            Credentials credentials = user.Credentials;
+            PageUser dbUser = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == user.EmailAddress);
+
+            if (!ValidateUser(dbUser, credentials.OldPassword)) 
+            {
+                ViewBag.Message = "Podano nieprawidlowe haslo";
+                return View("Edit", dbUser);
+            }
+            _context.Entry(dbUser).State = EntityState.Detached;
+            _context.Credentials.Attach(user.Credentials);
+            var passwordHasher = new PasswordHasher<string>();
+
+            if (passwordHasher.VerifyHashedPassword(dbUser.EmailAddress, dbUser.Credentials.Password, user.Credentials.Password) == PasswordVerificationResult.Success)
+            {
+                ViewBag.Message = "Haslo jest identyczne jak stare haslo";
+                return View("Edit", dbUser);
+            }
+            credentials.Password = passwordHasher.HashPassword(user.EmailAddress, credentials.Password);
+            _context.Entry(user.Credentials).Property(u => u.Password).IsModified = true;
+
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Index", "Home");
         }
 

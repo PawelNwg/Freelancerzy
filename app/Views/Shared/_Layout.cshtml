@@ -45,6 +45,12 @@
                     {
                         <li class="nav-item">
                             <button type="button" class="btn bg-transparent text-white">
+                                <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Edit">Edytuj
+                                    <br />@Context.User.Identity.Name</a>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="btn bg-transparent text-white">
                                 <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Logout">Wyloguj
                                     <br />@Context.User.Identity.Name</a>
                             </button>
