@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using freelancerzy.Models;
 using Microsoft.AspNetCore.Authorization;
+using NinjaNye.SearchExtensions;
+using System.Collections;
 
 namespace freelancerzy.Controllers
 {
@@ -20,12 +22,77 @@ namespace freelancerzy.Controllers
         }
 
         // GET: Offers
-        public async Task<IActionResult> Index()
+        public  IActionResult Search()
         {
-            var cb2020freedbContext = _context.Offer.Include(o => o.Category).Include(o => o.User);
-            return View(await cb2020freedbContext.ToListAsync());
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Categoryid", "CategoryName");
+            return View();
+            
         }
+        
+        public async Task<PartialViewResult> OfferListPartial(int? pageNumber, string order, string searchString, int categoryId, Filter Filter)
+        {
+            var Offers = SortedList(order);
+            Offers = Offers.Where(o => o.ExpirationDate >= DateTime.Now);
+            if(categoryId != 0)
+            {
+                Offers = Offers.Where(o => o.CategoryId == categoryId);
+            }
+            Offers = Filters(Offers, Filter);
+            if(searchString != null)
+            {
+                searchString = searchString.TrimEnd(); // uciecie nadmiaru spacji na koncu
 
+                var wordList = searchString.ToLower().Split(' ').ToList();
+                wordList.RemoveAll(o => o == ""); //usumoecie z listy pustych strignow
+                for(int i =0; i< wordList.Count; i++) // usuwanie końcówek
+                {
+                    
+                    if (wordList[i].Length > 4) wordList[i] = wordList[i].Substring(0, wordList[i].Length - 2);
+                }
+                var words = wordList.ToArray();
+                if(words.Count() >=2 ) // jesli wiecej niz dwa slowa musza pasowac conajmniej  2
+                {
+                    Offers = Offers.Search(o => o.Title.ToLower(), o => o.Description.ToLower()).Containing(words).ToRanked().Where(o=>o.Hits>=2).Select(o=> o.Item);
+                }
+                Offers = Offers.Search(o => o.Title,o=>o.Description).Containing(words); //https://ninjanye.github.io/SearchExtensions/
+            }
+            int pageSize = 15;
+            return PartialView("_OfferList", await PaginatedList<Offer>.CreateAsync(Offers, pageNumber ?? 1, pageSize));
+            
+        }
+        private IQueryable<Offer> Filters(IQueryable<Offer> offers, Filter filter)
+        {
+            var offerList = offers;
+            if(filter.WageLow != null || filter.WageUp != null)
+            {
+                offerList = offerList.Where(o => o.Wage >= (filter.WageLow == null ? 0 : filter.WageLow) && o.Wage <= (filter.WageUp == null ? Int32.MaxValue : filter.WageUp));
+            }
+            if(filter.DateLow != null || filter.DateUp != null)
+            {
+                offerList = offerList.Where(o => o.CreationDate >= (filter.DateLow == null ? DateTime.MinValue : filter.DateLow) && o.CreationDate <= (filter.DateUp == null ? DateTime.MaxValue : filter.DateUp));
+            }
+            return offerList;
+        }
+        private IQueryable<Offer> SortedList(string order)
+        {
+            switch(order)
+            {
+                case "nameAsc":
+                    return _context.Offer.Include(o => o.Category).OrderBy(o => o.Title);
+                case "nameDesc":
+                    return _context.Offer.Include(o => o.Category).OrderByDescending(o => o.Title);
+                case "wageAsc":
+                    return _context.Offer.Include(o => o.Category).OrderBy(o => o.Wage);
+                case "wageDesc":
+                    return _context.Offer.Include(o => o.Category).OrderByDescending(o => o.Wage);
+                case "dateAsc":
+                    return _context.Offer.Include(o => o.Category).OrderBy(o => o.CreationDate);
+                case "dateDesc":
+                    return _context.Offer.Include(o => o.Category).OrderByDescending(o => o.CreationDate);
+                default:
+                    return _context.Offer.Include(o => o.Category).OrderBy(o => o.Title);
+            }
+        }
         // GET: Offers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -74,7 +141,7 @@ namespace freelancerzy.Controllers
                 offer.Wage = Decimal.Parse(offer.WageValue);
                 _context.Add(offer);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Search));
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Categoryid", "CategoryName", offer.CategoryId);
             ViewData["UserId"] = new SelectList(_context.PageUser, "Userid", "EmailAddress", offer.UserId);
@@ -170,6 +237,14 @@ namespace freelancerzy.Controllers
         private bool OfferExists(int id)
         {
             return _context.Offer.Any(e => e.Offerid == id);
+        }
+        public class Filter
+        {
+            public int? WageLow { get; set; }
+            public int? WageUp { get; set; }
+            public DateTime? DateLow { get; set; }
+            public DateTime? DateUp { get; set; }
+
         }
     }
 }

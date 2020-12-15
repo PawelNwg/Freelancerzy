@@ -1,0 +1,78 @@
+﻿@model freelancerzy.Models.PaginatedList<freelancerzy.Models.Offer>
+
+@foreach (var offer in Model)
+{
+    <div class="m-1 border rounded border-dark offer">
+        <table class="table table-borderless" style="border:none">
+            <tbody>
+                <tr>
+                    <td width="70%">
+                        <h4 class="p-1">@offer.Title</h4>
+                    </td>
+                    <td width="30%" class="text-center">
+                        @if (offer.Wage != null)
+                        {
+                            <h4>@Html.DisplayFor(modelItem => offer.Wage)</h4>
+                        }
+                        else
+                        {
+                            <h4>Nieokreślona stawka</h4>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td width="70%" class="mb-0 pb-0">
+
+                        @if (offer.Description?.Length > 300)
+                        {
+                            <p class="p-1">@offer.Description.Substring(0, 300)...</p>
+                        }
+                        else
+                        {
+                            <p class="p-1">@offer.Description</p>
+                        }
+                    </td>
+                    <td class="text-center align-bottom">
+                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@offer.Offerid">Szczegóły</a>
+                    </td>
+
+                </tr>
+
+
+
+
+
+
+
+            </tbody>
+        </table>
+
+
+
+    </div>
+}
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<div>
+    <div style="width:50%" class="d-inline-block ">
+        Jesteś na stronie: <input min="1" max="@Model.TotalPages" type="number" value="@Model.PageIndex" id="page" style="width:50px;"/> z @Model.TotalPages <button class="btn btn-default" id="goToPage">Przejdź</button>
+
+    </div>
+    <div style="float:right">
+        <button id="prev"
+                class="btn btn-default" @prevDisabled>
+            Poprzednia
+        </button>
+        <button id="next"
+                class="btn btn-default" @nextDisabled>
+            Następna
+        </button>
+    </div>
+</div>
+<script>
+    var totalPages = @Model.TotalPages;
+</script>
+

@@ -16,35 +16,17 @@
     <link rel="stylesheet" href="~/css/main.css">
 </head>
 
-<body style="padding-bottom: 500px;">
-    <header>
-        <!--<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Freelancerzy</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>-->
-        <nav class="navbar navbar-expand-lg bg-dark navbar-light">
-            <!-- <a class="navbar-brand text-white" href="#">[v] Freelancerzy</a> -->
-            <a asp-area="" asp-controller="Home" asp-action="Index">
+<body class="bg-light">
+
+ <nav class="navbar navbar-dark bg-dark static-top">
+    <div class="container-fluid ">
+         <a asp-area="" asp-controller="Home" asp-action="Index" class="mr-auto">
                 <img class="navbar-brand text-white" src="~/css/logo.png" alt="Freelancerzy" style="width: 80%;">
             </a>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
 
-                <ul class="navbar-nav">
+            <div class="align-baseline " id="navbarNav" >
+
+                <ul class="navbar-nav list-group-horizontal ">
                     <li class="nav-item active">
                         <button type="button" class="btn btn-primary text-dark ">
                             <a class="nav-link  text-dark  " asp-area="" asp-controller="Offers" asp-action="NewOffer">
@@ -54,7 +36,7 @@
                     </li>
                     <li class="nav-item ml-4 mr-5">
                         <button type="button" class="btn btn-outline-primary text-white">
-                            <a class="nav-link  text-light" asp-area="" asp-controller="Home"
+                            <a class="nav-link  text-light" asp-area="" asp-controller="Offers"
                                asp-action="Search"><span>Szukaj Ofert</span></a>
                         </button>
                     </li>
@@ -63,56 +45,51 @@
                     {
                         <li class="nav-item">
                             <button type="button" class="btn bg-transparent text-white">
-                                <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Logout">Wyloguj <br />@Context.User.Identity.Name</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Logout">Wyloguj
+                                    <br />@Context.User.Identity.Name</a>
                             </button>
                         </li>
-
                     }
                     else
                     {
                         <li class="nav-item ">
                             <button type="button" class="btn bg-transparent text-white">
                                 <a class="nav-link  text-light" asp-area="" asp-controller="User"
-                                   asp-action="Login"><span>Logowanie</span></a>
+                                    asp-action="Login"><span>Logowanie</span></a>
                             </button>
                         </li>
                         <!--dodać linije jak w mockupie-->
                         <li class="nav-item">
                             <button type="button" class="btn bg-transparent text-white">
                                 <a class="nav-link  text-primary" asp-area="" asp-controller="User"
-                                   asp-action="Register"><span>Rejestracja</span></a>
+                                    asp-action="Register"><span>Rejestracja</span></a>
                             </button>
                         </li>
                     }
                 </ul>
             </div>
-        </nav>
-    </header>
+    </div>
+  </nav>
 
-
+  
+<div class="fluid " style="margin-bottom: 50em;" > 
     @RenderBody()
+</div>
 
-    <!--<div class="container">
-
-        <main role="main" class="pb-3">
-        </main>
-    </div>-->
-
-    <footer class="border-top footer text-muted">
-        <div class="container-fluid mt-5">
-            <div class="row bg-dark text-light pt-5">
-                <div class="col-sm-2 " style="margin-left: 10%;">
+    <footer class="footer bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 h-200 mt-5 text-center text-lg-left text-light">
                     <h4> Freelancerzy</h4>
                     <ul class="list-unstyled">
                         <li>O nas</li>
                         <li>Kontakt</li>
                         <li>Licencje</li>
                         <li>Plany Płatnicze</li>
-
+                        <li> </li>
                     </ul>
                 </div>
-
-                <div class="col-sm-2 ">
+                <div class="col-lg-3 h-200 mt-5 text-center text-lg-left  text-light">
                     <h4>Informacje </h4>
                     <ul class="list-unstyled">
                         <li>Pomoc</li>
@@ -126,7 +103,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-lg-3 h-200 mt-5 text-center text-lg-left  text-light">
                     <h4>Kategorie </h4>
                     <ul class="list-unstyled pt-2">
                         <li>Programista</li>
@@ -137,36 +114,95 @@
                         <li>Reszta</li>
                     </ul>
                 </div>
-                <!--kreska wielkropka-->
-                <div class="col-sm-4">
+                <div class="col-lg-3 h-200 mt-5 text-center text-lg-left  text-light">
                     <h4>Znajdź nas na </h4>
 
                     <div class="row ">
                         <div class="col-sm-4">
-                            <div><img src="~/css/in.png" alt="1" style="width: 25%; margin: 20px 2px 0px 2px;"></div>
-                            <div><img src="~/css/wu.png" alt="2" style="width: 25%; margin: 20px 2px 0px 2px;"></div>
+                            <div><img src="~/css/in.png" alt="1" class="img-thumbnail img-fluid" type="png" style="background: transparent; border-width: 0;"></div>
+                            <div><img src="~/css/wu.png" alt="2" class="img-thumbnail img-fluid" type="png" style="background: transparent; border-width: 0;"></div>
 
                         </div>
                         <div class="col-sm-4">
-                            <div> <img src="~/css/insta.png" alt="3" style="width: 25%; margin: 20px 2px 0px 2px;">
+                            <div> <img src="~/css/insta.png" alt="3" class="img-thumbnail img-fluid" type="png" style="background: transparent; border-width: 0;">
                             </div>
-                            <div> <img src="~/css/yt.png" alt="4" style="width: 25%; margin: 20px 2px 0px 2px;"></div>
+                            <div> <img src="~/css/yt.png" alt="4" class="img-thumbnail img-fluid" type="png" style="background: transparent; border-width: 0;"></div>
                         </div>
                         <div class="col-sm-4">
-                            <div> <img src="~/css/fb.png" alt="5" style="width: 25%; margin: 20px 2px 0px 2px;"></div>
-                            <div> <img src="~/css/t.png" alt="6" style="width: 25%; margin: 20px 2px 0px 2px;"></div>
+                            <div> <img src="~/css/fb.png" alt="5" class="img-thumbnail img-fluid" type="png" style="background: transparent; border-width: 0;"></div>
+                            <div> <img src="~/css/t.png" alt="6" class="img-thumbnail img-fluid" type="png" style="background: transparent; border-width: 0;"></div>
                         </div>
                     </div>
 
 
                 </div>
-            </div>
-        </div>
 
-        <!--<div class="container">
-            &copy; 2020 - Freelancerzy - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>-->
+                
+            </div>
+
+            <p class="text-muted small mb-4 mb-lg-0">&copy;2020 - Freelancerzy. Wszystkie prawa zastrzerzone.</p>
+
     </footer>
+<!--
+<footer class="footer bg-dark">
+      <div class="container-fluid mt-5">
+          <div class="row bg-dark text-light pt-5">
+            <div class="col-sm-2 "
+            style="margin-left: 10%;"><h4> Freelancerzy</h4>
+            <ul class="list-unstyled pt-2">
+             <li class="pb-2">O nas</li>
+             <li class="pb-2">Kontakt</li>
+             <li class="pb-2">Licencje</li>
+             <li class="pb-2">Plany Płatnicze</li>
+
+            </ul>
+          </div>
+            
+            <div class="col-sm-2"><h4>Informacje </h4>
+              <ul class="list-unstyled pt-2">
+                <li class="pb-2">Pomoc</li>
+                <li class="pb-2">Płatność i wysyłka</li>
+                <li class="pb-2">Regulamin</li>
+                <li class="pb-2">FAQ</li>
+                <li class="pb-2">Polityka prywatności</li>
+              </ul>
+          </div>
+            <div class="col-sm-2"><h4>Kategorie </h4>
+              <ul class="list-unstyled pt-2">
+                <li class="pb-2">Programista</li>
+                <li class="pb-2">Projektant Wnętrz</li>
+                <li class="pb-2">Architekt</li>
+                <li class="pb-2">Grafik</li>
+                <li class="pb-2">Montarzysta</li>
+                <li class="pb-2">Reszta</li>
+              </ul>
+            </div>
+            <div class="col-sm-4"><h4>Znajdź nas na </h4>
+
+              <div class="row ">
+                <div class="col-sm-4">
+                  <a href="#"><img src="in.png" alt="1"class="icon"></a>
+                  <a href="#"><img src="wu.png" alt="2"class="icon"></a>
+       
+                </div>
+                <div class="col-sm-4">
+                  <div> <img src="insta.png" alt="3" class="icon"></div>
+                  <div> <img src="yt.png" alt="4" class="icon"></div>
+                </div>
+                <div class="col-sm-4">
+                  <div>  <img src="fb.png" alt="5" class="icon"></div>
+                  <div>  <img src="t.png" alt="6" class="icon"></div>
+                </div>
+              </div>
+            
+              
+            </div>
+          </div>
+        </div>
+      </footer>-->
+
+
+
 
 
 

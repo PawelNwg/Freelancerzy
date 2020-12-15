@@ -4,11 +4,6 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
   <ItemGroup>
     
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.10" />
@@ -31,6 +26,7 @@
     
     <PackageReference Include="MySql.Data" Version="8.0.20" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.20" />
+    <PackageReference Include="NinjaNye.SearchExtensions" Version="3.0.1" />
     <PackageReference Include="TokenGenerator.Jwt" Version="1.0.2" />
   </ItemGroup>
 
