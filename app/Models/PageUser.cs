@@ -36,8 +36,8 @@ namespace freelancerzy.Models
         public string EmailAddress { get; set; }
 
         [Display(Name = "Numer telefonu")]
-        [Phone(ErrorMessage = "Niepoprawny format numeru telefonu")]
-        [DataType(DataType.PhoneNumber, ErrorMessage = "Niepoprawny numer telefonu")]
+        //[Phone(ErrorMessage = "Niepoprawny format numeru telefonu")]
+        //[DataType(DataType.PhoneNumber, ErrorMessage = "Niepoprawny numer telefonu")]
         [Range(0,999999999,ErrorMessage = "Numer telefonu nie może być dłuższy niż 9 znaków")] //TODO: zmienić po zmianie w bazie danych
         public int? Phonenumber { get; set; }
         public bool emailConfirmation { get; set; }

@@ -24,7 +24,7 @@ namespace freelancerzy.Models
         public string PasswordConfirmed { get; set; }
         
         [NotMapped]
-        [Required(ErrorMessage = "Stare hasła jest wymagane")]
+        //[Required(ErrorMessage = "Stare hasła jest wymagane")] TODO
         [DataType(DataType.Password)]
         [Display(Name = "Stare hasło")]
         public string OldPassword{ get; set; }
