@@ -158,6 +158,10 @@ namespace app.Controllers
                     return View();
                 }
             }
+            else
+            {
+                return View();
+            }
 
             //TODO: check user credentials
             return RedirectToAction("Index", "Home");
