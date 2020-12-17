@@ -110,7 +110,7 @@ namespace app.Controllers
                     return Redirect(ReturnUrl);
                 }
             }
-            ViewData["error"] = "Podano złe hasło";
+            ViewData["error"] = "Podano z�e hasło";
             return View();
         }
         private bool ValidateUser(PageUser user, string password)

@@ -232,7 +232,9 @@ namespace freelancerzy.Models
 
                 entity.Property(e => e.Phonenumber)
                     .HasColumnName("phonenumber")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("varchar(12)")
+                    .HasMaxLength(12);
+                    
 
                 entity.Property(e => e.Surname)
                     .IsRequired()
@@ -247,7 +249,7 @@ namespace freelancerzy.Models
                 entity.Property(e => e.registrationDate)
                     .IsRequired()
                     .HasColumnType("datetime")
-                    .HasDefaultValue(DateTime.Now)
+                    .HasDefaultValueSql("NOW()");
                     ;
 
                 entity.Property(e => e.TypeId).HasColumnType("int(11)");
