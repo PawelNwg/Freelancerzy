@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using MySql.Data.EntityFrameworkCore.DataAnnotations;
 
 namespace freelancerzy.Models
 {
@@ -35,11 +36,12 @@ namespace freelancerzy.Models
         [Display(Name = "Email")]
         public string EmailAddress { get; set; }
 
-        [Display(Name = "Numer telefonu")]
-        //[Phone(ErrorMessage = "Niepoprawny format numeru telefonu")]
-        //[DataType(DataType.PhoneNumber, ErrorMessage = "Niepoprawny numer telefonu")]
-        [Range(0,999999999,ErrorMessage = "Numer telefonu nie może być dłuższy niż 9 znaków")] //TODO: zmienić po zmianie w bazie danych
-        public int? Phonenumber { get; set; }
+       // [Display(Name = "Numer telefonu")]
+       // [Phone(ErrorMessage = "Niepoprawny format numeru telefonu")]
+       // [DataType(DataType.PhoneNumber, ErrorMessage = "Niepoprawny numer telefonu")]
+        
+        [MaxLength(12,ErrorMessage = "Numer telefonu nie może być dłuższy niż 9 znaków")] //TODO: zmienić po zmianie w bazie danych
+        public string Phonenumber { get; set; }
         public bool emailConfirmation { get; set; }
 
         public DateTime registrationDate { get; set; }
