@@ -40,7 +40,10 @@ namespace app.Controllers
         //{
         //    _logger = logger;
         //}
-
+        public IActionResult ConfirmUserRegistration()
+        {
+            return View();
+        }
         public IActionResult Login(string ReturnUrl = "/Home/Index")
         {
             ViewData["ReturnUrl"] = ReturnUrl;
@@ -110,7 +113,7 @@ namespace app.Controllers
                     return Redirect(ReturnUrl);
                 }
             }
-            ViewData["error"] = "Podano z≈e has≈Ço";
+            ViewData["error"] = "Podano z≥e has≥o";
             return View();
         }
         private bool ValidateUser(PageUser user, string password)
@@ -150,11 +153,10 @@ namespace app.Controllers
                     _context.Add(credentials);
                     await _context.SaveChangesAsync();
                     EmailAsync(pageuser);
-                    ViewBag.message = "ok";
                 }
                 else
                 {
-                    ViewData["Error"] = "Hasla nie sa taki same";
+                    ViewData["Error"] = "Has≥a nie sa taki same";
                     return View();
                 }
             }
@@ -164,7 +166,7 @@ namespace app.Controllers
             }
 
             //TODO: check user credentials
-            return RedirectToAction("Index", "Home");
+            return View("ConfirmUserRegistration");
         }
 
         [HttpPost]
