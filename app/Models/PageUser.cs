@@ -36,11 +36,9 @@ namespace freelancerzy.Models
         [Display(Name = "Email")]
         public string EmailAddress { get; set; }
 
-       // [Display(Name = "Numer telefonu")]
-       // [Phone(ErrorMessage = "Niepoprawny format numeru telefonu")]
-       // [DataType(DataType.PhoneNumber, ErrorMessage = "Niepoprawny numer telefonu")]
+        [Display(Name = "Numer telefonu")]
         
-        [MaxLength(12,ErrorMessage = "Numer telefonu nie może być dłuższy niż 9 znaków")] //TODO: zmienić po zmianie w bazie danych
+        [MaxLength(12,ErrorMessage = "Numer telefonu nie może być dłuższy niż 12 znaków")] 
         public string Phonenumber { get; set; }
         public bool emailConfirmation { get; set; }
 
