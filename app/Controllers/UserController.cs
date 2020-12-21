@@ -17,6 +17,7 @@ using System.Net.Mail;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace app.Controllers
 {
@@ -46,7 +47,7 @@ namespace app.Controllers
             ViewData["ReturnUrl"] = ReturnUrl;
             return View();
         }
-
+        [Authorize]
         public async Task<IActionResult> Edit()
         {
             //TODO: error handling
@@ -87,7 +88,7 @@ namespace app.Controllers
 
                 if(user.emailConfirmation != true)
                 {
-                    ViewData["error"] = "Email nie zosta³ potwierdzony";
+                    ViewData["error"] = "Email nie zostaï¿½ potwierdzony";
                     return View();
                 }
 
@@ -110,7 +111,7 @@ namespace app.Controllers
                     return Redirect(ReturnUrl);
                 }
             }
-            ViewData["error"] = "Podano zÅe hasÅ‚o";
+            ViewData["error"] = "Podano zï¿½e hasÅ‚o";
             return View();
         }
         private bool ValidateUser(PageUser user, string password)
@@ -168,6 +169,7 @@ namespace app.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> EditGeneral(PageUser user) 
         {
             if (user.EmailAddress == null) return NotFound();
@@ -188,6 +190,7 @@ namespace app.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> EditAddress(PageUser user)
         {
             if (user.Userid == null) return NotFound();
@@ -218,6 +221,7 @@ namespace app.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> EditCredentials(PageUser user)
         {
             if (user.EmailAddress == null) return NotFound();
@@ -280,7 +284,7 @@ namespace app.Controllers
         {
             if (token == null)
             {
-                ViewData["Data"] = "B£¥D";
+                ViewData["Data"] = "Bï¿½ï¿½D";
                 return View(); // TODO widok errora
             }
 
@@ -296,7 +300,7 @@ namespace app.Controllers
                 var user = _context.PageUser.FirstOrDefault(u => u.EmailAddress == email);
                 if (user == null)
                 {
-                    ViewData["Data"] = "B£¥D";
+                    ViewData["Data"] = "Bï¿½ï¿½D";
                     return View(); // TODO widok errora
                 }
                 else if (DateTime.Compare(DateTime.Now, date.AddMinutes(15)) > 0)
@@ -307,7 +311,7 @@ namespace app.Controllers
                 user.emailConfirmation = true;
                 _context.Update(user);
                 await _context.SaveChangesAsync();
-                ViewData["Data"] = "Zarejestrowano pomyœlnie :)";
+                ViewData["Data"] = "Zarejestrowano pomyï¿½lnie :)";
                 ViewData["Wynik"] = true;
                 return View();
             }
