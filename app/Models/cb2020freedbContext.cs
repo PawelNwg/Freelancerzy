@@ -190,7 +190,7 @@ namespace freelancerzy.Models
 
                 entity.Property(e => e.Wage)
                     .HasColumnName("wage")
-                    .HasColumnType("decimal(10,0)");
+                    .HasColumnType("decimal(10,2)");
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Offer)
