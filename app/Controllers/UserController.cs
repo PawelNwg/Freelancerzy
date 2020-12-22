@@ -50,7 +50,7 @@ namespace app.Controllers
             ViewData["ReturnUrl"] = ReturnUrl;
             return View();
         }
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> Edit()
         {
             //TODO: error handling
@@ -171,7 +171,7 @@ namespace app.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> EditGeneral(PageUser user) 
         {
             if (user.EmailAddress == null) return NotFound();
@@ -192,7 +192,7 @@ namespace app.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> EditAddress(PageUser user)
         {
             if (user.Userid == null) return NotFound();
@@ -223,7 +223,7 @@ namespace app.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> EditCredentials(PageUser user)
         {
             if (user.EmailAddress == null) return NotFound();
