@@ -173,7 +173,7 @@ namespace freelancerzy.Controllers
             String email = this.User.Identity.Name;
             if (email == null) return NotFound();
             int userId = Convert.ToInt32(_context.PageUser.FirstOrDefault(u => u.EmailAddress == email).Userid);
-            if (offer.UserId != userId) return RedirectToAction(nameof(Search)); 
+            if (offer.UserId != userId) return RedirectToAction(nameof(Search));
             //TODO: dodać komunikat informujący, że użytkownik nie ma uprawnień do edycji oferty
             ViewData["CategoryId"] = new SelectList(_context.Category, "Categoryid", "CategoryName", offer.CategoryId);
             ViewData["UserId"] = new SelectList(_context.PageUser, "Userid", "EmailAddress", offer.UserId);
@@ -186,7 +186,7 @@ namespace freelancerzy.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(AuthenticationSchemes = "CookieAuthentication")]
-        public async Task<IActionResult> Edit(int id, [Bind("Offerid,UserId,CategoryId,Title,Description,CreationDate,LastModificationDate,ExpirationDate,ViewCounter,Wage")] Offer offer)
+        public async Task<IActionResult> Edit(int id, [Bind("Offerid,UserId,CategoryId,Title,Description,CreationDate,LastModificationDate,ExpirationDate,ViewCounter,Wage,WageValue")] Offer offer)
         {
             if (id != offer.Offerid)
             {
@@ -196,28 +196,33 @@ namespace freelancerzy.Controllers
             String email = this.User.Identity.Name;
             if (email == null) return NotFound();
             int userId = Convert.ToInt32(_context.PageUser.FirstOrDefault(u => u.EmailAddress == email).Userid);
-            if (offer.UserId != userId) return RedirectToAction(nameof(Search)); 
+            if (offer.UserId != userId) return RedirectToAction(nameof(Search));
             //TODO: dodać komunikat informujący, że użytkownik nie ma uprawnień do edycji oferty
-
-            if (ModelState.IsValid)
+            offer.WageValue = offer.WageValue.Replace(".",",");
+            decimal wage;
+            if (decimal.TryParse(offer.WageValue, out wage))
             {
-                try
+                offer.Wage = wage;
+                if (ModelState.IsValid)
                 {
-                    _context.Update(offer);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OfferExists(offer.Offerid))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(offer);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!OfferExists(offer.Offerid))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Search)); //TODO: ustalić na co przekierowywać
                 }
-                return RedirectToAction(nameof(Search)); //TODO: ustalić na co przekierowywać
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Categoryid", "CategoryName", offer.CategoryId);
             ViewData["UserId"] = new SelectList(_context.PageUser, "Userid", "EmailAddress", offer.UserId);
