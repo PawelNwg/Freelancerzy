@@ -97,6 +97,11 @@ namespace freelancerzy.Controllers
                     return _context.Offer.Include(o => o.Category).OrderBy(o => o.Title);
             }
         }
+        [HttpGet]
+        public IActionResult MyOffers()
+        {
+            return View();
+        }
         // GET: Offers/Details/5
         public async Task<IActionResult> Details(int? id)
         {

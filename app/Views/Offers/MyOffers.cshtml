@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Twoje oferty";
+}
+<section class="front">
+    <div id="header">
+        <h1>Twoje oferty</h1>
+        <br />
+    </div>
+    
+    <div id="content">
+        <label>Sortuj według:</label>
+        <select id="sort">
+            <option value="nameAsc">Nazwa: A-Z</option>
+            <option value="nameDesc">Nazwa: Z-A</option>
+            <option value="wageAsc">Stawka: od najniższej</option>
+            <option value="wageDesc">Stawka: od najwyższej</option>
+            <option value="dateDesc">Data dodania: od najnowszych</option>
+            <option value="dateAsc">Data dodania: od najstarszych</option>
+        </select>
+        <br><br />
+        <h3>Oferty:</h3>
+        <div id="loader">
+
+        </div>
+        <div id="offers">
+
+
+        </div>
+
+    </div>
+</section>
+
+<style>
+
+    .loader {
+        margin: auto;
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #383838;
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    div.offer:hover {
+        background-color: dimgray;
+    }
+
+    #header {
+        text-align: center;
+        padding: 20px;
+    }
+
+
+    .border {
+        border-width: 10px !important;
+    }
+
+    
+
+    #content {
+        width: 75%;
+        min-height: 800px;
+        margin-left:auto;
+        margin-right:auto;
+        padding: 20px;
+        background-color: lightgray;
+        
+        margin-bottom: 516px;
+    }
+</style>
