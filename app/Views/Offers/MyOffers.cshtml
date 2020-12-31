@@ -6,7 +6,7 @@
         <h1>Twoje oferty</h1>
         <br />
     </div>
-    
+
     <div id="content">
         <label>Sortuj według:</label>
         <select id="sort">
@@ -66,16 +66,77 @@
         border-width: 10px !important;
     }
 
-    
+
 
     #content {
         width: 75%;
         min-height: 800px;
-        margin-left:auto;
-        margin-right:auto;
+        margin-left: auto;
+        margin-right: auto;
         padding: 20px;
         background-color: lightgray;
-        
         margin-bottom: 516px;
     }
 </style>
+@section Scripts
+{
+    <script>
+        $(function() {
+            var pageId = 1;
+            var categotyId = 0;
+            var sortorder = $('#sort').val();
+
+
+            var loadTable = function (pageId) {
+                $('#offers').empty();
+                $('#loader').addClass("loader");
+
+                var searchvalue = $('#phrase').val().replaceAll(' ', '+');
+                var WageLow = $('#wageLower').val();
+                var WageUp = $('#wageUpper').val();
+                var DateLow = $('#dateLower').val();
+                var DateUp = $('#dateUpper').val();
+
+                var searchstring = searchvalue == '' ? '' : '&searchString=' + searchvalue;
+                categotyId = $('#CategoryFilter').val();
+                console.log(categotyId)
+
+                $('#offers').load('/Offers/OfferListPartial?pageNumber=' + pageId + '&order=' + sortorder + searchstring + '&categoryId=' + categotyId,
+                    {
+                        Filter: { WageLow: WageLow, WageUp: WageUp, DateLow: DateLow, DateUp: DateUp }
+                    }, function () {
+                    $('#loader').removeClass("loader");
+
+                });
+
+
+            }
+
+            loadTable(pageId);
+
+            $(document).on('click', '#goToPage', null, function () {
+                var pageNr = $('#page').val();
+
+                if (pageNr <= 0) pageId = 1;
+                else if (pageNr > totalPages) pageId = totalPages;
+                else pageId = pageNr;
+
+                loadTable(pageId);
+            })
+
+            $(document).on('click', '#searchBtn', function () { loadTable(pageId) });
+
+            $(document).on('click', '#FilterButton', function () { loadTable(pageId) });
+
+            $(document).on('click', '#next', null, function () { loadTable(++pageId); });
+
+            $(document).on('click', '#prev', null, function () { loadTable(--pageId); });
+
+            $(document).on('change', '#sort', null, function () {
+                sortorder = $('#sort').val();
+                pageId = 1;
+                loadTable(pageId)
+            })
+        });
+    </script>
+}
