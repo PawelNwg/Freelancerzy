@@ -66,6 +66,11 @@
         border-width: 10px !important;
     }
 
+    .border-expired {
+        border-width: 10px !important;
+        border-color: darkgray !important;
+    }
+
 
 
     #content {
@@ -83,7 +88,7 @@
     <script>
         $(function() {
             var pageId = 1;
-            var categotyId = 0;
+            
             var sortorder = $('#sort').val();
 
 
@@ -91,22 +96,8 @@
                 $('#offers').empty();
                 $('#loader').addClass("loader");
 
-                var searchvalue = $('#phrase').val().replaceAll(' ', '+');
-                var WageLow = $('#wageLower').val();
-                var WageUp = $('#wageUpper').val();
-                var DateLow = $('#dateLower').val();
-                var DateUp = $('#dateUpper').val();
-
-                var searchstring = searchvalue == '' ? '' : '&searchString=' + searchvalue;
-                categotyId = $('#CategoryFilter').val();
-                console.log(categotyId)
-
-                $('#offers').load('/Offers/OfferListPartial?pageNumber=' + pageId + '&order=' + sortorder + searchstring + '&categoryId=' + categotyId,
-                    {
-                        Filter: { WageLow: WageLow, WageUp: WageUp, DateLow: DateLow, DateUp: DateUp }
-                    }, function () {
+                $('#offers').load('/Offers/MyOffersListPartial?pageNumber=' + pageId + '&order=' + sortorder, null , function () {
                     $('#loader').removeClass("loader");
-
                 });
 
 
@@ -123,10 +114,6 @@
 
                 loadTable(pageId);
             })
-
-            $(document).on('click', '#searchBtn', function () { loadTable(pageId) });
-
-            $(document).on('click', '#FilterButton', function () { loadTable(pageId) });
 
             $(document).on('click', '#next', null, function () { loadTable(++pageId); });
 

@@ -33,6 +33,19 @@ namespace freelancerzy.Controllers
 
         }
 
+        [Authorize]
+        public async Task<PartialViewResult> MyOffersListPartial(int? pageNumber, string order)
+        {
+            if (User.Identity.Name == null) return null;
+            var Offers = SortedList(order);
+            string email = User.Identity.Name;
+            PageUser user = _context.PageUser.FirstOrDefault(u => u.EmailAddress == email);
+            if (user == null) return null;
+            Offers = Offers.Where(o => o.UserId == user.Userid);
+            int pageSize = 15;
+            return PartialView("_MyOfferList", await PaginatedList<Offer>.CreateAsync(Offers, pageNumber ?? 1, pageSize));
+        }
+
         public async Task<PartialViewResult> OfferListPartial(int? pageNumber, string order, string searchString, int categoryId, Filter Filter)
         {
             var Offers = SortedList(order);
