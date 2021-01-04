@@ -156,13 +156,11 @@ namespace freelancerzy.Controllers
         [Authorize(AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> Edit(int? id)
         {
-            //TODO: sprawdzać czy to jest oferta tego usera i czy może w nią wejść, żeby nie przepuszczało adresu z palca jeśli nie ma dostępu
             if (id == null)
             {
                 return NotFound();
             }
 
-            //TODO: ustawiać wartość last modification date
             var offer = await _context.Offer.FindAsync(id);
             if (offer == null)
             {
@@ -175,6 +173,7 @@ namespace freelancerzy.Controllers
             int userId = Convert.ToInt32(_context.PageUser.FirstOrDefault(u => u.EmailAddress == email).Userid);
             if (offer.UserId != userId) return RedirectToAction(nameof(Search));
             //TODO: dodać komunikat informujący, że użytkownik nie ma uprawnień do edycji oferty
+            offer.WageValue = offer.Wage.ToString();
             ViewData["CategoryId"] = new SelectList(_context.Category, "Categoryid", "CategoryName", offer.CategoryId);
             ViewData["UserId"] = new SelectList(_context.PageUser, "Userid", "EmailAddress", offer.UserId);
             return View(offer);
@@ -198,32 +197,38 @@ namespace freelancerzy.Controllers
             int userId = Convert.ToInt32(_context.PageUser.FirstOrDefault(u => u.EmailAddress == email).Userid);
             if (offer.UserId != userId) return RedirectToAction(nameof(Search));
             //TODO: dodać komunikat informujący, że użytkownik nie ma uprawnień do edycji oferty
-            offer.WageValue = offer.WageValue.Replace(".",",");
-            decimal wage;
-            if (decimal.TryParse(offer.WageValue, out wage))
+
+            //TODO: dodać kalendarz do wyboru daty
+            if (offer.WageValue != null)
             {
-                offer.Wage = wage;
-                if (ModelState.IsValid)
-                {
-                    try
-                    {
-                        _context.Update(offer);
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!OfferExists(offer.Offerid))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                    return RedirectToAction(nameof(Search)); //TODO: ustalić na co przekierowywać
-                }
+                decimal wage;
+                offer.WageValue = offer.WageValue.Replace(".", ",");
+                if (decimal.TryParse(offer.WageValue, out wage))
+                    offer.Wage = wage;
             }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    offer.LastModificationDate = DateTime.Now;
+                    _context.Update(offer);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!OfferExists(offer.Offerid))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Search)); //TODO: ustalić na co przekierowywać
+            }
+            offer.WageValue = offer.Wage.ToString();
             ViewData["CategoryId"] = new SelectList(_context.Category, "Categoryid", "CategoryName", offer.CategoryId);
             ViewData["UserId"] = new SelectList(_context.PageUser, "Userid", "EmailAddress", offer.UserId);
             return View(offer);
