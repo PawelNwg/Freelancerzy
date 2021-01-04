@@ -32,7 +32,7 @@ namespace Freelancerzy
         {
             services.AddControllersWithViews();
             services.AddDbContext<cb2020freedbContext>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
-            
+            services.AddTokenGenerator(Configuration);
 
             services.AddAuthentication(o => {
                 
@@ -47,7 +47,7 @@ namespace Freelancerzy
                 config.LoginPath = "/User/Login";
                 config.Cookie.SameSite = SameSiteMode.Strict;
             });
-            services.AddTokenGenerator(Configuration);
+           
 
 
         }
