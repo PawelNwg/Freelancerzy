@@ -47,9 +47,9 @@ namespace Freelancerzy
                 config.LoginPath = "/User/Login";
                 config.Cookie.SameSite = SameSiteMode.Strict;
             });
-
-          
            
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

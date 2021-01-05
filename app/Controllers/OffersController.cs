@@ -33,6 +33,19 @@ namespace freelancerzy.Controllers
 
         }
 
+        [Authorize]
+        public async Task<PartialViewResult> MyOffersListPartial(int? pageNumber, string order)
+        {
+            if (User.Identity.Name == null) return null;
+            var Offers = SortedList(order);
+            string email = User.Identity.Name;
+            PageUser user = _context.PageUser.FirstOrDefault(u => u.EmailAddress == email);
+            if (user == null) return null;
+            Offers = Offers.Where(o => o.UserId == user.Userid);
+            int pageSize = 15;
+            return PartialView("_MyOfferList", await PaginatedList<Offer>.CreateAsync(Offers, pageNumber ?? 1, pageSize));
+        }
+
         public async Task<PartialViewResult> OfferListPartial(int? pageNumber, string order, string searchString, int categoryId, Filter Filter)
         {
             var Offers = SortedList(order);
@@ -96,6 +109,12 @@ namespace freelancerzy.Controllers
                     return _context.Offer.Include(o => o.Category).OrderBy(o => o.Title);
             }
         }
+        [Authorize]
+        [HttpGet]
+        public IActionResult MyOffers()
+        {
+            return View();
+        }
         // GET: Offers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -108,6 +127,11 @@ namespace freelancerzy.Controllers
                 .Include(o => o.Category)
                 .Include(o => o.User)
                 .FirstOrDefaultAsync(m => m.Offerid == id);
+
+            offer.ViewCounter++;
+            _context.Update(offer);
+            _context.SaveChangesAsync();
+
             if (offer == null)
             {
                 return NotFound();

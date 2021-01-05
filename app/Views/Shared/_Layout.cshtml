@@ -27,52 +27,66 @@
             <div class="align-baseline " id="navbarNav" >
 
                 <ul class="navbar-nav list-group-horizontal ">
-                    <li class="nav-item active">
+                    @if (Context.User.Identity.IsAuthenticated == true)
+                    {
+                    <li class="nav-item  mr-4">
                         <button type="button" class="btn btn-primary text-dark ">
-                            <a class="nav-link  text-dark  " asp-area="" asp-controller="Offers" asp-action="NewOffer">
-                                <span>Opublikuj Ofertę</span>
+                            <a class="nav-link  text-dark  " asp-area="" asp-controller="Offers" asp-action="MyOffers">
+                                <span>Twoje oferty</span>
                             </a>
                         </button>
                     </li>
-                    <li class="nav-item ml-4 mr-5">
-                        <button type="button" class="btn btn-outline-primary text-white">
-                            <a class="nav-link  text-light" asp-area="" asp-controller="Offers"
-                               asp-action="Search"><span>Szukaj Ofert</span></a>
-                        </button>
-                    </li>
+                            }
+                        <li class="nav-item active">
+                            <button type="button" class="btn btn-primary text-dark ">
+                                <a class="nav-link  text-dark  " asp-area="" asp-controller="Offers" asp-action="NewOffer">
+                                    <span>Opublikuj Ofertę</span>
+                                </a>
+                            </button>
+                        </li>
+                        <li class="nav-item ml-4 mr-5">
+                            <button type="button" class="btn btn-outline-primary text-white">
+                                <a class="nav-link  text-light" asp-area="" asp-controller="Offers"
+                                   asp-action="Search"><span>Szukaj Ofert</span></a>
+                            </button>
+                        </li>
 
-                    @if (Context.User.Identity.IsAuthenticated == true)
-                    {
-                        <li class="nav-item">
-                            <button type="button" class="btn bg-transparent text-white">
-                                <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Edit">Edytuj
-                                    <br />@Context.User.Identity.Name</a>
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button" class="btn bg-transparent text-white">
-                                <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Logout">Wyloguj
-                                    <br />@Context.User.Identity.Name</a>
-                            </button>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item ">
-                            <button type="button" class="btn bg-transparent text-white">
-                                <a class="nav-link  text-light" asp-area="" asp-controller="User"
-                                    asp-action="Login"><span>Logowanie</span></a>
-                            </button>
-                        </li>
-                        <!--dodać linije jak w mockupie-->
-                        <li class="nav-item">
-                            <button type="button" class="btn bg-transparent text-white">
-                                <a class="nav-link  text-primary" asp-area="" asp-controller="User"
-                                    asp-action="Register"><span>Rejestracja</span></a>
-                            </button>
-                        </li>
-                    }
-                </ul>
+                        @if (Context.User.Identity.IsAuthenticated == true)
+                        {
+                            <li class="nav-item">
+                                <button type="button" class="btn bg-transparent text-white">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Edit">
+                                        Edytuj
+                                        <br />@Context.User.Identity.Name
+                                    </a>
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button type="button" class="btn bg-transparent text-white">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Logout">
+                                        Wyloguj
+                                        <br />@Context.User.Identity.Name
+                                    </a>
+                                </button>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item ">
+                                <button type="button" class="btn bg-transparent text-white">
+                                    <a class="nav-link  text-light" asp-area="" asp-controller="User"
+                                       asp-action="Login"><span>Logowanie</span></a>
+                                </button>
+                            </li>
+                            <!--dodać linije jak w mockupie-->
+                            <li class="nav-item">
+                                <button type="button" class="btn bg-transparent text-white">
+                                    <a class="nav-link  text-primary" asp-area="" asp-controller="User"
+                                       asp-action="Register"><span>Rejestracja</span></a>
+                                </button>
+                            </li>
+                        }
+                    </ul>
             </div>
     </div>
   </nav>
@@ -130,7 +144,8 @@
 
                         </div>
                         <div class="col-sm-4">
-                            <div> <img src="~/css/insta.png" alt="3" class="img-thumbnail img-fluid" type="png" style="background: transparent; border-width: 0;">
+                            <div>
+                                <img src="~/css/insta.png" alt="3" class="img-thumbnail img-fluid" type="png" style="background: transparent; border-width: 0;">
                             </div>
                             <div> <img src="~/css/yt.png" alt="4" class="img-thumbnail img-fluid" type="png" style="background: transparent; border-width: 0;"></div>
                         </div>
@@ -143,11 +158,11 @@
 
                 </div>
 
-                
+
             </div>
 
             <p class="text-muted small mb-4 mb-lg-0">&copy;2020 - Freelancerzy. Wszystkie prawa zastrzerzone.</p>
-
+        </div>
     </footer>
 <!--
 <footer class="footer bg-dark">

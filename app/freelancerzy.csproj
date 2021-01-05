@@ -20,6 +20,8 @@
     <Compile Include="Migrations\20201217155146_Zmianadatydefault.Designer.cs" />
     <Compile Include="Migrations\20201217160548_bugFixing.cs" />
     <Compile Include="Migrations\20201217160548_bugFixing.Designer.cs" />
+    <Compile Include="Migrations\20201222172853_dodaniePrzecinka.cs" />
+    <Compile Include="Migrations\20201222172853_dodaniePrzecinka.Designer.cs" />
     <Compile Include="Migrations\cb2020freedbContextModelSnapshot.cs" />
   </ItemGroup>
 
