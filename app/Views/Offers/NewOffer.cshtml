@@ -25,13 +25,14 @@
                 </div>
                 <br />
                 <br />
-                
-                <textarea asp-for="Description" rows="12" style="padding:3px; width:100%" placeholder="Opis"></textarea>
+
+                <textarea asp-for="Description" rows="12" style="padding:3px; width:100%" placeholder="Opis" maxlength="1500"></textarea>
+                <span asp-validation-for="Description" style="font-size: small" class="text-danger"></span>
                 <br />
                 <br />
                 <div class="form-group">
                     <h3>@Html.DisplayNameFor(model => model.Wage)</h3>
-                    <input type="text" asp-for="WageValue" style="padding:3px; width:100%"   placeholder="@Html.DisplayNameFor(model => model.Wage) - może pozostać puste"/>
+                    <input type="text" asp-for="WageValue" style="padding:3px; width:100%" placeholder="@Html.DisplayNameFor(model => model.Wage) - może pozostać puste" />
                     <span asp-validation-for="WageValue" style="font-size: small" class="text-danger"></span>
                 </div>
                 <br />

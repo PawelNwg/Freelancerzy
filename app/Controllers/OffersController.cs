@@ -128,6 +128,11 @@ namespace freelancerzy.Controllers
                 .Include(o => o.Category)
                 .Include(o => o.User)
                 .FirstOrDefaultAsync(m => m.Offerid == id);
+
+            offer.ViewCounter++;
+            _context.Update(offer);
+            _context.SaveChangesAsync();
+
             if (offer == null)
             {
                 return NotFound();
