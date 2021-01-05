@@ -1,72 +1,54 @@
 ﻿@model freelancerzy.Models.Offer
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Szczegóły: " + Model.Title;
 }
 
-<h1>Details</h1>
+<div class="row ml-4 pr-3">
+    <div class="col-12 mt-4">
+        <h1>@Model.Title</h1>
+    </div>
+    <div class="col-lg-9 pr-4">
+        Dodał:
+        <h4>@Model.User.FirstName - @Model.User.EmailAddress</h4>
+        <article>
+            <div class="mt-3 text-justify">
+                <h2>Szerszy opis usługi</h2>
+                <div class="mt-3 mb-3">@Model.Description</div>
+                Dodano: <b>@Model.CreationDate</b>, Liczba wyświetleń: @Model.ViewCounter
+            </div>
+        </article>
+    </div>
+    <div class="col-lg-3" >
+        <div style="background-color:lightgray" class="p-3">
+            <h5>Szczegóły:</h5>
+            @if (Model.Wage == null)
+            {
+                <div>Stawka: <b>nieokreślona</b></div>
+            }
+            else
+            {
+                <div>Stawka: <b>@Model.Wage zł</b></div>
+            }
+            <div>Kategoria: <b>@Model.Category.CategoryName</b></div>
+            <br />
+            <h5>Dana kontaktowe:</h5>
+            <div>Imię: <b>@Model.User.FirstName</b></div>
+            <div>Email: <b>@Model.User.EmailAddress</b></div>
+            <div>Numer telefonu: <b>@Model.User.Phonenumber</b></div>
 
-<div>
-    <h4>Offer</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreationDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastModificationDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastModificationDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ExpirationDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ExpirationDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ViewCounter)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ViewCounter)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Wage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Wage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.CategoryName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.EmailAddress)
-        </dd>
-    </dl>
+            <div class="ml-auto mr-auto mt-5 pb-4 ">
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary">Napisz wiadomość</a>
+                    </div>
+                    <div class="col"></div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Offerid">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
