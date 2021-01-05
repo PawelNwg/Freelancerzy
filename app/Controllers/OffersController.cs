@@ -50,7 +50,6 @@ namespace freelancerzy.Controllers
                 wordList.RemoveAll(o => o == ""); //usumoecie z listy pustych strignow
                 for (int i = 0; i < wordList.Count; i++) // usuwanie końcówek
                 {
-
                     if (wordList[i].Length > 4) wordList[i] = wordList[i].Substring(0, wordList[i].Length - 2);
                 }
                 var words = wordList.ToArray();
@@ -176,6 +175,8 @@ namespace freelancerzy.Controllers
             offer.WageValue = offer.Wage.ToString();
             ViewData["CategoryId"] = new SelectList(_context.Category, "Categoryid", "CategoryName", offer.CategoryId);
             ViewData["UserId"] = new SelectList(_context.PageUser, "Userid", "EmailAddress", offer.UserId);
+            ViewData["minExpirationDate"] = DateTime.Now.ToString("yyyy-MM-dd");
+            ViewData["maxExpirationDate"] = offer.CreationDate.AddDays(14).ToString("yyyy-MM-dd"); //TODO: dodać zakres na jak długo ma być ważna oferta
             return View(offer);
         }
 
@@ -199,13 +200,13 @@ namespace freelancerzy.Controllers
             //TODO: dodać komunikat informujący, że użytkownik nie ma uprawnień do edycji oferty
 
             //TODO: dodać kalendarz do wyboru daty
+            decimal wage;
             if (offer.WageValue != null)
             {
-                decimal wage;
                 offer.WageValue = offer.WageValue.Replace(".", ",");
                 if (decimal.TryParse(offer.WageValue, out wage))
                     offer.Wage = wage;
-            }
+            }else offer.Wage = null;
 
             if (ModelState.IsValid)
             {
