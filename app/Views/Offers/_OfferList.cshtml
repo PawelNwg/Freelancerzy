@@ -2,9 +2,9 @@
 
 @foreach (var offer in Model)
 {
-    <div class="m-1 border rounded border-dark offer">
-        <table class="table table-borderless" style="border:none">
-            <tbody>
+    <div id="text" class="m-1 border rounded border-dark offer" style="padding-bottom: 0px">
+        <table class="table table-borderless pb-2" style="border:none; margin-bottom: 0px">
+            <tbody >
                 <tr>
                     <td width="70%">
                         <h4 class="p-1">@offer.Title</h4>
@@ -21,7 +21,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td width="70%" class="mb-0 pb-0">
+                    <td  width="70%" class="mb-0 pb-0">
 
                         @if (offer.Description?.Length > 300)
                         {
@@ -33,22 +33,11 @@
                         }
                     </td>
                     <td class="text-center align-bottom">
-                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@offer.Offerid">Szczegóły</a>
+                        <a id="btn" class="btn btn-dark btn-outline-primary" asp-action="Details" asp-route-id="@offer.Offerid">Szczegóły</a>
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
             </tbody>
         </table>
-
-
-
     </div>
 }
 @{
@@ -75,4 +64,9 @@
 <script>
     var totalPages = @Model.TotalPages;
 </script>
+<style>
+    div#text > table:hover {
+        color: ghostwhite !important;
+    }
+</style>
 
