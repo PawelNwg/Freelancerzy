@@ -32,7 +32,7 @@ namespace freelancerzy.Models
         //TODO: zrobić coś żeby ładnie wyświetlało z dwoma miejscami po przecinku
         public decimal? Wage { get; set; }
         [NotMapped]
-        [RegularExpression(@"^[1-9]([0-9]*)([.,]*)([0-9]\d{0,1})$", ErrorMessage = "Zły format")]
+        [RegularExpression(@"^([0-9]*)([.,]*)([0-9]\d{0,1})$", ErrorMessage = "Zły format")]
         [Display(Name = "Stawka")]
         public string WageValue { get; set; }
         public virtual Category Category { get; set; }

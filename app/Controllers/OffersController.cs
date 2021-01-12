@@ -230,6 +230,7 @@ namespace freelancerzy.Controllers
                 offer.WageValue = offer.WageValue.Replace(".", ",");
                 if (decimal.TryParse(offer.WageValue, out wage))
                     offer.Wage = wage;
+                if (offer.Wage == 0) offer.Wage = null;
             }else offer.Wage = null;
 
             if (ModelState.IsValid)
