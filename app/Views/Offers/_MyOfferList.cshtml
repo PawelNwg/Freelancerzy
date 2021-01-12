@@ -2,8 +2,8 @@
 
 @foreach (var offer in Model)
 {
-    <div class="m-1 @if (offer.ExpirationDate >= DateTime.Now) { @Html.Raw("border border-dark")} else { @Html.Raw("border border-expired")}  rounded  offer">
-        <table class="table table-borderless" style="border:none">
+    <div id="text" class="m-1 @if (offer.ExpirationDate >= DateTime.Now) { @Html.Raw("border border-dark")} else { @Html.Raw("border border-expired")}  rounded  offer" style="padding-bottom: 0px">
+        <table class="table table-borderless pb-2" style="border:none" margin-bottom: 0px">
             <tbody>
                 <tr>
                     <td width="70%">
@@ -33,7 +33,7 @@
                         }
                     </td>
                     <td class="text-center align-bottom">
-                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@offer.Offerid">Szczegóły</a>
+                        <a class="btn btn-dark btn-outline-primary" asp-action="Details" asp-route-id="@offer.Offerid">Szczegóły</a>
                         
                                 <a class="btn btn-danger" asp-action="Edit" asp-route-id="@offer.Offerid">Edytuj</a>
                         
@@ -47,12 +47,6 @@
 
                 </tr>
 
-
-
-
-
-
-
             </tbody>
         </table>
 
@@ -60,6 +54,12 @@
 
     </div>
 }
+
+<style>
+    div#text > table:hover {
+        color: ghostwhite !important;
+    }
+</style>
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
@@ -84,5 +84,6 @@
 <script>
     var totalPages = @Model.TotalPages;
 </script>
+
 
 
