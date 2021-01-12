@@ -257,6 +257,8 @@ namespace freelancerzy.Controllers
             offer.WageValue = offer.Wage.ToString();
             ViewData["CategoryId"] = new SelectList(_context.Category, "Categoryid", "CategoryName", offer.CategoryId);
             ViewData["UserId"] = new SelectList(_context.PageUser, "Userid", "EmailAddress", offer.UserId);
+            ViewData["minExpirationDate"] = DateTime.Now.ToString("yyyy-MM-dd");
+            ViewData["maxExpirationDate"] = offer.CreationDate.AddDays(14).ToString("yyyy-MM-dd");
             return View(offer);
         }
 
