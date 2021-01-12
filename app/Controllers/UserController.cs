@@ -269,7 +269,8 @@ namespace app.Controllers
             mail.Subject = mailInfo.EmailSubject;
             var token = generateToken(pageuser);
             string Body = mailInfo.EmailBody;
-            string ConfirmationLink = "https://localhost:44326/User/ConfirmEmail?" + "token=" + token;
+            string url = HttpContext.Request.Host.Value;
+            string ConfirmationLink = "https://" + url + "/User/ConfirmEmail?" + "token=" + token;
             //int x = Body.IndexOf("qq");
             Body = Body.Insert(1736,ConfirmationLink);
             mail.Body = Body;
