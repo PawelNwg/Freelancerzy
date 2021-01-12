@@ -3,57 +3,55 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
-<h1>Edytuj</h1>
-
-<h4>Ofertę</h4>
-<p><label asp-for="LastModificationDate" class="control-label"></label> : @Model.LastModificationDate</p>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+<div>
+    <h1 class="p-3 text-center">Edytuj Ofertę</h1>
+    <!--<p><label asp-for="LastModificationDate" class="control-label"></label> : @Model.LastModificationDate</p> -->
+</div>
+<div class="container p-3 my-3 divBackground" style="width:60%;">
+<form asp-action="Edit" class="form-horizontal">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Offerid" />
             <input type="hidden" asp-for="UserId" />
             <input type="hidden" asp-for="CreationDate" />
             <input type="hidden" asp-for="LastModificationDate" />
+            <input type="hidden" asp-for="LastModificationDate" />
             <input type="hidden" asp-for="ViewCounter" />
             <input type="hidden" asp-for="Wage" />
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <select asp-for="CategoryId" class="editSiteBackground form-control" asp-items="ViewBag.CategoryId"></select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Title" class="form-control editSiteBackground"/>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" rows="12" style="padding:3px; width:100%" placeholder="Opis" maxlength="1500"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ExpirationDate" class="control-label"></label>
-                <input type="date" asp-for="ExpirationDate" class="form-control" min=@ViewBag.minExpirationDate max=@ViewBag.maxExpirationDate/>
+                <input type="date" asp-for="ExpirationDate" class="form-control editSiteBackground" min=@ViewBag.minExpirationDate max=@ViewBag.maxExpirationDate/>
                 <span asp-validation-for="ExpirationDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="WageValue" class="control-label"></label>
-                <input asp-for="WageValue" class="form-control"/>
+                <input asp-for="WageValue" class="form-control editSiteBackground"/>
                 <span asp-validation-for="WageValue" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="form-group text-center">
+                <input type="submit" value="Zatwierdź" class="tn btn-outline-primary btn-dark text-light submitButton"/>
             </div>
         </form>
+    <div>
+        <a asp-action="Index" class="tn btn-outline-primary btn-dark text-light submitButton">Anuluj</a>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
