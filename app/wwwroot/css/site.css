@@ -71,5 +71,14 @@ body {
 }
 
 .editSiteBackground{
-  background-color: #929292 !important;
+  background-color: white !important; /*#c5c5bb*/
+}
+
+.divBackground{
+  background-color: lightgray !important;
+}
+
+.submitButton{
+  padding:15px 50px;
+  font-size:large;
 }
