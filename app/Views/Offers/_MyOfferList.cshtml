@@ -2,7 +2,7 @@
 
 @foreach (var offer in Model)
 {
-    <div id="text" class="m-1 @if (offer.ExpirationDate >= DateTime.Now) { @Html.Raw("border border-dark")} else { @Html.Raw("border border-expired")}  rounded  offer" style="padding-bottom: 0px">
+    <div id="text" class="m-1 @if (offer.ExpirationDate >= DateTime.Now) { @Html.Raw("border border-dark")} else { @Html.Raw("border border-danger")}  rounded  offer" style="padding-bottom: 0px">
         <table class="table table-borderless pb-2" style="border:none" margin-bottom: 0px">
             <tbody>
                 <tr>
@@ -35,7 +35,7 @@
                     <td class="text-center align-bottom">
                         <a class="btn btn-dark btn-outline-primary" asp-action="Details" asp-route-id="@offer.Offerid">Szczegóły</a>
                         
-                                <a class="btn btn-danger" asp-action="Edit" asp-route-id="@offer.Offerid">Edytuj</a>
+                                <a class="btn btn-dark btn-outline-primary" asp-action="Edit" asp-route-id="@offer.Offerid">Edytuj</a>
                         
                         @if (offer.ExpirationDate < DateTime.Now)
                         {
