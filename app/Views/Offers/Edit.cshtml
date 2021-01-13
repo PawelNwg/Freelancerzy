@@ -4,10 +4,10 @@
     ViewData["Title"] = "Edit";
 }
 <div>
-    <h1 class="p-3 text-center">Edytuj Ofertę</h1>
+    <h1 class="display-3 text-center mt-4 mb-4">Edytuj Ofertę</h1>
     <!--<p><label asp-for="LastModificationDate" class="control-label"></label> : @Model.LastModificationDate</p> -->
 </div>
-<div class="container p-3 my-3 divBackground" style="width:60%;">
+<div class="container bg-white border border-primary rounded" style="width:60%; padding:30px">
 <form asp-action="Edit" class="form-horizontal">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Offerid" />
@@ -43,11 +43,11 @@
                 <span asp-validation-for="WageValue" class="text-danger"></span>
             </div>
             <div class="form-group text-center">
-                <input type="submit" value="Zatwierdź" class="tn btn-outline-primary btn-dark text-light submitButton"/>
+                <input type="submit" value="Zatwierdź" style="padding:15px 40px" class="btn btn-outline-primary btn-dark text-light submitButton"/>
             </div>
         </form>
     <div>
-        <a asp-action="Index" class="tn btn-outline-primary btn-dark text-light submitButton">Anuluj</a>
+        <a asp-action="MyOffers" class="btn btn-outline-primary btn-dark text-light submitButton">Anuluj</a>
     </div>
 </div>
 

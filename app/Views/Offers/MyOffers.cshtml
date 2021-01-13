@@ -3,11 +3,11 @@
 }
 <section class="front">
     <div id="header">
-        <h1>Twoje oferty</h1>
+        <h1 class="display-3 text-center mt-4 mb-4">Twoje oferty</h1>
         <br />
     </div>
 
-    <div id="content">
+    <div id="content" class="container bg-white border border-primary rounded">
         <label>Sortuj według:</label>
         <select id="sort">
             <option value="nameAsc">Nazwa: A-Z</option>
@@ -53,7 +53,7 @@
     }
 
     div.offer:hover {
-        background-color: dimgray;
+        background-color: #4d4d4d;
     }
 
     #header {
@@ -63,7 +63,7 @@
 
 
     .border {
-        border-width: 10px !important;
+        border-width: 2px !important;
     }
 
     .border-expired {
@@ -75,12 +75,11 @@
 
     #content {
         width: 75%;
-        min-height: 800px;
+        min-height: 500px;
         margin-left: auto;
         margin-right: auto;
         padding: 20px;
         background-color: lightgray;
-        margin-bottom: 516px;
     }
 </style>
 @section Scripts
