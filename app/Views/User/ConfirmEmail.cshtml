@@ -1,9 +1,32 @@
-﻿<h3>@ViewData["Data"]</h3>
-@if (ViewData["wynik"] != null)
+﻿@if (ViewData["wynik"] != null)
 {
-    <h1> true </h1>
+    <div>
+        <div style="font-family: inherit; text-align: center; margin:50px;">
+            <span style="color: #383a40;font-size: 40px;font-family:inherit;">
+                Dziękujemy za potwierdzenie konta, zapraszamy do zalogowania się.
+                <div style="padding: 40px; margin: 30px;"><img src="~/css/success.png" width="200" height="200"></div>
+                <button type="button" class="btn btn-outline-primary font-weight-bold bg-dark">
+                    <a asp-controller="Home" asp-action="Index" class="nav-link  text-light "><h4>Wróć na stronę główną</h4></a>
+                </button>
+            </span>
+        </div><div></div>
+    </div>
 }
 else
-    {
-        <h2> fail</h2>
-    }
+{
+    <div>
+        <div style="font-family: inherit; text-align: center; margin:50px;">
+            <span style="color: #383a40;font-size: 40px;font-family:inherit;">
+                Coś poszło nie tak, Twóje konto nie zostało aktywowane
+                <br />
+                Skontaktuj się z administracją.
+                <div style="padding: 40px; margin: 30px;"><img src="~/css/fail.png" width="200" height="200"></div>
+                <button type="button" class="btn btn-outline-primary font-weight-bold bg-dark">
+                    <a asp-controller="Home" asp-action="Index" class="nav-link  text-light "><h4>Wróć na stronę główną</h4></a>
+                </button>
+            </span>
+        </div><div></div>
+    </div>
+}
+
+
