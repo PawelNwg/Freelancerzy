@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace freelancerzy.Models
 {
@@ -11,6 +12,7 @@ namespace freelancerzy.Models
         }
 
         public int Categoryid { get; set; }
+        [Display(Name = "Nazwa")]
         public string CategoryName { get; set; }
 
         public virtual ICollection<Offer> Offer { get; set; }
