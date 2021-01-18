@@ -6,9 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using freelancerzy.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace freelancerzy.Controllers
 {
+    
+    [Authorize(AuthenticationSchemes = "CookieAuthentication")]
+    [Authorize(Roles = "normalny użytkownik,administrator")]
     public class CategoryController : Controller
     {
         private readonly cb2020freedbContext _context;

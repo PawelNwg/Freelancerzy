@@ -13,6 +13,7 @@ namespace freelancerzy.Models
 
         public int Categoryid { get; set; }
         [Display(Name = "Nazwa")]
+        [MaxLength(20,ErrorMessage = "Nazwa kategorii nie może być dłuższa niż 20 znaków")]
         public string CategoryName { get; set; }
 
         public virtual ICollection<Offer> Offer { get; set; }

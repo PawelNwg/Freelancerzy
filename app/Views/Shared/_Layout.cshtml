@@ -27,13 +27,6 @@
             <div class="align-baseline " id="navbarNav">
 
                 <ul class="navbar-nav list-group-horizontal ">
-                        <li class="nav-item  mr-4">
-                            <button type="button" class="btn btn-primary text-dark ">
-                                <a class="nav-link  text-dark  " asp-area="" asp-controller="Category" asp-action="Index">
-                                    <span>Kategorie</span>
-                                </a>
-                            </button>
-                        </li>
                     @if (Context.User.Identity.IsAuthenticated == true)
                     {
                         <li class="nav-item  mr-4">
@@ -59,7 +52,15 @@
                     </li>
 
                     @if (Context.User.Identity.IsAuthenticated == true)
-                    {
+                    {   
+                        @if (Context.User.IsInRole("administrator")){
+                        <li class="nav-item  mr-4">
+                            <button type="button" class="btn btn-primary text-dark ">
+                                <a class="nav-link  text-dark  " asp-area="" asp-controller="Category" asp-action="Index">
+                                    <span>Panel administratorski</span>
+                                </a>
+                            </button>
+                        </li>}
                         <li class="nav-item">
                             <button type="button" class="btn bg-transparent text-white">
                                 <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Edit">
