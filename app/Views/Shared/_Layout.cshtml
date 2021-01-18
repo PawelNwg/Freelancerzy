@@ -53,14 +53,17 @@
 
                     @if (Context.User.Identity.IsAuthenticated == true)
                     {   
-                        @if (Context.User.IsInRole("administrator")){
-                        <li class="nav-item  mr-4">
-                            <button type="button" class="btn btn-primary text-dark ">
-                                <a class="nav-link  text-dark  " asp-area="" asp-controller="Category" asp-action="Index">
-                                    <span>Panel administratorski</span>
-                                </a>
-                            </button>
-                        </li>}
+                        @if (Context.User.IsInRole("administrator"))
+                        {
+                        <li class="nav-item  mr-4 dropdown">
+                            <a class="dropdown-toggle nav-link  text-dark" data-toggle="dropdown" href="#">Panel administratorski
+                            <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link text-light" asp-area="" asp-controller="Category" asp-action="Index">Lista kategorii</a></li>
+                                <li><a class="nav-link text-light" asp-area="" asp-controller="Category" asp-action="Create">Dodaj kategorię</a></li>
+                            </ul>
+                        </li>
+                        }
                         <li class="nav-item">
                             <button type="button" class="btn bg-transparent text-white">
                                 <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Edit">
