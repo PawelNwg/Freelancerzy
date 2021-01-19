@@ -18,7 +18,7 @@
 
 <body class="bg-light">
 
-    <nav class="navbar navbar-dark bg-dark static-top">
+    <nav class="navbar navbar-dark bg-dark static-top bg-jumpers navbar-expand-lg">
         <div class="container-fluid ">
             <a asp-area="" asp-controller="Home" asp-action="Index" class="mr-auto">
                 <img class="navbar-brand text-white" src="~/css/logo.png" alt="Freelancerzy" style="width: 80%;">
@@ -27,70 +27,70 @@
             <div class="align-baseline " id="navbarNav">
 
                 <ul class="navbar-nav list-group-horizontal ">
-                    @if (Context.User.Identity.IsAuthenticated == true)
-                    {
-                        <li class="nav-item  mr-4">
-                            <button type="button" class="btn btn-primary text-dark ">
-                                <a class="nav-link  text-dark  " asp-area="" asp-controller="Offers" asp-action="MyOffers">
-                                    <span>Twoje oferty</span>
-                                </a>
-                            </button>
-                        </li>
-                    }
                     <li class="nav-item active">
-                        <button type="button" class="btn btn-primary text-dark ">
+                        <button type="button" class="btn btn-primary text-dark mt-1">
                             <a class="nav-link  text-dark  " asp-area="" asp-controller="Offers" asp-action="NewOffer">
                                 <span>Opublikuj Ofertę</span>
                             </a>
                         </button>
                     </li>
                     <li class="nav-item ml-4 mr-5">
-                        <button type="button" class="btn btn-outline-primary text-white">
+                        <button type="button" class="btn btn-outline-primary text-white mt-1">
                             <a class="nav-link  text-light" asp-area="" asp-controller="Offers"
-                                asp-action="Search"><span>Szukaj Ofert</span></a>
+                               asp-action="Search"><span>Szukaj Ofert</span></a>
                         </button>
                     </li>
 
                     @if (Context.User.Identity.IsAuthenticated == true)
-                    {   
-                        @if (Context.User.IsInRole("administrator")){
-                        <li class="nav-item  mr-4">
-                            <button type="button" class="btn btn-primary text-dark ">
-                                <a class="nav-link  text-dark  " asp-area="" asp-controller="Category" asp-action="Index">
-                                    <span>Panel administratorski</span>
+                    {
+                        @if (Context.User.IsInRole("administrator"))
+                        {
+                            <li class="nav-item nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Zalogowany
+                                    <br /><span>@Context.User.Identity.Name</span>
                                 </a>
-                            </button>
-                        </li>}
-                        <li class="nav-item">
-                            <button type="button" class="btn bg-transparent text-white">
-                                <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Edit">
-                                    Edytuj
-                                    <br />@Context.User.Identity.Name
+                                <div id="text" class="dropdown-menu bg-dark text-light" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Details">Szczegóły konta</a>
+                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Edit">Edytuj dane</a>
+                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Offers" asp-action="MyOffers">Moje oferty</a>
+                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Category" asp-action="Index">Panel administracyjny</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Logout">Wyloguj się</a>
+                                </div>
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li class="nav-item nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Zalogowany
+                                    <br /><span>@Context.User.Identity.Name</span>
                                 </a>
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button" class="btn bg-transparent text-white">
-                                <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Logout">
-                                    Wyloguj
-                                    <br />@Context.User.Identity.Name
-                                </a>
-                            </button>
-                        </li>
+                                <div id="text" class="dropdown-menu bg-dark text-light" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Details">Szczegóły konta</a>
+                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Edit">Edytuj dane</a>
+                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Offers" asp-action="MyOffers">Moje oferty</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Logout">Wyloguj się</a>
+                                </div>
+                            </li>
+                        }
                     }
                     else
                     {
                         <li class="nav-item ">
                             <button type="button" class="btn bg-transparent text-white">
                                 <a class="nav-link  text-light" asp-area="" asp-controller="User"
-                                    asp-action="Login"><span>Logowanie</span></a>
+                                   asp-action="Login"><span>Logowanie</span></a>
                             </button>
                         </li>
                         <!--dodać linije jak w mockupie-->
                         <li class="nav-item">
                             <button type="button" class="btn bg-transparent text-white">
                                 <a class="nav-link  text-primary" asp-area="" asp-controller="User"
-                                    asp-action="Register"><span>Rejestracja</span></a>
+                                   asp-action="Register"><span>Rejestracja</span></a>
                             </button>
                         </li>
                     }
@@ -147,25 +147,35 @@
 
                     <div class="row ">
                         <div class="col-sm-4">
-                            <div><img src="~/css/in.png" alt="1" class="img-thumbnail img-fluid" type="png"
-                                    style="background: transparent; border-width: 0;"></div>
-                            <div><img src="~/css/wu.png" alt="2" class="img-thumbnail img-fluid" type="png"
-                                    style="background: transparent; border-width: 0;"></div>
+                            <div>
+                                <img src="~/css/in.png" alt="1" class="img-thumbnail img-fluid" type="png"
+                                     style="background: transparent; border-width: 0;">
+                            </div>
+                            <div>
+                                <img src="~/css/wu.png" alt="2" class="img-thumbnail img-fluid" type="png"
+                                     style="background: transparent; border-width: 0;">
+                            </div>
 
                         </div>
                         <div class="col-sm-4">
                             <div>
                                 <img src="~/css/insta.png" alt="3" class="img-thumbnail img-fluid" type="png"
-                                    style="background: transparent; border-width: 0;">
+                                     style="background: transparent; border-width: 0;">
                             </div>
-                            <div> <img src="~/css/yt.png" alt="4" class="img-thumbnail img-fluid" type="png"
-                                    style="background: transparent; border-width: 0;"></div>
+                            <div>
+                                <img src="~/css/yt.png" alt="4" class="img-thumbnail img-fluid" type="png"
+                                     style="background: transparent; border-width: 0;">
+                            </div>
                         </div>
                         <div class="col-sm-4">
-                            <div> <img src="~/css/fb.png" alt="5" class="img-thumbnail img-fluid" type="png"
-                                    style="background: transparent; border-width: 0;"></div>
-                            <div> <img src="~/css/t.png" alt="6" class="img-thumbnail img-fluid" type="png"
-                                    style="background: transparent; border-width: 0;"></div>
+                            <div>
+                                <img src="~/css/fb.png" alt="5" class="img-thumbnail img-fluid" type="png"
+                                     style="background: transparent; border-width: 0;">
+                            </div>
+                            <div>
+                                <img src="~/css/t.png" alt="6" class="img-thumbnail img-fluid" type="png"
+                                     style="background: transparent; border-width: 0;">
+                            </div>
                         </div>
                     </div>
 
@@ -179,62 +189,62 @@
         </div>
     </footer>
     <!--
-<footer class="footer bg-dark">
-      <div class="container-fluid mt-5">
-          <div class="row bg-dark text-light pt-5">
-            <div class="col-sm-2 "
-            style="margin-left: 10%;"><h4> Freelancerzy</h4>
-            <ul class="list-unstyled pt-2">
-             <li class="pb-2">O nas</li>
-             <li class="pb-2">Kontakt</li>
-             <li class="pb-2">Licencje</li>
-             <li class="pb-2">Plany Płatnicze</li>
+    <footer class="footer bg-dark">
+          <div class="container-fluid mt-5">
+              <div class="row bg-dark text-light pt-5">
+                <div class="col-sm-2 "
+                style="margin-left: 10%;"><h4> Freelancerzy</h4>
+                <ul class="list-unstyled pt-2">
+                 <li class="pb-2">O nas</li>
+                 <li class="pb-2">Kontakt</li>
+                 <li class="pb-2">Licencje</li>
+                 <li class="pb-2">Plany Płatnicze</li>
 
-            </ul>
-          </div>
-
-            <div class="col-sm-2"><h4>Informacje </h4>
-              <ul class="list-unstyled pt-2">
-                <li class="pb-2">Pomoc</li>
-                <li class="pb-2">Płatność i wysyłka</li>
-                <li class="pb-2">Regulamin</li>
-                <li class="pb-2">FAQ</li>
-                <li class="pb-2">Polityka prywatności</li>
-              </ul>
-          </div>
-            <div class="col-sm-2"><h4>Kategorie </h4>
-              <ul class="list-unstyled pt-2">
-                <li class="pb-2">Programista</li>
-                <li class="pb-2">Projektant Wnętrz</li>
-                <li class="pb-2">Architekt</li>
-                <li class="pb-2">Grafik</li>
-                <li class="pb-2">Montarzysta</li>
-                <li class="pb-2">Reszta</li>
-              </ul>
-            </div>
-            <div class="col-sm-4"><h4>Znajdź nas na </h4>
-
-              <div class="row ">
-                <div class="col-sm-4">
-                  <a href="#"><img src="in.png" alt="1"class="icon"></a>
-                  <a href="#"><img src="wu.png" alt="2"class="icon"></a>
-
-                </div>
-                <div class="col-sm-4">
-                  <div> <img src="insta.png" alt="3" class="icon"></div>
-                  <div> <img src="yt.png" alt="4" class="icon"></div>
-                </div>
-                <div class="col-sm-4">
-                  <div>  <img src="fb.png" alt="5" class="icon"></div>
-                  <div>  <img src="t.png" alt="6" class="icon"></div>
-                </div>
+                </ul>
               </div>
 
+                <div class="col-sm-2"><h4>Informacje </h4>
+                  <ul class="list-unstyled pt-2">
+                    <li class="pb-2">Pomoc</li>
+                    <li class="pb-2">Płatność i wysyłka</li>
+                    <li class="pb-2">Regulamin</li>
+                    <li class="pb-2">FAQ</li>
+                    <li class="pb-2">Polityka prywatności</li>
+                  </ul>
+              </div>
+                <div class="col-sm-2"><h4>Kategorie </h4>
+                  <ul class="list-unstyled pt-2">
+                    <li class="pb-2">Programista</li>
+                    <li class="pb-2">Projektant Wnętrz</li>
+                    <li class="pb-2">Architekt</li>
+                    <li class="pb-2">Grafik</li>
+                    <li class="pb-2">Montarzysta</li>
+                    <li class="pb-2">Reszta</li>
+                  </ul>
+                </div>
+                <div class="col-sm-4"><h4>Znajdź nas na </h4>
 
+                  <div class="row ">
+                    <div class="col-sm-4">
+                      <a href="#"><img src="in.png" alt="1"class="icon"></a>
+                      <a href="#"><img src="wu.png" alt="2"class="icon"></a>
+
+                    </div>
+                    <div class="col-sm-4">
+                      <div> <img src="insta.png" alt="3" class="icon"></div>
+                      <div> <img src="yt.png" alt="4" class="icon"></div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div>  <img src="fb.png" alt="5" class="icon"></div>
+                      <div>  <img src="t.png" alt="6" class="icon"></div>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </footer>-->
+          </footer>-->
 
 
 
@@ -251,3 +261,8 @@
 </body>
 
 </html>
+<style>
+    div#text > a:hover {
+        color: #383a40 !important;
+    }
+</style>
