@@ -34,7 +34,7 @@
                             </a>
                         </button>
                     </li>
-                    <li class="nav-item ml-4 mr-5">
+                    <li class="nav-item ml-4 mr-4">
                         <button type="button" class="btn btn-outline-primary text-white mt-1">
                             <a class="nav-link  text-light" asp-area="" asp-controller="Offers"
                                asp-action="Search"><span>Szukaj Ofert</span></a>
@@ -45,38 +45,32 @@
                     {
                         @if (Context.User.IsInRole("administrator"))
                         {
-                            <li class="nav-item nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-light" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Zalogowany
-                                    <br /><span>@Context.User.Claims.FirstOrDefault(c => c.Type == "nameandsurname")?.Value</span>
+                            <li class="nav-item nav-item dropdown mr-3 pt-2">
+                                <a class="nav-link dropdown-toggle text-light mt-1" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span>Panel administracyjny</span>
                                 </a>
                                 <div id="text" class="dropdown-menu bg-dark text-light" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Details">Szczegóły konta</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Edit">Edytuj dane</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Offers" asp-action="MyOffers">Moje oferty</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Category" asp-action="Index">Panel administracyjny</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Logout">Wyloguj się</a>
+                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Category" asp-action="Index">Lista kategorii</a>
+                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Category" asp-action="Create">Dodaj kategorię</a>
                                 </div>
                             </li>
 
                         }
-                        else
-                        {
-                            <li class="nav-item nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-light" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Zalogowany
-                                    <br /><span>@Context.User.Claims.FirstOrDefault(c => c.Type == "nameandsurname")?.Value</span>
-                                </a>
-                                <div id="text" class="dropdown-menu bg-dark text-light" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Details">Szczegóły konta</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Edit">Edytuj dane</a>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Offers" asp-action="MyOffers">Moje oferty</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Logout">Wyloguj się</a>
-                                </div>
-                            </li>
-                        }
+
+                        <li class="nav-item nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Zalogowany
+                                <br /><span>@Context.User.Claims.FirstOrDefault(c => c.Type == "nameandsurname")?.Value</span>
+                            </a>
+                        <div id="text" class="dropdown-menu bg-dark text-light" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Details">Szczegóły konta</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Edit">Edytuj dane</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="Offers" asp-action="MyOffers">Moje oferty</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Logout">Wyloguj się</a>
+                            </div>
+                        </li>
+                        
                     }
                     else
                     {
