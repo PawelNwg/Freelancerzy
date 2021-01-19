@@ -30,7 +30,8 @@
         <div id="column" class="input">
 
             <input id="input" class="form-control border border-primary" asp-for="EmailAddress" placeholder="@Html.DisplayNameFor(model => model.EmailAddress)">
-            <span id="input" asp-validation-for="EmailAddress" class="text-danger" style="font-size: small;"></span>
+            <span id="input" asp-validation-for="EmailAddress" class="text-danger" style="font-size: small; float: left"></span>
+            <span class="" style="font-size: 97%; font-weight: 600; font-kerning: auto; padding-left: 51px; color: #dc3545;">@ViewData["ErrorEmail"]</span>
             </br> </br>
 
             <div id="passwd" class="input-group align-items-center">

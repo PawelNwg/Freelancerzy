@@ -127,37 +127,45 @@ namespace app.Controllers
             else return false;
         }
         [HttpPost]
-        public async Task<IActionResult> Register(PageUser pageuser) //TODO: pass user credentials
+        public async Task<IActionResult> Register(PageUser pageuser) 
         {
             if (ModelState.IsValid)
             {
-                PageUser pageUser = new PageUser() // TODO SPRAWDZIC CZY NIE MA USERA W BAZIE
+                if (_context.PageUser.FirstOrDefault(u => u.EmailAddress == pageuser.EmailAddress) == null) 
                 {
-                    FirstName = pageuser.FirstName,
-                    Surname = pageuser.Surname,
-                    EmailAddress = pageuser.EmailAddress,
-                    Phonenumber = pageuser.Phonenumber,
-                    TypeId = 1,
-                };
+                    PageUser pageUser = new PageUser() 
+                    {
+                        FirstName = pageuser.FirstName,
+                        Surname = pageuser.Surname,
+                        EmailAddress = pageuser.EmailAddress,
+                        Phonenumber = pageuser.Phonenumber,
+                        TypeId = 1,
+                    };
 
-                var passwordHasher = new PasswordHasher<string>();
-                Credentials credentials = new Credentials()
-                {
-                    Password = passwordHasher.HashPassword(pageuser.EmailAddress, pageuser.Credentials.Password),
-                };
+                    var passwordHasher = new PasswordHasher<string>();
+                    Credentials credentials = new Credentials()
+                    {
+                        Password = passwordHasher.HashPassword(pageuser.EmailAddress, pageuser.Credentials.Password),
+                    };
 
-                var passwordHasherConfirmation = new PasswordHasher<string>();
-                if (passwordHasherConfirmation.VerifyHashedPassword(null, credentials.Password, pageuser.Credentials.PasswordConfirmed) == PasswordVerificationResult.Success) // strawdzic czy nie ma takiego usera
-                {
-                    pageUser.Credentials = credentials;
-                    _context.Add(pageUser);
-                    _context.Add(credentials);
-                    await _context.SaveChangesAsync();
-                    EmailAsync(pageuser);
+                    var passwordHasherConfirmation = new PasswordHasher<string>();
+                    if (passwordHasherConfirmation.VerifyHashedPassword(null, credentials.Password, pageuser.Credentials.PasswordConfirmed) == PasswordVerificationResult.Success) // strawdzic czy nie ma takiego usera
+                    {
+                        pageUser.Credentials = credentials;
+                        _context.Add(pageUser);
+                        _context.Add(credentials);
+                        await _context.SaveChangesAsync();
+                        EmailAsync(pageuser);
+                    }
+                    else
+                    {                     
+                        ViewData["Error"] = "Hasła nie sa taki same";                     
+                        return View();
+                    }
                 }
                 else
                 {
-                    ViewData["Error"] = "Has�a nie sa taki same";
+                    ViewData["ErrorEmail"] = "Podany adres email jest juz zajety, proszę podac inny";                   
                     return View();
                 }
             }
@@ -341,5 +349,6 @@ namespace app.Controllers
             }); 
             return token;
         }
+
     } 
 }
