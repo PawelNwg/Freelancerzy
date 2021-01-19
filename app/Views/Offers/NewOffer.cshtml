@@ -4,17 +4,16 @@
 }
 
 <section class="front">
-    <div class="text-center">
-        <h1 style="padding:20px">Dodaj Ofertę</h1>
+    <div style="padding:20px">
+        <h1 class="display-3 text-center mt-4 mb-4">Dodaj Ofertę</h1>
         <br />
     </div>
-    <div id="x">
         
-        <div id="content">
-            <form asp-action="NewOffer">
+    <div id="content" class="container bg-white border border-primary rounded">
+            <form asp-action="NewOffer" class="text-center">
                 <br />
                 <h3>Kategoria</h3>
-                <select asp-for="CategoryId" asp-items="ViewBag.CategoryId" style="padding:3px; width:50%">
+                <select class="text-center" asp-for="CategoryId" asp-items="ViewBag.CategoryId" style="padding:3px; width:30%">
                 </select>
                 <br />
                 <br />
@@ -32,7 +31,7 @@
                 <br />
                 <div class="form-group">
                     <h3>@Html.DisplayNameFor(model => model.Wage)</h3>
-                    <input type="text" asp-for="WageValue" style="padding:3px; width:100%" placeholder="@Html.DisplayNameFor(model => model.Wage) - może pozostać puste" />
+                    <input type="text" asp-for="WageValue" style="padding: 3px; width: 23%" placeholder="@Html.DisplayNameFor(model => model.Wage) - może pozostać puste" />
                     <span asp-validation-for="WageValue" style="font-size: small" class="text-danger"></span>
                 </div>
                 <br />
@@ -40,29 +39,19 @@
                 <div class="text-center">
                     <input type="submit" style="padding:15px 50px;font-size:large;" class="btn btn-outline-primary btn-dark text-light" value="Dodaj" />
                 </div>
-            </form>
-            
-        </div>
-       
+                <br />
+            </form>           
     </div>
+
 
 </section>
 
 <style>
-    #x {
-        width: 80%;
-        min-height: 700px;
-        float: left;
-        padding: 20px;
-        background-color: lightgray;
-        margin-right: 10%;
-        margin-left: 10%;
-        margin-bottom: 516px;
-    }
-
     #content {
-        margin-right: 5%;
-        margin-left: 5%;
+        width:60%;
+        margin-right: 20%;
+        margin-left: 20%;
+        padding:20px;
     }
 </style>
 @section Scripts {
