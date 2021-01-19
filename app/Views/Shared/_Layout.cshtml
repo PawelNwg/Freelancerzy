@@ -48,7 +48,7 @@
                             <li class="nav-item nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-light" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Zalogowany
-                                    <br /><span>@Context.User.Identity.Name</span>
+                                    <br /><span>@Context.User.Claims.FirstOrDefault(c => c.Type == "nameandsurname")?.Value</span>
                                 </a>
                                 <div id="text" class="dropdown-menu bg-dark text-light" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Details">Szczegóły konta</a>
@@ -66,7 +66,7 @@
                             <li class="nav-item nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-light" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Zalogowany
-                                    <br /><span>@Context.User.Identity.Name</span>
+                                    <br /><span>@Context.User.Claims.FirstOrDefault(c => c.Type == "nameandsurname")?.Value</span>
                                 </a>
                                 <div id="text" class="dropdown-menu bg-dark text-light" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Details">Szczegóły konta</a>

@@ -101,7 +101,7 @@ namespace app.Controllers
                     {
                         new Claim(ClaimTypes.Name,user.EmailAddress),
                         new Claim(ClaimTypes.Role,user.Type.Name),
-                        new Claim(ClaimTypes.Surname,user.Surname),
+                        new Claim("nameandsurname",user.FirstName + " " + user.Surname),
                     };
                     var claimsIdentity = new ClaimsIdentity(claims, "CookieAuthentication");
 
