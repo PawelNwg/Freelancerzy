@@ -29,9 +29,9 @@
 
         <div id="column" class="input">
 
-            <input id="input" class="form-control border border-primary" asp-for="EmailAddress" placeholder="@Html.DisplayNameFor(model => model.EmailAddress)">
+            <input id="input" class="form-control border border-primary inputemail" asp-for="EmailAddress" placeholder="@Html.DisplayNameFor(model => model.EmailAddress)">
             <span id="input" asp-validation-for="EmailAddress" class="text-danger" style="font-size: small; float: left"></span>
-            <span class="" style="font-size: 97%; font-weight: 600; font-kerning: auto; padding-left: 51px; color: #dc3545;">@ViewData["ErrorEmail"]</span>
+            <span id="emailvalidate" style="font-size: 97%; font-weight: 600; font-kerning: auto; padding-left: 51px; color: #dc3545;">@ViewData["ErrorEmail"]</span>
             </br> </br>
 
             <div id="passwd" class="input-group align-items-center">
@@ -101,6 +101,15 @@
                     $('#txtPassword, #txtPassword2').attr('type', 'password');
                     $('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
                 });
+        });
+
+        let wasFocused = false;
+
+        $(document).on('focus', '.inputemail', null, function () {
+            if (!wasFocused) {
+                $('#emailvalidate').text('');
+                wasFocused = true;
+            }
         });
     </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
