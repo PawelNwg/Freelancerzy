@@ -34,7 +34,7 @@
                             </a>
                         </button>
                     </li>
-                    <li class="nav-item ml-4 mr-5">
+                    <li class="nav-item ml-4 mr-4">
                         <button type="button" class="btn btn-outline-primary text-white mt-1">
                             <a class="nav-link  text-light" asp-area="" asp-controller="Offers"
                                asp-action="Search"><span>Szukaj Ofert</span></a>
@@ -45,7 +45,7 @@
                     {
                         @if (Context.User.IsInRole("administrator"))
                         {
-                            <li class="nav-item nav-item dropdown ml-3 mr-2 pt-1">
+                            <li class="nav-item nav-item dropdown mr-3 pt-2">
                                 <a class="nav-link dropdown-toggle text-light mt-1" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span>Panel administracyjny</span>
                                 </a>
