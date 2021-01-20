@@ -9,10 +9,9 @@
 </head>
 <body>
 
-<h4>Category</h4>
+<h1 class="text-center" style=" padding:20px">Dodanie kategorii</h1>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="container bg-white border border-primary rounded" style="width:20%; padding:30px">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -20,16 +19,13 @@
                 <input asp-for="CategoryName" class="form-control" />
                 <span asp-validation-for="CategoryName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group text-center">
+                <input type="submit" value="Dodaj kategorię" class="btn btn-primary"/>
             </div>
         </form>
-    </div>
+        <div class="text-center">
+            <a asp-action="Index" class="align-middle btn btn-outline-primary btn-dark text-light submitButton">Anuluj</a>
+        </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 </body>
 </html>
