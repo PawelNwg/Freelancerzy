@@ -155,6 +155,11 @@ namespace freelancerzy.Models
 
             modelBuilder.Entity<Offer>(entity =>
             {
+                entity.Property(e => e.IsReported)
+                   .IsRequired()
+                   .HasColumnType("boolean")
+                   .HasDefaultValueSql("false")
+                   ;
                 entity.ToTable("offer");
 
                 entity.HasIndex(e => e.CategoryId)
