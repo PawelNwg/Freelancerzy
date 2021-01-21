@@ -22,6 +22,8 @@
     <Compile Include="Migrations\20201217160548_bugFixing.Designer.cs" />
     <Compile Include="Migrations\20201222172853_dodaniePrzecinka.cs" />
     <Compile Include="Migrations\20201222172853_dodaniePrzecinka.Designer.cs" />
+    <Compile Include="Migrations\20210121181326_DodaniePolaZgloszeniaOferty.cs" />
+    <Compile Include="Migrations\20210121181326_DodaniePolaZgloszeniaOferty.Designer.cs" />
     <Compile Include="Migrations\cb2020freedbContextModelSnapshot.cs" />
   </ItemGroup>
 

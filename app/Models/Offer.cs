@@ -27,6 +27,9 @@ namespace freelancerzy.Models
         [Display(Name = "Ilość wyświetleń")]
         public int ViewCounter { get; set; }
 
+        public bool IsReported { get; set; }
+
+
         [Display(Name = "Stawka")]
         [DataType(DataType.Currency)]
         //TODO: zrobić coś żeby ładnie wyświetlało z dwoma miejscami po przecinku
