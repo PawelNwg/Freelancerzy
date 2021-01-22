@@ -3,37 +3,50 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
 </head>
+
 <body>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Categoryid">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Categoryid">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Categoryid">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="container bg-white border border-primary rounded mt-3 pt-2">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="60%">
+                        @Html.DisplayNameFor(model => model.CategoryName)
+                    </th>
+                    <th width="30%"></th>
+                    <th width="10%">
+                        <input type="submit" value="Dodaj kategorię" class="btn btn-primary border border-dark" />
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CategoryName)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Categoryid">
+                                <span  class="fa fa-pencil btn"></span>
+                            </a>
+                            <a  asp-action="Details" asp-route-id="@item.Categoryid">
+                                <span  class="fa fa-reorder btn"></span>
+                            </a> 
+                            <a asp-action="Delete" asp-route-id="@item.Categoryid">
+                                 <span  class="fa fa-trash btn"></span>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </body>
+
 </html>
