@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
 </head>
-
+<h1 class="text-center" style="padding:20px">Lista kategorii</h1>
+<hr />
 <body>
-    <div class="container bg-white border border-primary rounded mt-3 pt-2">
-
+    <div class="container bg-white border border-primary rounded mt-3 pt-2 px-5">
         <table class="table">
             <thead>
                 <tr>
@@ -20,7 +20,7 @@
                     </th>
                     <th width="30%"></th>
                     <th width="10%">
-                        <input type="submit" value="Dodaj kategorię" class="btn btn-primary border border-dark" />
+                        <a asp-action="Create" type="submit" class="btn btn-primary border border-dark">Dodaj kategorię</a>
                     </th>
                 </tr>
             </thead>
@@ -28,7 +28,7 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>
+                        <td class="py-3">
                             @Html.DisplayFor(modelItem => item.CategoryName)
                         </td>
                         <td>
