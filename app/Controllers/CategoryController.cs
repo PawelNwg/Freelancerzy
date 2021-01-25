@@ -12,7 +12,7 @@ namespace freelancerzy.Controllers
 {
     
     [Authorize(AuthenticationSchemes = "CookieAuthentication")]
-    [Authorize(Roles = "normalny użytkownik,administrator")]
+    [Authorize(Roles = "administrator")]
     public class CategoryController : Controller
     {
         private readonly cb2020freedbContext _context;
