@@ -9,9 +9,9 @@
 </head>
 <body>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Category</h4>
+<h3 class="text-center" style="padding:30px 20px">Czy napewno chcesz usunąć tą kategorię?</h3>
+<div class="container bg-white border border-primary rounded" style="width:20%; padding:30px">
+    <h4>Kategoria</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -24,9 +24,24 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Categoryid" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Usuń" class="btn btn-danger" /> 
+        <a asp-action="Index" class="ml-3 align-middle btn btn-outline-primary btn-dark text-light submitButton">Anuluj</a>
     </form>
 </div>
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.Message");
+        window.location.href = '/Category';
+    };
+    </script>
+}
+
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
 </body>
 </html>
