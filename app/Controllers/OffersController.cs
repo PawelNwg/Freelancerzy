@@ -298,7 +298,7 @@ namespace freelancerzy.Controllers
 
             _context.Offer.Remove(offer);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(MyOffers));
         }
 
         private bool OfferExists(int id)
