@@ -81,7 +81,7 @@ namespace app.Controllers
             var user = _context.PageUser.FirstOrDefault(user => user.EmailAddress == email);
             if (user == null)
             {
-                ViewData["error"] = "Podana nazwa u�ytkownika nie istnieje";
+                ViewData["error"] = "Podana nazwa użytkownika nie istnieje";
                 return View();
             }
             else
@@ -91,7 +91,7 @@ namespace app.Controllers
 
                 if(user.emailConfirmation != true)
                 {
-                    ViewData["error"] = "Email nie zosta� potwierdzony";
+                    ViewData["error"] = "Email nie został potwierdzony";
                     return View();
                 }
 
@@ -241,7 +241,7 @@ namespace app.Controllers
 
             if (!ValidateUser(dbUser, credentials.OldPassword)) 
             {
-                ViewBag.Message = "Podano nieprawidlowe haslo";
+                ViewBag.Message = "Podano nieprawidłowe hasło";
                 return View("Edit", dbUser);
             }
             _context.Entry(dbUser).State = EntityState.Detached;
@@ -250,7 +250,7 @@ namespace app.Controllers
 
             if (passwordHasher.VerifyHashedPassword(dbUser.EmailAddress, dbUser.Credentials.Password, user.Credentials.Password) == PasswordVerificationResult.Success)
             {
-                ViewBag.Message = "Haslo jest identyczne jak stare haslo";
+                ViewBag.Message = "Hasło jest identyczne jak stare hasło";
                 return View("Edit", dbUser);
             }
             credentials.Password = passwordHasher.HashPassword(user.EmailAddress, credentials.Password);
@@ -314,7 +314,7 @@ namespace app.Controllers
                 var user = _context.PageUser.FirstOrDefault(u => u.EmailAddress == email);
                 if (user == null)
                 {
-                    ViewData["Data"] = "B��D";
+                    ViewData["Data"] = "BŁĄD";
                     return View(); // TODO widok errora
                 }
                 else if (DateTime.Compare(DateTime.Now, date.AddMinutes(15)) > 0)
@@ -325,7 +325,7 @@ namespace app.Controllers
                 user.emailConfirmation = true;
                 _context.Update(user);
                 await _context.SaveChangesAsync();
-                ViewData["Data"] = "Zarejestrowano pomy�lnie :)";
+                ViewData["Data"] = "Zarejestrowano pomyślnie :)";
                 ViewData["Wynik"] = true;
                 return View();
             }
