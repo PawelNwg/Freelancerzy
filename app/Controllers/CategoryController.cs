@@ -63,8 +63,8 @@ namespace freelancerzy.Controllers
             {
                 if (_context.Category.First(c => c.CategoryName == category.CategoryName) != null)
                 {
-                    //TODO: zwracać komunikat że nazwa nie unikalna
-                    return RedirectToAction(nameof(Index));
+                    ViewBag.Message = "Nazwa musi być unikalna";
+                    return View(category);
                 }
                 _context.Add(category);
                 await _context.SaveChangesAsync();
@@ -150,8 +150,8 @@ namespace freelancerzy.Controllers
             var category = await _context.Category.FindAsync(id);
             if (category.CategoryName.Equals("Inne"))
             {
-                //TODO nie można usunąć Inne
-                return RedirectToAction(nameof(Index));
+                ViewBag.Message = "Nie można usunąć tej kategorii!";
+                return View(category);
             }
 
             List<Offer> offers = await _context.Offer.Where(o => o.Category.Categoryid == category.Categoryid).ToListAsync();

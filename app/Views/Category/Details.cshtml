@@ -8,10 +8,9 @@
     <title>Details</title>
 </head>
 <body>
-
-<div>
-    <h4>Category</h4>
-    <hr />
+<h3 class="text-center" style="padding:20px">Szczegóły</h3>
+<hr />
+<div class="container bg-white border border-primary rounded" style="width:20%; padding:30px">
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CategoryName)
@@ -20,10 +19,11 @@
             @Html.DisplayFor(model => model.CategoryName)
         </dd>
     </dl>
+    <div>
+        <a class="ml-3 align-middle btn btn-outline-primary btn-dark text-light submitButton" asp-action="Edit" asp-route-id="@Model.Categoryid">Edytuj</a>
+        <a asp-action="Index" class="ml-3 align-middle btn btn-outline-primary btn-dark text-light submitButton">Anuluj</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Categoryid">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
 </body>
 </html>
