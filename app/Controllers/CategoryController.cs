@@ -61,7 +61,7 @@ namespace freelancerzy.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_context.Category.First(c => c.CategoryName == category.CategoryName) != null)
+                if (await _context.Category.FirstOrDefaultAsync(c => c.CategoryName == category.CategoryName) != null)
                 {
                     ViewBag.Message = "Nazwa musi być unikalna";
                     return View(category);
@@ -105,6 +105,11 @@ namespace freelancerzy.Controllers
             {
                 try
                 {
+                    if (await _context.Category.FirstOrDefaultAsync(c => c.CategoryName == category.CategoryName) != null)
+                    {
+                        ViewBag.Message = "Nazwa musi być unikalna";
+                        return View(category);
+                    }
                     _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
