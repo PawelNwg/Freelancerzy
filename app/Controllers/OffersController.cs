@@ -265,6 +265,7 @@ namespace freelancerzy.Controllers
         // GET: Offers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+           
             if (id == null)
             {
                 return NotFound();
@@ -279,7 +280,7 @@ namespace freelancerzy.Controllers
                 return NotFound();
             }
 
-            return View(offer);
+            return HttpContext.User.Identity.Name == offer.User.EmailAddress ? (IActionResult)View(offer) : Unauthorized();
         }
 
         // POST: Offers/Delete/5
@@ -287,7 +288,14 @@ namespace freelancerzy.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var offer = await _context.Offer.FindAsync(id);
+            var offer = await _context.Offer.Include(u => u.User).FirstOrDefaultAsync(o => o.Offerid == id);
+
+            if (offer == null)
+                return NotFound();
+
+            if (HttpContext.User.Identity.Name != offer.User.EmailAddress)
+                return Unauthorized();
+
             _context.Offer.Remove(offer);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
