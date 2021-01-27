@@ -1,10 +1,17 @@
 ﻿@model freelancerzy.Models.PaginatedList<freelancerzy.Models.Offer>
 
+
+@{
+    var reportConfirmation = false;
+    var confirmation = false;
+}
+
+
 @foreach (var offer in Model)
 {
     <div id="text" class="m-1 border rounded border-dark offer" style="padding-bottom: 0px">
         <table class="table table-borderless pb-2" style="border:none; margin-bottom: 0px">
-            <tbody >
+            <tbody>
                 <tr>
                     <td width="70%">
                         <h4 class="p-1">@offer.Title</h4>
@@ -21,7 +28,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td  width="70%" class="mb-0 pb-0">
+                    <td width="70%" class="mb-0 pb-0">
 
                         @if (offer.Description?.Length > 300)
                         {
@@ -34,12 +41,22 @@
                     </td>
                     <td class="text-center align-bottom">
                         <a id="btn" class="btn btn-dark btn-outline-primary" asp-action="Details" asp-route-id="@offer.Offerid">Szczegóły</a>
+
+                       
+                        
+                        <a id="btn" class="btn btn-dark btn-outline-primary" asp-action="Report" asp-route-id="@offer.Offerid">Zgłoś</a>
+                        
+                       
+
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 }
+
+
+
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
@@ -47,7 +64,7 @@
 
 <div>
     <div style="width:50%" class="d-inline-block ">
-        Jesteś na stronie: <input min="1" max="@Model.TotalPages" type="number" value="@Model.PageIndex" id="page" style="width:50px;"/> z @Model.TotalPages <button class="btn btn-default" id="goToPage">Przejdź</button>
+        Jesteś na stronie: <input min="1" max="@Model.TotalPages" type="number" value="@Model.PageIndex" id="page" style="width:50px;" /> z @Model.TotalPages <button class="btn btn-default" id="goToPage">Przejdź</button>
 
     </div>
     <div style="float:right">
