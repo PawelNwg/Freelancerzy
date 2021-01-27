@@ -175,6 +175,29 @@ namespace freelancerzy.Controllers
             return View(offer);
         }
 
+        //zgloszenie
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> Report(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var offer = await _context.Offer.FindAsync(id);
+            if (offer == null)
+            {
+                return NotFound();
+            }
+
+            offer.IsReported = true;
+            _context.Update(offer);
+            await _context.SaveChangesAsync();
+
+            return View(offer);
+        }
+
         [HttpGet]
         [Authorize(AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> Edit(int? id)
