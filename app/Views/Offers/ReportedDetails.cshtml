@@ -1,0 +1,74 @@
+﻿@model freelancerzy.Models.Offer
+
+@{
+    ViewData["Title"] = "Szczegóły: " + Model.Title;
+}
+
+<div id="content" class="row bg-white border border-primary rounded pb-3">
+    <div class="col-12 mt-4 mb-3">
+        <h1>@Model.Title</h1>
+    </div>
+    <div class="col-lg-9 pr-4">
+        Dodał:
+        <h4>@Model.User.FirstName - @Model.User.EmailAddress</h4>
+        <article>
+            <div class="mt-3 text-justify">
+                <h2>Szerszy opis usługi</h2>
+                <div class="mt-3 mb-3">@Model.Description</div>
+            </div>
+        </article>
+    </div>
+    <div class="col-lg-3 mb-5">
+        <div style="background-color:lightgray" class="p-3  border border-dark rounded">
+            <h5>Szczegóły:</h5>
+            @if (Model.Wage == null)
+            {
+                <div>Stawka: <b>nieokreślona</b></div>
+            }
+            else
+            {
+                <div>Stawka: <b>@Model.Wage zł</b></div>
+            }
+            <div>Kategoria: <b>@Model.Category.CategoryName</b></div>
+            <br />
+            <h5>Dana kontaktowe:</h5>
+            <div>Imię: <b>@Model.User.FirstName</b></div>
+            <div>Email: <b>@Model.User.EmailAddress</b></div>
+            <div>Numer telefonu: <b>@Model.User.Phonenumber</b></div>
+
+        </div>
+    </div>
+    <div class="reportDecision">
+        <h3 style="color:red;">Zdecyduj, co zrobić z tą ofertą</h3>
+        <div class="reportDecisionButtons">
+        <a class="btn btn-outline-primary btn-dark" href="#" >Pozostaw</a>
+        <a class="btn btn-outline-primary btn-dark"href="#" >Usuń</a>
+        </div>
+        @* tu dodac potem usuwanie *@
+    </div>
+    <div id="buttons" class="col-12">
+        Dodano: <b>@Model.CreationDate</b>, Liczba wyświetleń: @Model.ViewCounter
+        <br /><br />
+        <a class="btn btn-outline-primary btn-dark" href='javascript:history.go(-1)'>Powrót</a>
+       
+
+    </div>
+</div>
+
+
+<style>
+    #content {
+        margin: 10%;
+        margin-top: 5%;
+    }
+    .reportDecision{
+        margin-left:auto;
+        margin-right:auto;
+        display:flex;
+        flex-direction:column;
+    }
+    .reportDecisionButtons{
+        align-content:center;
+        
+    }
+</style>

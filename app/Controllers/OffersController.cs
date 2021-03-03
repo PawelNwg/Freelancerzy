@@ -12,6 +12,7 @@ using System.Collections;
 
 namespace freelancerzy.Controllers
 {
+
     public class OffersController : Controller
     {
         private readonly cb2020freedbContext _context;
@@ -20,6 +21,53 @@ namespace freelancerzy.Controllers
         {
             _context = context;
         }
+
+        #region Admin - oferty zgłoszone
+
+        [HttpGet]
+        [Authorize(Roles = "administrator",AuthenticationSchemes = "CookieAuthentication")]
+        public IActionResult ReportedOffers()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> ReportedOffersListPartial(int? pageNumber, string order)
+        {
+            
+            var Offers = SortedList(order);
+            var reportedOffers = Offers.Where(o => o.IsReported == true);
+            int pageSize = 15;
+            return PartialView("_ReportedOfferList", await PaginatedList<Offer>.CreateAsync(reportedOffers, pageNumber ?? 1, pageSize));
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> ReportedDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var offer = await _context.Offer
+                .Include(o => o.Category)
+                .Include(o => o.User)
+                .FirstOrDefaultAsync(m => m.Offerid == id);
+
+            
+
+            if (offer == null)
+            {
+                return NotFound();
+            }
+
+            return View(offer);
+        }
+
+        #endregion
+
 
         public IActionResult Index()
         {
