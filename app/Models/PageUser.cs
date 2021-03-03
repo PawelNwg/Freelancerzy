@@ -14,7 +14,7 @@ namespace freelancerzy.Models
             Offer = new HashSet<Offer>();
             Permissionuser = new HashSet<Permissionuser>();
         }
-
+        [Display(Name = "Id Użytkownika")] 
         public int Userid { get; set; }
         public int TypeId { get; set; }
 
@@ -40,8 +40,9 @@ namespace freelancerzy.Models
         
         [MaxLength(12,ErrorMessage = "Numer telefonu nie może być dłuższy niż 12 znaków")] 
         public string Phonenumber { get; set; }
+        [Display(Name = "Potwierdzenia maila")]
         public bool emailConfirmation { get; set; }
-
+        [Display(Name = "Data rejestracji")]
         public DateTime registrationDate { get; set; }
 
 
