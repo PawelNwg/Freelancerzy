@@ -65,7 +65,42 @@ namespace freelancerzy.Controllers
 
             return View(offer);
         }
+        [HttpDelete]
+        [Authorize(Roles ="administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> DeleteReported(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var Offer = await _context.Offer.FirstOrDefaultAsync(o => o.Offerid == id);
+            if(Offer == null)
+            {
+                return NotFound();
+            }
+            _context.Offer.Remove(Offer);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
 
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> RejectReport(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var Offer = await _context.Offer.FirstOrDefaultAsync(o => o.Offerid == id);
+            if (Offer == null)
+            {
+                return NotFound();
+            }
+            Offer.IsReported = false;
+            _context.Update(Offer);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        
         #endregion
 
 
