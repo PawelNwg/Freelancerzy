@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "Szczegóły: " + Model.Title;
 }
+<head>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet">
+</head>
+
+
 
 <div id="content" class="row bg-white border border-primary rounded pb-3">
     <div class="col-12 mt-4 mb-3">
@@ -41,16 +47,21 @@
     <div class="reportDecision">
         <h3 style="color:red;">Zdecyduj, co zrobić z tą ofertą</h3>
         <div class="reportDecisionButtons">
-        <a class="btn btn-outline-primary btn-dark" href="#" >Pozostaw</a>
-        <a class="btn btn-outline-primary btn-dark"href="#" >Usuń</a>
+            <button id="cancelBtn" class="btn btn-outline-primary btn-dark">Pozostaw</button>
+            <button id="deleteBtn" class="btn btn-outline-primary btn-dark">Usuń</button>
         </div>
         @* tu dodac potem usuwanie *@
+        <div id="dialog-1" title="Czy na pewno chcesz usunąć ofertę?">
+
+        </div>
+        <div id="dialog-2"
+             title="Czy na pewno chcesz pozostawić ofertę?"></div>
     </div>
     <div id="buttons" class="col-12">
         Dodano: <b>@Model.CreationDate</b>, Liczba wyświetleń: @Model.ViewCounter
         <br /><br />
         <a class="btn btn-outline-primary btn-dark" href='javascript:history.go(-1)'>Powrót</a>
-       
+
 
     </div>
 </div>
@@ -61,14 +72,115 @@
         margin: 10%;
         margin-top: 5%;
     }
-    .reportDecision{
-        margin-left:auto;
-        margin-right:auto;
-        display:flex;
-        flex-direction:column;
+
+    .reportDecision {
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        flex-direction: column;
     }
-    .reportDecisionButtons{
-        align-content:center;
-        
+
+    .reportDecisionButtons {
+        margin: auto;
     }
+</style>
+<script>
+
+    const id = @Model.Offerid;
+
+    const DeleteOffer = (id) => {
+        $.ajax({
+            method: "DELETE",
+            url: "/Offers/DeleteReported?id=" + id,
+            cache: false
+
+        }
+        ).fail(() => alert("Błąd podczas usuwania oferty"))
+            .done(() => {
+                const url = '@Url.Action("ReportedOffers","Offers")';
+                window.location.href = url;
+            })
+    }
+
+    const RejectReport = (id) => {
+         $.ajax({
+            method: "GET",
+            url: "/Offers/RejectReport?id=" + id,
+            cache: false
+
+        }
+        ).fail(() => alert("Błąd podczas przetwarzania rządania"))
+            .done(() => {
+                const url = '@Url.Action("ReportedOffers","Offers")';
+                window.location.href = url;
+            })
+    }
+
+    $(function () {
+        $('#dialog-1').dialog({
+            autoOpen: false,
+            modal: true,
+            dialogClass: 'border border-dark rounded',
+            width: 500,
+            show: 'fold',
+            hide: 'fold',
+            resizable: false,
+            closeText: 'Zamknij',
+            draggable:false,
+            buttons: {
+                TAK: function () {
+                    DeleteOffer(id);
+                },
+                NIE: function () {
+                    $(this).dialog('close');
+                }
+            }
+
+        });
+
+        $('#dialog-2').dialog({
+            autoOpen: false,
+            modal: true,
+            dialogClass: 'border border-dark rounded',
+            width: 550,
+            show: 'fold',
+            hide: 'fold',
+            resizable: false,
+            closeText: 'Zamknij',
+            draggable: false,
+            buttons: {
+                TAK: function () {
+                    RejectReport(id);
+                },
+                NIE: function () {
+                    $(this).dialog('close');
+                }
+            }
+
+        });
+        $('#deleteBtn').click(function () {
+            $('#dialog-1').dialog("open");
+        });
+
+
+        $('#cancelBtn').click(function () {
+            $('#dialog-2').dialog("open");
+        });
+    });
+</script>
+@section scripts{
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+}
+<style>
+    .ui-widget-header, .ui-state-default, ui-button {
+        background-color:dimgrey;
+        color: black;
+        font-weight: bold;
+    }
+    .ui-dialog {
+        padding: 10px;
+        background: lightgray;
+    }
+    
 </style>
