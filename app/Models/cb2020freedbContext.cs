@@ -26,12 +26,14 @@ namespace freelancerzy.Models
         public virtual DbSet<Reason> Reason { get; set; }
         public virtual DbSet<Useraddress> Useraddress { get; set; }
         public virtual DbSet<Usertype> Usertype { get; set; }
+        public virtual DbSet<OfferReport> OfferReport { get; set; }
+        public virtual DbSet<OfferReportReason> OfferReportReason { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySQL("server=212.33.90.100;port=3306;user=cb2020freeuser;password=cb2020freePASS;database=cb2020freedb");
+                optionsBuilder.UseMySql("server=212.33.90.100;port=3306;user=cb2020freeuser;password=cb2020freePASS;database=cb2020freedb");
             }
         }
 
@@ -209,6 +211,51 @@ namespace freelancerzy.Models
                     .HasConstraintName("offer_user_fk");
             });
 
+            modelBuilder.Entity<OfferReport>(entity =>
+            {
+                entity.HasKey(e => e.ReportId).HasName("OfferReportPK");
+
+                entity.Property(e => e.ReportId).HasColumnType("int(11)").UseIdentityColumn();
+
+                entity.Property(e => e.IsActive).HasColumnType("boolean").IsRequired().HasDefaultValueSql("true");
+
+                entity.Property(e => e.OfferId).HasColumnType("int(11)").IsRequired();
+
+                entity.Property(e => e.ReasonId).HasColumnType("int(11)").IsRequired();
+
+                entity.Property(e => e.ReportDate).HasColumnType("datetime(3)").IsRequired();
+
+                entity.Property(e => e.ReportingUserId).HasColumnType("int(11)").IsRequired();
+
+                entity.HasOne(d => d.Offer)
+                    .WithMany(p => p.OfferReports)
+                    .HasForeignKey(d => d.OfferId)
+                    .HasConstraintName("offerReport_offer_fk")
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasOne(d => d.OfferReportReason)
+                    .WithMany(p => p.OfferReports)
+                    .HasForeignKey(d => d.ReasonId)
+                    .HasConstraintName("offerReport_reason_FK")
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasOne(d => d.ReportingUser)
+                    .WithMany(p => p.OfferReports)
+                    .HasForeignKey(d => d.ReportingUserId)
+                    .HasConstraintName("offerReport_ReportingUser_FK")
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            modelBuilder.Entity<OfferReportReason>(entity =>
+            {
+                entity.HasKey(e => e.ReasonId).HasName("OfferReportReasonPK");
+
+                entity.Property(e => e.ReasonId).HasColumnType("int(11)").UseIdentityColumn();
+
+                entity.Property(e => e.Description).HasColumnType("varchar(50)").HasMaxLength(50).IsRequired(true);
+                
+            });
+
             modelBuilder.Entity<PageUser>(entity =>
             {
                 entity.HasKey(e => e.Userid)
@@ -279,6 +326,8 @@ namespace freelancerzy.Models
                     .HasMaxLength(25)
                     .IsUnicode(false);
             });
+
+
 
             modelBuilder.Entity<Permissionuser>(entity =>
             {
