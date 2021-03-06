@@ -37,7 +37,7 @@ namespace freelancerzy.Controllers
         {
             
             var Offers = SortedList(order);
-            var reportedOffers = Offers.Where(o => o.IsReported == true);
+            var reportedOffers = Offers.Where(o => o.IsReported == true).Include(o => o.OfferReports);
             int pageSize = 15;
             return PartialView("_ReportedOfferList", await PaginatedList<Offer>.CreateAsync(reportedOffers, pageNumber ?? 1, pageSize));
         }
@@ -54,9 +54,17 @@ namespace freelancerzy.Controllers
             var offer = await _context.Offer
                 .Include(o => o.Category)
                 .Include(o => o.User)
+                .Include(o => o.OfferReports)
                 .FirstOrDefaultAsync(m => m.Offerid == id);
 
-            
+            var reports = offer.OfferReports.Where(r => r.IsActive == true).ToList();
+
+            foreach(var report in reports)
+            {
+                report.OfferReportReason = await _context.OfferReportReason.FirstOrDefaultAsync(ors => ors.ReasonId == report.ReasonId);
+            }
+
+            offer.OfferReports = reports;
 
             if (offer == null)
             {
@@ -73,10 +81,14 @@ namespace freelancerzy.Controllers
             {
                 return NotFound();
             }
-            var Offer = await _context.Offer.FirstOrDefaultAsync(o => o.Offerid == id);
+            var Offer = await _context.Offer.Include(o => o.OfferReports).FirstOrDefaultAsync(o => o.Offerid == id);
             if(Offer == null)
             {
                 return NotFound();
+            }
+            foreach(var report in Offer.OfferReports)
+            {
+                _context.OfferReport.Remove(report);
             }
             _context.Offer.Remove(Offer);
             await _context.SaveChangesAsync();
@@ -90,10 +102,15 @@ namespace freelancerzy.Controllers
             {
                 return NotFound();
             }
-            var Offer = await _context.Offer.FirstOrDefaultAsync(o => o.Offerid == id);
+            var Offer = await _context.Offer.Include(o => o.OfferReports).FirstOrDefaultAsync(o => o.Offerid == id);
             if (Offer == null)
             {
                 return NotFound();
+            }
+            foreach(var report in Offer.OfferReports)
+            {
+                report.IsActive = false;
+                _context.Update(report);
             }
             Offer.IsReported = false;
             _context.Update(Offer);
@@ -213,12 +230,14 @@ namespace freelancerzy.Controllers
 
             offer.ViewCounter++;
             _context.Update(offer);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             if (offer == null)
             {
                 return NotFound();
             }
+
+            ViewBag.ReasonId = new SelectList(_context.OfferReportReason, "ReasonId", "Description");
 
             return View(offer);
         }
@@ -259,9 +278,9 @@ namespace freelancerzy.Controllers
         }
 
         //zgloszenie
-        [HttpGet]
+        [HttpPost]
         [Authorize(AuthenticationSchemes = "CookieAuthentication")]
-        public async Task<IActionResult> Report(int? id)
+        public async Task<IActionResult> Report(int? id, int ReasonId)
         {
             if (id == null)
             {
@@ -276,9 +295,26 @@ namespace freelancerzy.Controllers
 
             offer.IsReported = true;
             _context.Update(offer);
+
+            var user = await _context.PageUser.FirstOrDefaultAsync(u => u.EmailAddress == User.Identity.Name);
+            var reason = await _context.OfferReportReason.FirstOrDefaultAsync(or => or.ReasonId == ReasonId);
+
+            OfferReport offerReport = new OfferReport()
+            {
+                OfferId = offer.Offerid,
+                ReportDate = DateTime.Now,
+                ReportingUserId = user.Userid,
+                ReasonId = ReasonId,
+                IsActive = true,
+                Offer = offer,
+                OfferReportReason = reason
+            };
+
+            _context.Add(offerReport);
+
             await _context.SaveChangesAsync();
 
-            return View(offer);
+            return View(offerReport);
         }
 
         [HttpGet]

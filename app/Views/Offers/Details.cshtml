@@ -3,68 +3,115 @@
 @{
     ViewData["Title"] = "Szczegóły: " + Model.Title;
 }
+<head>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet">
+</head>
 
-    <div id="content" class="row bg-white border border-primary rounded pb-3">
-        <div class="col-12 mt-4 mb-3">
-            <h1>@Model.Title</h1>
-        </div>
-        <div class="col-lg-9 pr-4">
-            Dodał:
-            <h4>@Model.User.FirstName - @Model.User.EmailAddress</h4>
-            <article>
-                <div class="mt-3 text-justify">
-                    <h2>Szerszy opis usługi</h2>
-                    <div class="mt-3 mb-3">@Model.Description</div>
-                </div>
-            </article>
-        </div>
-        <div class="col-lg-3 mb-5">
-            <div style="background-color:lightgray" class="p-3  border border-dark rounded">
-                <h5>Szczegóły:</h5>
-                @if (Model.Wage == null)
-                {
-                    <div>Stawka: <b>nieokreślona</b></div>
-                }
-                else
-                {
-                    <div>Stawka: <b>@Model.Wage zł</b></div>
-                }
-                <div>Kategoria: <b>@Model.Category.CategoryName</b></div>
-                <br />
-                <h5>Dana kontaktowe:</h5>
-                <div>Imię: <b>@Model.User.FirstName</b></div>
-                <div>Email: <b>@Model.User.EmailAddress</b></div>
-                <div>Numer telefonu: <b>@Model.User.Phonenumber</b></div>
+<div id="content" class="row bg-white border border-primary rounded pb-3">
+    <div class="col-12 mt-4 mb-3">
+        <h1>@Model.Title</h1>
+    </div>
+    <div class="col-lg-9 pr-4">
+        Dodał:
+        <h4>@Model.User.FirstName - @Model.User.EmailAddress</h4>
+        <article>
+            <div class="mt-3 text-justify">
+                <h2>Szerszy opis usługi</h2>
+                <div class="mt-3 mb-3">@Model.Description</div>
+            </div>
+        </article>
+    </div>
+    <div class="col-lg-3 mb-5">
+        <div style="background-color:lightgray" class="p-3  border border-dark rounded">
+            <h5>Szczegóły:</h5>
+            @if (Model.Wage == null)
+            {
+                <div>Stawka: <b>nieokreślona</b></div>
+            }
+            else
+            {
+                <div>Stawka: <b>@Model.Wage zł</b></div>
+            }
+            <div>Kategoria: <b>@Model.Category.CategoryName</b></div>
+            <br />
+            <h5>Dana kontaktowe:</h5>
+            <div>Imię: <b>@Model.User.FirstName</b></div>
+            <div>Email: <b>@Model.User.EmailAddress</b></div>
+            <div>Numer telefonu: <b>@Model.User.Phonenumber</b></div>
 
-                <div class="ml-auto mr-auto mt-5 pb-4 ">
-                    <div class="row">
-                        <div class="col"></div>
-                        <div class="col-auto">
-                            <a class="btn btn-primary">Napisz wiadomość</a>
-                        </div>
-                        <div class="col"></div>
+            <div class="ml-auto mr-auto mt-5 pb-4 ">
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary">Napisz wiadomość</a>
                     </div>
-
+                    <div class="col"></div>
                 </div>
+
             </div>
         </div>
-        <div id="buttons" class="col-12">
-            Dodano: <b>@Model.CreationDate</b>, Liczba wyświetleń: @Model.ViewCounter
-            <br /><br />
-            <a class="btn btn-outline-primary btn-dark" href='javascript:history.go(-1)'>Powrót</a>
-            @if (Context.User.Identity.IsAuthenticated)
-                if (Context.User.Identity.Name == Model.User.EmailAddress)
-                {
-                    <a class="btn btn-outline-primary btn-dark" asp-action="Edit" asp-route-id="@Model.Offerid">Edytuj</a>
-                }
+    </div>
+    <div id="buttons" class="col-12">
+        Dodano: <b>@Model.CreationDate</b>, Liczba wyświetleń: @Model.ViewCounter
+        <br /><br />
+        <a class="btn btn-outline-primary btn-dark" href='javascript:history.go(-1)'>Powrót</a>
+        @if (Context.User.Identity.IsAuthenticated)
+            if (Context.User.Identity.Name == Model.User.EmailAddress)
+            {
+                <a class="btn btn-outline-primary btn-dark" asp-action="Edit" asp-route-id="@Model.Offerid">Edytuj</a>
+            }
+        <div class="float-right">
+            <button id="reportOffer" class="btn btn-outline-primary btn-dark">Zgłoś ofertę</button>
+        </div>
+        <div id="reportOfferDialog" title="Wybierz powód zgłoszenia">
+            <form id="reportOfferForm" asp-action="Report" method="post" asp-route-id="@Model.Offerid">
 
+                <select class="custom-select" asp-items="ViewBag.ReasonId" name="ReasonId"></select>
+            </form>
         </div>
     </div>
 
+</div>
+<script>
+
+    $(function () {
+        $('#reportOfferDialog').dialog({
+            autoOpen: false,
+            modal: true,
+            dialogClass: 'border border-dark rounded',
+            width: 500,
+            show: 'fold',
+            hide: 'fold',
+            resizable: false,
+            closeText: 'Zamknij',
+            draggable:false,
+            buttons: {
+                Potwierdź: function () {
+                    $("#reportOfferForm").submit();
+                }
+                
+            }
+
+        });
+
+        
+        $('#reportOffer').click(function () {
+            $('#reportOfferDialog').dialog("open");
+        });
+
+
+       
+    });
+</script>
 
 <style>
     #content {
         margin: 10%;
-        margin-top:5%;
+        margin-top: 5%;
     }
 </style>
+@section scripts{
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+}
