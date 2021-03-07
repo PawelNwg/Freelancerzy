@@ -1,6 +1,38 @@
-﻿@*
-    
-*@
+﻿@model freelancerzy.Models.OfferReport
+
+
 @{
+    ViewData["Title"] = "Oferta zgłoszona";
 }
-<h1>Oferta została zgłoszona !</h1>
+<div class="d-flex flex-column mt-5">
+    <div class="justify-content-center text-center">
+        <h1>Zgłoszenie przyjęte</h1>
+        <dl >
+            <dt >
+                Tytuł oferty:
+            </dt>
+            <dd >
+                @Model.Offer.Title
+            </dd>
+            <dt >
+                Id zgłoszenia:
+            </dt>
+            <dd >
+                @Model.ReportId
+            </dd>
+            <dt >
+                Data zgłoszenia:
+            </dt>
+            <dd ">
+                @Model.ReportDate
+            </dd>
+            <dt c>
+                Powód:
+            </dt>
+            <dd >
+                @Model.OfferReportReason.Description
+            </dd>
+        </dl>
+        <h3>Nasza administracja sprawdzi zgłoszenie najszybciej jak to możliwe</h3>
+    </div>
+</div>

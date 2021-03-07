@@ -1,6 +1,7 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using MySql.Data.EntityFrameworkCore.Metadata;
+
 
 namespace freelancerzy.Migrations
 {
@@ -13,7 +14,8 @@ namespace freelancerzy.Migrations
                 columns: table => new
                 {
                     categoryid = table.Column<int>(type: "int(11)", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+
+                        .Annotation("MySQL:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     CategoryName = table.Column<string>(unicode: false, maxLength: 30, nullable: false)
                 },
                 constraints: table =>
@@ -26,7 +28,7 @@ namespace freelancerzy.Migrations
                 columns: table => new
                 {
                     permissionid = table.Column<int>(type: "int(11)", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(unicode: false, maxLength: 25, nullable: false)
                 },
                 constraints: table =>
@@ -39,7 +41,7 @@ namespace freelancerzy.Migrations
                 columns: table => new
                 {
                     reasonid = table.Column<int>(type: "int(11)", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(unicode: false, maxLength: 20, nullable: false),
                     description = table.Column<string>(unicode: false, maxLength: 150, nullable: true)
                 },
@@ -53,7 +55,7 @@ namespace freelancerzy.Migrations
                 columns: table => new
                 {
                     typeid = table.Column<int>(type: "int(11)", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(unicode: false, maxLength: 20, nullable: false)
                 },
                 constraints: table =>
@@ -66,7 +68,7 @@ namespace freelancerzy.Migrations
                 columns: table => new
                 {
                     userid = table.Column<int>(type: "int(11)", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     TypeId = table.Column<int>(type: "int(11)", nullable: false),
                     FirstName = table.Column<string>(unicode: false, maxLength: 20, nullable: false),
                     Surname = table.Column<string>(unicode: false, maxLength: 30, nullable: false),
@@ -109,7 +111,7 @@ namespace freelancerzy.Migrations
                 columns: table => new
                 {
                     messageid = table.Column<int>(type: "int(11)", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserFromId = table.Column<int>(type: "int(11)", nullable: false),
                     UserToId = table.Column<int>(type: "int(11)", nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
@@ -138,7 +140,7 @@ namespace freelancerzy.Migrations
                 columns: table => new
                 {
                     offerid = table.Column<int>(type: "int(11)", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<int>(type: "int(11)", nullable: false),
                     CategoryId = table.Column<int>(type: "int(11)", nullable: false),
                     Title = table.Column<string>(unicode: false, maxLength: 40, nullable: false),
@@ -217,7 +219,7 @@ namespace freelancerzy.Migrations
                 columns: table => new
                 {
                     reportid = table.Column<int>(type: "int(11)", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     MessageId = table.Column<int>(type: "int(11)", nullable: false),
                     ReasonId = table.Column<int>(type: "int(11)", nullable: false)
                 },

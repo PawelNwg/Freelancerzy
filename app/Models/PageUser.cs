@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using MySql.Data.EntityFrameworkCore.DataAnnotations;
+
 
 namespace freelancerzy.Models
 {
@@ -13,6 +13,7 @@ namespace freelancerzy.Models
             MessageUserTo = new HashSet<Message>();
             Offer = new HashSet<Offer>();
             Permissionuser = new HashSet<Permissionuser>();
+            OfferReports = new HashSet<OfferReport>();
         }
         [Display(Name = "Id Użytkownika")] 
         public int Userid { get; set; }
@@ -53,5 +54,6 @@ namespace freelancerzy.Models
         public virtual ICollection<Message> MessageUserTo { get; set; }
         public virtual ICollection<Offer> Offer { get; set; }
         public virtual ICollection<Permissionuser> Permissionuser { get; set; }
+        public virtual ICollection<OfferReport> OfferReports { get; set; }
     }
 }

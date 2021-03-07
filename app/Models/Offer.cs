@@ -7,6 +7,10 @@ namespace freelancerzy.Models
 {
     public partial class Offer
     {
+        public Offer()
+        {
+            OfferReports = new HashSet<OfferReport>();
+        }
         public int Offerid { get; set; }
         public int UserId { get; set; }
         [Display(Name = "Kategoria")]
@@ -40,5 +44,6 @@ namespace freelancerzy.Models
         public string WageValue { get; set; }
         public virtual Category Category { get; set; }
         public virtual PageUser User { get; set; }
+        public virtual ICollection<OfferReport> OfferReports { get; set; }
     }
 }

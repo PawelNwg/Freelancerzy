@@ -1,16 +1,9 @@
 ﻿@model freelancerzy.Models.PaginatedList<freelancerzy.Models.Offer>
 
-
-@{
-    var reportConfirmation = false;
-    var confirmation = false;
-}
-
-
 @foreach (var offer in Model)
 {
-    <div id="text" class="m-1 border rounded border-dark offer" style="padding-bottom: 0px">
-        <table class="table table-borderless pb-2" style="border:none; margin-bottom: 0px">
+    <div id="text" class="m-1 @if (offer.ExpirationDate >= DateTime.Now) { @Html.Raw("border border-dark")} else { @Html.Raw("border border-danger")}  rounded  offer" style="padding-bottom: 0px">
+        <table class="table table-borderless pb-2" style="border:none" margin-bottom: 0px">
             <tbody>
                 <tr>
                     <td width="70%">
@@ -40,23 +33,34 @@
                         }
                     </td>
                     <td class="text-center align-bottom">
-                        <a id="btn" class="btn btn-dark btn-outline-primary" asp-action="Details" asp-route-id="@offer.Offerid">Szczegóły</a>
+                        <a class="btn btn-dark btn-outline-primary" asp-action="ReportedDetails" asp-route-id="@offer.Offerid">Zobacz ofertę</a>
+
 
                        
-                        
-                        
-                        
-                       
 
+                        @if (offer.ExpirationDate < DateTime.Now)
+                        {
+                            <div style="clear:both; margin-top:10px;">
+                                <span class="text-danger">Oferta wygasła</span>
+                            </div>
+                        }
                     </td>
+
                 </tr>
+
             </tbody>
         </table>
+
+
+
     </div>
 }
 
-
-
+<style>
+    div#text > table:hover {
+        color: ghostwhite !important;
+    }
+</style>
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
@@ -81,9 +85,6 @@
 <script>
     var totalPages = @Model.TotalPages;
 </script>
-<style>
-    div#text > table:hover {
-        color: ghostwhite !important;
-    }
-</style>
+
+
 
