@@ -1,0 +1,49 @@
+@model freelancerzy.Models.PageUser
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+
+<body>
+
+    <h3 class="text-center" style="padding:30px 20px">Czy napewno chcesz usunąć tego użytkownika?</h3>
+    <div class="container bg-white border border-primary rounded" style="width:40%; padding:30px">
+        <h4>Użytkownik:</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Userid)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Userid)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Type.Name)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Type.Name)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.EmailAddress)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.EmailAddress)
+            </dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Userid" />
+            <input type="submit" value="Usuń" class="btn btn-danger" />
+            <a asp-action="List"
+                class="ml-3 align-middle btn btn-outline-primary btn-dark text-light submitButton">Anuluj</a>
+        </form>
+    </div>
+
+</body>
+
+</html>
