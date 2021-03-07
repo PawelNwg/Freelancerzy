@@ -67,6 +67,10 @@ namespace app.Controllers
         {
             return View();
         }
+        public IActionResult PasswordReset()
+        {
+            return View();
+        }
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
