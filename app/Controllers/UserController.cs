@@ -48,7 +48,7 @@ namespace app.Controllers
                 .Include(u => u.Useraddress)
                 .Include(u => u.Type)
                 .FirstOrDefaultAsync(u => u.Userid == id);
-                
+
             if (user == null)
             {
                 return NotFound();
@@ -58,6 +58,7 @@ namespace app.Controllers
         }
 
         // GET: PageUser/Delete/5
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -65,37 +66,27 @@ namespace app.Controllers
                 return NotFound();
             }
 
-            var user = await _context.PageUser.Include(u => u.Type)
-                .FirstOrDefaultAsync(m => m.Userid == id);
+            var user = await _context.PageUser.FindAsync(id);
+
             if (user == null)
             {
                 return NotFound();
             }
 
-            return View(user);
-        }
-
-        // POST: PageUser/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var user = await _context.PageUser.FindAsync(id);
-
-
             List<Offer> offers = await _context.Offer.Where(o => o.UserId == user.Userid).ToListAsync();
 
 
             foreach (Offer o in offers)
-            {   
+            {
                 List<OfferReport> reports = await _context.OfferReport.Where(m => m.OfferId == o.Offerid).ToListAsync();
 
-                foreach(OfferReport r in reports) _context.OfferReport.Remove(r);
+                foreach (OfferReport r in reports) _context.OfferReport.Remove(r);
                 _context.Offer.Remove(o);
             }
 
             _context.PageUser.Remove(user);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(List));
         }
 
