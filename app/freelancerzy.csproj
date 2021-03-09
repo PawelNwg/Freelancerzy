@@ -25,6 +25,10 @@
     <Compile Include="Migrations\20201222172853_dodaniePrzecinka.Designer.cs" />
     <Compile Include="Migrations\20210121181326_DodaniePolaZgloszeniaOferty.cs" />
     <Compile Include="Migrations\20210121181326_DodaniePolaZgloszeniaOferty.Designer.cs" />
+    <Compile Include="Migrations\20210305193457_addofferreport.cs" />
+    <Compile Include="Migrations\20210305193457_addofferreport.Designer.cs" />
+    <Compile Include="Migrations\20210305201203_addofferreport2.cs" />
+    <Compile Include="Migrations\20210305201203_addofferreport2.Designer.cs" />
     <Compile Include="Migrations\cb2020freedbContextModelSnapshot.cs" />
   </ItemGroup>
 
@@ -47,10 +51,8 @@
     </PackageReference>
            
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
-    
-    <PackageReference Include="MySql.Data" Version="8.0.20" />
-    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.20" />
     <PackageReference Include="NinjaNye.SearchExtensions" Version="3.0.1" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.4" />
     <PackageReference Include="TokenGenerator.Jwt" Version="1.0.2" />
   </ItemGroup>
 

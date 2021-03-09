@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using freelancerzy.Models;
 
 namespace freelancerzy.Migrations
 {
     [DbContext(typeof(cb2020freedbContext))]
-    partial class cb2020freedbContextModelSnapshot : ModelSnapshot
+    [Migration("20210305193457_addofferreport")]
+    partial class addofferreport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -476,21 +478,21 @@ namespace freelancerzy.Migrations
                         .WithMany("OfferReports")
                         .HasForeignKey("OfferId")
                         .HasConstraintName("offerReport_offer_fk")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("freelancerzy.Models.OfferReportReason", "OfferReportReason")
                         .WithMany("OfferReports")
                         .HasForeignKey("ReasonId")
                         .HasConstraintName("offerReport_reason_FK")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("freelancerzy.Models.PageUser", "ReportingUser")
                         .WithMany("OfferReports")
                         .HasForeignKey("ReportingUserId")
                         .HasConstraintName("offerReport_ReportingUser_FK")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

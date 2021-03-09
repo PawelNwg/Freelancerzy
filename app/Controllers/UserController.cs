@@ -28,6 +28,34 @@ namespace app.Controllers
         private readonly cb2020freedbContext _context;
 
         private readonly ITokenManager _tokenManager;
+        // GET: User List
+        public async Task<IActionResult> List()
+        {
+            return View(await _context.PageUser
+            .Include(u => u.Type)
+            .ToListAsync());
+        }
+
+        // GET: User/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.PageUser
+                .Include(u => u.Useraddress)
+                .Include(u => u.Type)
+                .FirstOrDefaultAsync(u => u.Userid == id);
+                
+            if (user == null)
+            {
+                return NotFound();
+            }
+            ViewBag.Confirmation = user.emailConfirmation ? "Potwierdzono" : "Nie potwierdzono";
+            return View(user);
+        }
 
         //private readonly ILogger<UserController> _logger;
         public UserController(cb2020freedbContext context, IConfiguration config, ITokenManager tokenManager)
@@ -89,7 +117,7 @@ namespace app.Controllers
                 user.Credentials = _context.Credentials.FirstOrDefault(u => u.Userid == user.Userid);
                 user.Type = _context.Usertype.FirstOrDefault(u => u.Typeid == user.TypeId);
 
-                if(user.emailConfirmation != true)
+                if (user.emailConfirmation != true)
                 {
                     ViewData["error"] = "Email nie został potwierdzony";
                     return View();
@@ -127,13 +155,13 @@ namespace app.Controllers
             else return false;
         }
         [HttpPost]
-        public async Task<IActionResult> Register(PageUser pageuser) 
+        public async Task<IActionResult> Register(PageUser pageuser)
         {
             if (ModelState.IsValid)
             {
-                if (_context.PageUser.FirstOrDefault(u => u.EmailAddress == pageuser.EmailAddress) == null) 
+                if (_context.PageUser.FirstOrDefault(u => u.EmailAddress == pageuser.EmailAddress) == null)
                 {
-                    PageUser pageUser = new PageUser() 
+                    PageUser pageUser = new PageUser()
                     {
                         FirstName = pageuser.FirstName,
                         Surname = pageuser.Surname,
@@ -158,14 +186,14 @@ namespace app.Controllers
                         EmailAsync(pageuser);
                     }
                     else
-                    {                     
-                        ViewData["Error"] = "Hasła nie sa taki same";                     
+                    {
+                        ViewData["Error"] = "Hasła nie sa taki same";
                         return View();
                     }
                 }
                 else
                 {
-                    ViewData["ErrorEmail"] = "Podany adres email jest juz zajety, proszę podac inny";                   
+                    ViewData["ErrorEmail"] = "Podany adres email jest juz zajety, proszę podac inny";
                     return View();
                 }
             }
@@ -180,14 +208,14 @@ namespace app.Controllers
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = "CookieAuthentication")]
-        public async Task<IActionResult> EditGeneral(PageUser user) 
+        public async Task<IActionResult> EditGeneral(PageUser user)
         {
             if (user.EmailAddress == null) return NotFound();
 
             _context.PageUser.Attach(user);
             _context.Entry(user).Property(u => u.FirstName).IsModified = true;
             _context.Entry(user).Property(u => u.Surname).IsModified = true;
-            if (user.Phonenumber == null) 
+            if (user.Phonenumber == null)
             {
                 ViewBag.Message = "Podano nieprawidłowy numer telefonu";
                 var dbUser = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == user.EmailAddress);
@@ -239,7 +267,7 @@ namespace app.Controllers
             Credentials credentials = user.Credentials;
             PageUser dbUser = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == user.EmailAddress);
 
-            if (!ValidateUser(dbUser, credentials.OldPassword)) 
+            if (!ValidateUser(dbUser, credentials.OldPassword))
             {
                 ViewBag.Message = "Podano nieprawidłowe hasło";
                 return View("Edit", dbUser);
@@ -280,7 +308,7 @@ namespace app.Controllers
             string url = HttpContext.Request.Host.Value;
             string ConfirmationLink = "https://" + url + "/User/ConfirmEmail?" + "token=" + token;
             //int x = Body.IndexOf("qq");
-            Body = Body.Insert(1736,ConfirmationLink);
+            Body = Body.Insert(1736, ConfirmationLink);
             mail.Body = Body;
             mail.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient();
@@ -346,9 +374,9 @@ namespace app.Controllers
                 {
                     "nameAndSurname", DateTime.Now.ToString()
                 }
-            }); 
+            });
             return token;
         }
 
-    } 
+    }
 }

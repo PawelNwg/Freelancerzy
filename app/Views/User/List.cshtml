@@ -1,0 +1,81 @@
+@model IEnumerable<freelancerzy.Models.PageUser>
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>List</title>
+    <style>
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="text-center" style="padding:20px">Lista użytkowników</h1>
+    <hr />
+
+    <div class="container bg-white border border-primary rounded mt-3 pt-2 px-5">
+        <div id="filtr" style="text-align: center;">
+            <input id="userId" class="form-control-lg" type="number" min=1 style="padding:3px; width:20%" maxlength="6"
+                placeholder="ID">
+            <input id="userEmail" class="form-control-lg" type="text" style="padding:3px; width:30%"
+                placeholder="Wprowadź email">
+            <button id="searchBtn" type="button" style="padding:7px 30px; margin:0px 0px 10px 10px"
+                class="btn btn-outline-primary btn-dark">Szukaj</button>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Userid)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Type.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmailAddress)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Userid)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Type.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmailAddress)
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Userid">
+                                <span class="fa fa-reorder btn"></span>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Userid">
+                                <span class="fa fa-trash btn"></span>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

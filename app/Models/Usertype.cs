@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace freelancerzy.Models
 {
@@ -11,6 +12,7 @@ namespace freelancerzy.Models
         }
 
         public int Typeid { get; set; }
+        [Display(Name = "Typ")]
         public string Name { get; set; }
 
         public virtual ICollection<PageUser> PageUser { get; set; }

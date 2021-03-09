@@ -50,7 +50,6 @@
             <button id="cancelBtn" class="btn btn-outline-primary btn-dark">Pozostaw</button>
             <button id="deleteBtn" class="btn btn-outline-primary btn-dark">Usuń</button>
         </div>
-        @* tu dodac potem usuwanie *@
         <div id="dialog-1" title="Czy na pewno chcesz usunąć ofertę?">
 
         </div>
@@ -60,10 +59,28 @@
     <div id="buttons" class="col-12">
         Dodano: <b>@Model.CreationDate</b>, Liczba wyświetleń: @Model.ViewCounter
         <br /><br />
-        <a class="btn btn-outline-primary btn-dark" href='javascript:history.go(-1)'>Powrót</a>
-
-
     </div>
+    <h2 class="m-2">Zgłoszenia: </h2>
+    @foreach(var report in Model.OfferReports)
+    {
+        <div class="col-12 border rounded border-dark mb-2">
+            <dl class="row">
+                <dt class="col-2">
+                    Powód:
+                </dt>
+                <dd class="col-10">
+                    @report.OfferReportReason.Description
+                </dd>
+                <dt class="col-2">
+                    Data:
+                </dt>
+                <dd class="col-10">
+                    @report.ReportDate
+                </dd>
+            </dl>
+        </div>
+    }
+    <a class="btn btn-outline-primary btn-dark m-2" href='javascript:history.go(-1)'>Powrót</a>
 </div>
 
 
