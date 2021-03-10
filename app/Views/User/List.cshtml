@@ -35,49 +35,42 @@
             <button id="searchBtn" type="button" style="padding:7px 30px; margin:0px 0px 10px 10px"
                 class="btn btn-outline-primary btn-dark">Szukaj</button>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Userid)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Type.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.EmailAddress)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(m => user.Userid)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => user.Type.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => user.EmailAddress)
-                        </td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@user.Userid">
-                                <span class="fa fa-reorder btn"></span>
-                            </a>
-                            <a>
-                                @Html.ActionLink("", "Delete", "User", new { id = user.Userid },
-                                    new { @class="fa fa-trash btn", @OnClick = $"return confirm('Czy na pewno chcesz skasować użytkownika {user.Userid}?');" })
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
+        
+        <div id="loader">
+        </div>
+        <div id="userList">
+        </div>
     </div>
+@section Scripts
+{
+    <script>
+        $(function() {
+            var pageId = 1;
+
+            var loadTable = function (pageId) {
+                $('#userList').empty();
+                $('#loader').addClass("loader");
+
+                var userId = $('#userId').val();
+                var userEmail = $('#userEmail').val();
+
+                $('#userList').load('/User/PartialList?pageNumber=' + pageId + '&email=' + userEmail + '&id=' + userId,
+                     function () {
+                    $('#loader').removeClass("loader");
+                   
+                });
+            }
+
+            loadTable(pageId);
+
+            $(document).on('click', '#searchBtn', function () { loadTable(pageId) });
+
+            $(document).on('click', '#next', null, function () { loadTable(++pageId); });
+
+            $(document).on('click', '#prev', null, function () { loadTable(--pageId); });
+        });
+    </script>
+}
 </body>
 
 </html>

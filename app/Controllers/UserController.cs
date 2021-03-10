@@ -37,6 +37,22 @@ namespace app.Controllers
             .ToListAsync());
         }
 
+        public async Task<PartialViewResult> PartialList(int? pageNumber, int? pageSize, string id, string email)
+        {
+            IQueryable<PageUser> users = _context.PageUser.Include(u => u.Type).OrderBy(u => u.Userid);
+            
+            int userId;
+            if (id != null && Int32.TryParse(id, out userId)){
+                users = users.Where(u => u.Userid == userId);
+            }
+
+            if (email != null){
+                users = users.Where(u => u.EmailAddress.Contains(email));
+            }
+
+            return PartialView("_UserList", await PaginatedList<PageUser>.CreateAsync(users, pageNumber ?? 1, pageSize ?? 20));
+        }
+
         // GET: User/Details/5
         public async Task<IActionResult> Details(int? id)
         {
