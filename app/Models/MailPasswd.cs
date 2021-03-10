@@ -11,7 +11,7 @@ namespace freelancerzy.Models
         private String smtpEmailAdress = "freeelancerzy@gmail.com";
         public String SmtpEmailAdress { get { return smtpEmailAdress; } }
 
-        private String emailSubject = "Odzyskanie hasła";
+        private String emailSubject = "Freelancerzy - nowe hasło";
         public String EmailSubject { get { return emailSubject; } }
 
         private String smtpHost = "smtp.gmail.com";

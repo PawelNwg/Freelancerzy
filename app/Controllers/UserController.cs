@@ -145,7 +145,7 @@ namespace app.Controllers
             else
             {
                 EmailPasswordAsync(user);
-                return View();
+                return View("ConfirmPasswordReset");
             }
         }
 
