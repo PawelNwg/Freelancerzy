@@ -48,13 +48,46 @@ namespace app.Controllers
                 .Include(u => u.Useraddress)
                 .Include(u => u.Type)
                 .FirstOrDefaultAsync(u => u.Userid == id);
-                
+
             if (user == null)
             {
                 return NotFound();
             }
             ViewBag.Confirmation = user.emailConfirmation ? "Potwierdzono" : "Nie potwierdzono";
             return View(user);
+        }
+
+        // GET: PageUser/Delete/5
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.PageUser.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            List<Offer> offers = await _context.Offer.Where(o => o.UserId == user.Userid).ToListAsync();
+
+
+            foreach (Offer o in offers)
+            {
+                List<OfferReport> reports = await _context.OfferReport.Where(m => m.OfferId == o.Offerid).ToListAsync();
+
+                foreach (OfferReport r in reports) _context.OfferReport.Remove(r);
+                _context.Offer.Remove(o);
+            }
+
+            _context.PageUser.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(List));
         }
 
         //private readonly ILogger<UserController> _logger;
@@ -154,6 +187,7 @@ namespace app.Controllers
             }
             else return false;
         }
+
         [HttpPost]
         public async Task<IActionResult> Register(PageUser pageuser)
         {
