@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 namespace app.Controllers
 {
     public class UserController : Controller
@@ -32,9 +32,34 @@ namespace app.Controllers
         // GET: User List
         public async Task<IActionResult> List()
         {
+            ViewData["TypeId"] = new SelectList(_context.Usertype, "Typeid", "Name");
+
             return View(await _context.PageUser
             .Include(u => u.Type)
             .ToListAsync());
+        }
+
+        public async Task<PartialViewResult> PartialList(int? pageNumber, int? pageSize, int type, string id, string email)
+        {
+            IQueryable<PageUser> users = _context.PageUser.Include(u => u.Type).OrderBy(u => u.Userid);
+
+            int userId;
+            if (id != null && Int32.TryParse(id, out userId))
+            {
+                users = users.Where(u => u.Userid == userId);
+            }
+
+            if (email != null)
+            {
+                users = users.Where(u => u.EmailAddress.Contains(email));
+            }
+
+            if (type != 0)
+            {
+                users = users.Where(u => u.TypeId == type);
+            }
+
+            return PartialView("_UserList", await PaginatedList<PageUser>.CreateAsync(users, pageNumber ?? 1, pageSize ?? 20));
         }
 
         // GET: User/Details/5
@@ -200,7 +225,7 @@ namespace app.Controllers
             PageUser user = _context.PageUser.Include(user => user.Credentials).FirstOrDefault(user => user.EmailAddress == email);
             if (user == null)
             {
-                ViewData["ErrorEmail"] = "Na podany email nie ma zarejestrowanego konta!";            
+                ViewData["ErrorEmail"] = "Na podany email nie ma zarejestrowanego konta!";
                 return View();
             }
             else
@@ -262,7 +287,7 @@ namespace app.Controllers
             return View("ConfirmUserRegistration");
         }
 
-       
+
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = "CookieAuthentication")]
@@ -389,8 +414,8 @@ namespace app.Controllers
             string Body = mailInfo.EmailBody;
             string url = HttpContext.Request.Host.Value;
             string ConfirmationLink = "https://" + url + "/User/Login";
-            string Psswd = GeneratePassword();            
-            ResetPassword(pageuser,Psswd);
+            string Psswd = GeneratePassword();
+            ResetPassword(pageuser, Psswd);
             Body = Body.Insert(1947, ConfirmationLink);
             Body = Body.Insert(1387, Psswd);
             mail.Body = Body;
@@ -472,7 +497,7 @@ namespace app.Controllers
             data = new byte[12];
             crypto.GetBytes(data);
             StringBuilder password = new StringBuilder(12);
-            foreach(byte b in data)
+            foreach (byte b in data)
             {
                 password.Append(chars[b % (chars.Length)]);
             }
@@ -481,7 +506,7 @@ namespace app.Controllers
 
         public async void ResetPassword(PageUser pageuser, string psswd)
         {
-            Credentials credentials = pageuser.Credentials;           
+            Credentials credentials = pageuser.Credentials;
             PageUser dbUser = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == pageuser.EmailAddress);
             _context.Entry(dbUser).State = EntityState.Detached;
             _context.Credentials.Attach(pageuser.Credentials);
@@ -492,6 +517,6 @@ namespace app.Controllers
             await _context.SaveChangesAsync();
         }
 
-    } 
-
     }
+
+}

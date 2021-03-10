@@ -174,7 +174,6 @@ namespace freelancerzy.Controllers
             }
             int pageSize = 15;
             return PartialView("_OfferList", await PaginatedList<Offer>.CreateAsync(Offers, pageNumber ?? 1, pageSize));
-
         }
         private IQueryable<Offer> Filters(IQueryable<Offer> offers, Filter filter)
         {
