@@ -211,7 +211,6 @@ namespace app.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(PageUser pageuser) 
         public async Task<IActionResult> Register(PageUser pageuser)
         {
             if (ModelState.IsValid)
@@ -494,5 +493,5 @@ namespace app.Controllers
         }
 
     } 
+
     }
-}
