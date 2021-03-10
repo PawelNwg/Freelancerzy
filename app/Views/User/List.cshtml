@@ -51,30 +51,32 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var user in Model)
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Userid)
+                            @Html.DisplayFor(m => user.Userid)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Type.Name)
+                            @Html.DisplayFor(m => user.Type.Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.EmailAddress)
+                            @Html.DisplayFor(m => user.EmailAddress)
                         </td>
                         <td>
-                            <a asp-action="Details" asp-route-id="@item.Userid">
+                            <a asp-action="Details" asp-route-id="@user.Userid">
                                 <span class="fa fa-reorder btn"></span>
                             </a>
-                            <a asp-action="Delete" asp-route-id="@item.Userid">
-                                <span class="fa fa-trash btn"></span>
+                            <a>
+                                @Html.ActionLink("", "Delete", "User", new { id = user.Userid },
+                                    new { @class="fa fa-trash btn", @OnClick = $"return confirm('Czy na pewno chcesz skasować użytkownika {user.Userid}?');" })
                             </a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
+
     </div>
 </body>
 
