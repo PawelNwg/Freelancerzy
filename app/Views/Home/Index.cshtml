@@ -4,6 +4,34 @@
 
 <div class="text-center">
     
+<div class="content">
+
+        <div id="chatBox" class="chatBox" style="display:none;" >
+            <div class="keeper">
+                <div class="label">Nazwa kontaktu</div>
+                <div id="chatClose" onclick="CloseChat()">X</div>
+                <div class="chatCloudContact">wiadomosc</div>
+                <div class="chatCloudUser">wiadomosc</div>
+                <div class="chatLabel">Chat</div>
+            </div>
+          
+        </div>
+        <input id="chatSquare" type="button"  class="chatSquare" onclick="ShowChat()" value="Chat "/>
+</div>
+
+
+
+    <script>
+        let ShowChat = () => {
+            document.getElementById("chatSquare").style.display = "none";
+            document.getElementById("chatBox").style.display = "";
+        }
+        let CloseChat = () => {
+            document.getElementById("chatBox").style.display = "none";
+            document.getElementById("chatSquare").style.display = "";
+        }
+    </script>
+
     <div class="frontImage parallax ">
 
             <div class="vertical-center">

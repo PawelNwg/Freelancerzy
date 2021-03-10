@@ -1,3 +1,97 @@
+/* * {
+    box-sizing: border-box;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+} */
+
+body {
+    background-color: #b43939;
+}
+
+.content {
+    position: absolute;
+    width: 80vw;
+    height: 150vh;
+    background-color: transparent;
+    z-index: 100;
+}
+
+.chatSquare {
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    right: 100px;
+    bottom: 10px;
+    background-color: #D6E324;
+    border-radius: 10px;
+    border: 5px solid #383A40;
+    cursor: pointer;
+    content: 'chat';
+    color: #383A40;
+}
+
+.chatBox {
+    width: 400px;
+    height: 400px;
+    position: fixed;
+    right: 100px;
+    bottom: 10px;
+    background-color: #E7E8E2;
+    border-radius: 10px;
+    border: 5px solid #383A40;
+    cursor: pointer;
+}
+
+.label {
+    border-radius: 2px;
+    background-color: #383A40;
+    font-size: 1em;
+    padding: 10px;
+    color: #D6E324;
+    font-weight: 400;
+    text-align: left;
+}
+
+#chatClose {
+    transform: translate(170px, -30px);
+    color: #E7E8E2;
+}
+
+.chatCloudContact {
+    background-color: #C4C4C4;
+    border-radius: 10px;
+    font-size: 1em;
+    position: relative;
+    width: 40%;
+    left: 5%;
+    top: 5%;
+    margin: 50px 0;
+    padding: 10px;
+}
+
+.chatCloudUser {
+    background-color: #D6E324;
+    font-size: 1em;
+    padding: 10px;
+    border-radius: 10px;
+    position: relative;
+    width: 40%;
+    left: 55%;
+    top: 0.2%;
+    margin: 50px 0;
+}
+
+.chatLabel {
+    font-size: 1em;
+    display: flex;
+    transform: translateY(90%);
+    /* display: inline-block; */
+    background-color: #C4C4C4;
+    padding: 10px;
+    border-radius: 4px;
+}
+
 .gold {
     background-color: red;
     color: goldenrod;
