@@ -61,9 +61,12 @@
             {
                 <a class="btn btn-outline-primary btn-dark" asp-action="Edit" asp-route-id="@Model.Offerid">Edytuj</a>
             }
+        @if (Context.User.Identity.IsAuthenticated)
+        {
         <div class="float-right">
             <button id="reportOffer" class="btn btn-outline-primary btn-dark">Zgłoś ofertę</button>
         </div>
+        }
         <div id="reportOfferDialog" title="Wybierz powód zgłoszenia">
             <form id="reportOfferForm" asp-action="Report" method="post" asp-route-id="@Model.Offerid">
 
