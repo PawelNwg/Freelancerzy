@@ -21,6 +21,6 @@ namespace freelancerzy.Models
         public int SmtpPort { get { return smtpPort; } }
 
         public String EmailBody { get { return emailBody; } }
-        private String emailBody = File.ReadAllText("Data/mailBodyPsswd.html");
+        private String emailBody = File.ReadAllText("wwwroot/mail_body_psswd.html");
     }
 }
