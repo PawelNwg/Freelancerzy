@@ -114,7 +114,7 @@
         }
         ).fail(() => alert("Błąd podczas usuwania oferty"))
             .done(() => {
-                const url = '@Url.Action("ReportedOffers","Offers")';
+                const url = '@Url.Action("OfferDeleted","Offers",new { id= Model.UserId})';
                 window.location.href = url;
             })
     }

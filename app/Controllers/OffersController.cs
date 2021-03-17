@@ -81,7 +81,7 @@ namespace freelancerzy.Controllers
             {
                 return NotFound();
             }
-            var Offer = await _context.Offer.Include(o => o.OfferReports).FirstOrDefaultAsync(o => o.Offerid == id);
+            var Offer = await _context.Offer.Include(o => o.User).Include(o => o.OfferReports).FirstOrDefaultAsync(o => o.Offerid == id);
             if(Offer == null)
             {
                 return NotFound();
@@ -93,6 +93,37 @@ namespace freelancerzy.Controllers
             _context.Offer.Remove(Offer);
             await _context.SaveChangesAsync();
             return Ok();
+        }
+
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> OfferDeleted(int? id)
+        {
+            if (id == null)
+                return RedirectToAction("ReportedOffers");
+
+            var user = await _context.PageUser.FirstOrDefaultAsync(u => u.Userid == id);
+
+            return View(user);
+        }
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")] 
+        [HttpPost]
+        public async Task<IActionResult> BlockUser(int? id, int ReasonId)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.PageUser.FirstOrDefaultAsync(o => o.Userid == id);
+
+            user.isBlocked = true;
+            user.blockType = ReasonId;
+            user.dateOfBlock = DateTime.Now;
+
+            _context.Update(user);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ReportedOffers");
         }
 
         [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]

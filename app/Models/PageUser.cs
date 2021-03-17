@@ -46,6 +46,9 @@ namespace freelancerzy.Models
         [Display(Name = "Data rejestracji")]
         public DateTime registrationDate { get; set; }
 
+        public bool isBlocked { get; set; }
+        public DateTime? dateOfBlock { get; set; }
+        public int? blockType { get; set; } // 1 - tydzien 2- miesiac 3 - na stałe
 
         public virtual Usertype Type { get; set; }
         public virtual Credentials Credentials { get; set; }
