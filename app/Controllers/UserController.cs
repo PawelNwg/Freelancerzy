@@ -390,8 +390,7 @@ namespace app.Controllers
             string Body = mailInfo.EmailBody;
             string url = HttpContext.Request.Host.Value;
             string ConfirmationLink = "https://" + url + "/User/ConfirmEmail?" + "token=" + token;
-            //int x = Body.IndexOf("qq");
-            Body = Body.Insert(1736, ConfirmationLink);
+            Body = Body.Replace("<insert_confirmation_link_here>", ConfirmationLink);
             mail.Body = Body;
             mail.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient();
