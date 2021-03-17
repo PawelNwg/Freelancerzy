@@ -382,13 +382,14 @@ mark,
   max-width: 100%;
   height: auto; }
 
-.img-thumbnail {
+/* .img-thumbnail {
   padding: 0.25rem;
   background-color: #e7e8e1;
   border: 1px solid #dee2e6;
   border-radius: 0.25rem;
-  max-width: 100%;
-  height: auto; }
+  max-width: 50%;
+  height: auto; 
+} */
 
 .figure {
   display: inline-block; }
@@ -5715,7 +5716,7 @@ button.bg-dark:focus {
 
 .pt-2,
 .py-2 {
-  padding-top: 0.5rem !important; }
+  padding-top: 0.5rem  }
 
 .pr-2,
 .px-2 {
