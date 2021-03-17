@@ -12,6 +12,7 @@ using System.Collections;
 
 namespace freelancerzy.Controllers
 {
+
     public class OffersController : Controller
     {
         private readonly cb2020freedbContext _context;
@@ -20,6 +21,105 @@ namespace freelancerzy.Controllers
         {
             _context = context;
         }
+
+        #region Admin - oferty zgłoszone
+
+        [HttpGet]
+        [Authorize(Roles = "administrator",AuthenticationSchemes = "CookieAuthentication")]
+        public IActionResult ReportedOffers()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> ReportedOffersListPartial(int? pageNumber, string order)
+        {
+            
+            var Offers = SortedList(order);
+            var reportedOffers = Offers.Where(o => o.IsReported == true).Include(o => o.OfferReports);
+            int pageSize = 15;
+            return PartialView("_ReportedOfferList", await PaginatedList<Offer>.CreateAsync(reportedOffers, pageNumber ?? 1, pageSize));
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> ReportedDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var offer = await _context.Offer
+                .Include(o => o.Category)
+                .Include(o => o.User)
+                .Include(o => o.OfferReports)
+                .FirstOrDefaultAsync(m => m.Offerid == id);
+
+            var reports = offer.OfferReports.Where(r => r.IsActive == true).ToList();
+
+            foreach(var report in reports)
+            {
+                report.OfferReportReason = await _context.OfferReportReason.FirstOrDefaultAsync(ors => ors.ReasonId == report.ReasonId);
+            }
+
+            offer.OfferReports = reports;
+
+            if (offer == null)
+            {
+                return NotFound();
+            }
+
+            return View(offer);
+        }
+        [HttpDelete]
+        [Authorize(Roles ="administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> DeleteReported(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var Offer = await _context.Offer.Include(o => o.OfferReports).FirstOrDefaultAsync(o => o.Offerid == id);
+            if(Offer == null)
+            {
+                return NotFound();
+            }
+            foreach(var report in Offer.OfferReports)
+            {
+                _context.OfferReport.Remove(report);
+            }
+            _context.Offer.Remove(Offer);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> RejectReport(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var Offer = await _context.Offer.Include(o => o.OfferReports).FirstOrDefaultAsync(o => o.Offerid == id);
+            if (Offer == null)
+            {
+                return NotFound();
+            }
+            foreach(var report in Offer.OfferReports)
+            {
+                report.IsActive = false;
+                _context.Update(report);
+            }
+            Offer.IsReported = false;
+            _context.Update(Offer);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        
+        #endregion
+
 
         public IActionResult Index()
         {
@@ -74,7 +174,6 @@ namespace freelancerzy.Controllers
             }
             int pageSize = 15;
             return PartialView("_OfferList", await PaginatedList<Offer>.CreateAsync(Offers, pageNumber ?? 1, pageSize));
-
         }
         private IQueryable<Offer> Filters(IQueryable<Offer> offers, Filter filter)
         {
@@ -130,12 +229,14 @@ namespace freelancerzy.Controllers
 
             offer.ViewCounter++;
             _context.Update(offer);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             if (offer == null)
             {
                 return NotFound();
             }
+
+            ViewBag.ReasonId = new SelectList(_context.OfferReportReason, "ReasonId", "Description");
 
             return View(offer);
         }
@@ -176,9 +277,9 @@ namespace freelancerzy.Controllers
         }
 
         //zgloszenie
-        [HttpGet]
+        [HttpPost]
         [Authorize(AuthenticationSchemes = "CookieAuthentication")]
-        public async Task<IActionResult> Report(int? id)
+        public async Task<IActionResult> Report(int? id, int ReasonId)
         {
             if (id == null)
             {
@@ -193,9 +294,26 @@ namespace freelancerzy.Controllers
 
             offer.IsReported = true;
             _context.Update(offer);
+
+            var user = await _context.PageUser.FirstOrDefaultAsync(u => u.EmailAddress == User.Identity.Name);
+            var reason = await _context.OfferReportReason.FirstOrDefaultAsync(or => or.ReasonId == ReasonId);
+
+            OfferReport offerReport = new OfferReport()
+            {
+                OfferId = offer.Offerid,
+                ReportDate = DateTime.Now,
+                ReportingUserId = user.Userid,
+                ReasonId = ReasonId,
+                IsActive = true,
+                Offer = offer,
+                OfferReportReason = reason
+            };
+
+            _context.Add(offerReport);
+
             await _context.SaveChangesAsync();
 
-            return View(offer);
+            return View(offerReport);
         }
 
         [HttpGet]

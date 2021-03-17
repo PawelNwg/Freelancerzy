@@ -1,0 +1,125 @@
+﻿@{
+    ViewData["Title"] = "Zgłoszone oferty";
+}
+<section class="front">
+    <div id="header">
+        <h1 class="display-3 text-center mt-4 mb-4">Zgłoszone oferty do rozpatrzenia</h1>
+        <br />
+    </div>
+
+    <div id="content" class="container bg-white border border-primary rounded">
+        <label>Sortuj według:</label>
+        <select id="sort">
+            <option value="dateDesc">Data dodania: od najnowszych</option>
+            <option value="dateAsc">Data dodania: od najstarszych</option>
+        </select>
+        <br><br />
+        <h3>Oferty:</h3>
+        <div id="loader">
+
+        </div>
+        <div id="offers">
+
+
+        </div>
+        
+
+    </div>
+</section>
+
+<style>
+
+    .loader {
+        margin: auto;
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #383838;
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    div.offer:hover {
+        background-color: #4d4d4d;
+    }
+
+    #header {
+        text-align: center;
+        padding: 20px;
+    }
+
+
+    .border {
+        border-width: 2px !important;
+    }
+
+    .border-expired {
+        border-width: 10px !important;
+        border-color: darkgray !important;
+    }
+
+
+
+    #content {
+        width: 75%;
+        min-height: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 20px;
+        background-color: lightgray;
+    }
+</style>
+@section Scripts
+{
+    <script>
+        $(function () {
+            var pageId = 1;
+
+            var sortorder = $('#sort').val();
+
+
+            var loadTable = function (pageId) {
+                $('#offers').empty();
+                $('#loader').addClass("loader");
+
+                $('#offers').load('/Offers/ReportedOffersListPartial?pageNumber=' + pageId + '&order=' + sortorder, null, function () {
+                    $('#loader').removeClass("loader");
+                });
+
+
+            }
+
+            loadTable(pageId);
+
+            $(document).on('click', '#goToPage', null, function () {
+                var pageNr = $('#page').val();
+
+                if (pageNr <= 0) pageId = 1;
+                else if (pageNr > totalPages) pageId = totalPages;
+                else pageId = pageNr;
+
+                loadTable(pageId);
+            })
+
+            $(document).on('click', '#next', null, function () { loadTable(++pageId); });
+
+            $(document).on('click', '#prev', null, function () { loadTable(--pageId); });
+
+            $(document).on('change', '#sort', null, function () {
+                sortorder = $('#sort').val();
+                pageId = 1;
+                loadTable(pageId)
+            })
+        });
+    </script>
+}

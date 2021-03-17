@@ -1,0 +1,75 @@
+@model freelancerzy.Models.PageUser
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+
+<body>
+    <h3 class="text-center" style="padding:2%">Szczegóły</h3>
+    <hr />
+    <div>
+        <div class="container bg-white border border-primary rounded" style="width:40%; padding:3%">
+            <dl class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Userid)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Userid)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Type.Name)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Type.Name)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Surname)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Surname)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.EmailAddress)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.EmailAddress)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Phonenumber)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Phonenumber)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.emailConfirmation)
+                </dt>
+                <dd class="col-sm-6">
+                    @ViewBag.Confirmation
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.registrationDate)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.registrationDate)
+                </dd>
+            </dl>
+            <div style="text-align: center;">
+                <a asp-action="List"
+                    class="ml-3 align-middle btn btn-outline-primary btn-dark text-light submitButton">Cofnij</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

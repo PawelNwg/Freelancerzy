@@ -18,7 +18,8 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Mvc.Rendering;
 namespace app.Controllers
 {
     public class UserController : Controller
@@ -28,6 +29,92 @@ namespace app.Controllers
         private readonly cb2020freedbContext _context;
 
         private readonly ITokenManager _tokenManager;
+        // GET: User List
+        public async Task<IActionResult> List()
+        {
+            ViewData["TypeId"] = new SelectList(_context.Usertype, "Typeid", "Name");
+
+            return View(await _context.PageUser
+            .Include(u => u.Type)
+            .ToListAsync());
+        }
+
+        public async Task<PartialViewResult> PartialList(int? pageNumber, int? pageSize, int type, string id, string email)
+        {
+            IQueryable<PageUser> users = _context.PageUser.Include(u => u.Type).OrderBy(u => u.Userid);
+
+            int userId;
+            if (id != null && Int32.TryParse(id, out userId))
+            {
+                users = users.Where(u => u.Userid == userId);
+            }
+
+            if (email != null)
+            {
+                users = users.Where(u => u.EmailAddress.Contains(email));
+            }
+
+            if (type != 0)
+            {
+                users = users.Where(u => u.TypeId == type);
+            }
+
+            return PartialView("_UserList", await PaginatedList<PageUser>.CreateAsync(users, pageNumber ?? 1, pageSize ?? 20));
+        }
+
+        // GET: User/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.PageUser
+                .Include(u => u.Useraddress)
+                .Include(u => u.Type)
+                .FirstOrDefaultAsync(u => u.Userid == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            ViewBag.Confirmation = user.emailConfirmation ? "Potwierdzono" : "Nie potwierdzono";
+            return View(user);
+        }
+
+        // GET: PageUser/Delete/5
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.PageUser.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            List<Offer> offers = await _context.Offer.Where(o => o.UserId == user.Userid).ToListAsync();
+
+
+            foreach (Offer o in offers)
+            {
+                List<OfferReport> reports = await _context.OfferReport.Where(m => m.OfferId == o.Offerid).ToListAsync();
+
+                foreach (OfferReport r in reports) _context.OfferReport.Remove(r);
+                _context.Offer.Remove(o);
+            }
+
+            _context.PageUser.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(List));
+        }
 
         //private readonly ILogger<UserController> _logger;
         public UserController(cb2020freedbContext context, IConfiguration config, ITokenManager tokenManager)
@@ -67,6 +154,10 @@ namespace app.Controllers
         {
             return View();
         }
+        public IActionResult PasswordReset()
+        {
+            return View();
+        }
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
@@ -89,7 +180,7 @@ namespace app.Controllers
                 user.Credentials = _context.Credentials.FirstOrDefault(u => u.Userid == user.Userid);
                 user.Type = _context.Usertype.FirstOrDefault(u => u.Typeid == user.TypeId);
 
-                if(user.emailConfirmation != true)
+                if (user.emailConfirmation != true)
                 {
                     ViewData["error"] = "Email nie został potwierdzony";
                     return View();
@@ -126,14 +217,32 @@ namespace app.Controllers
             }
             else return false;
         }
+
         [HttpPost]
-        public async Task<IActionResult> Register(PageUser pageuser) 
+        public IActionResult PasswordReset(string email)
+        {
+
+            PageUser user = _context.PageUser.Include(user => user.Credentials).FirstOrDefault(user => user.EmailAddress == email);
+            if (user == null)
+            {
+                ViewData["ErrorEmail"] = "Na podany email nie ma zarejestrowanego konta!";
+                return View();
+            }
+            else
+            {
+                EmailPasswordAsync(user);
+                return View("ConfirmPasswordReset");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(PageUser pageuser)
         {
             if (ModelState.IsValid)
             {
-                if (_context.PageUser.FirstOrDefault(u => u.EmailAddress == pageuser.EmailAddress) == null) 
+                if (_context.PageUser.FirstOrDefault(u => u.EmailAddress == pageuser.EmailAddress) == null)
                 {
-                    PageUser pageUser = new PageUser() 
+                    PageUser pageUser = new PageUser()
                     {
                         FirstName = pageuser.FirstName,
                         Surname = pageuser.Surname,
@@ -158,14 +267,14 @@ namespace app.Controllers
                         EmailAsync(pageuser);
                     }
                     else
-                    {                     
-                        ViewData["Error"] = "Hasła nie sa taki same";                     
+                    {
+                        ViewData["Error"] = "Hasła nie sa taki same";
                         return View();
                     }
                 }
                 else
                 {
-                    ViewData["ErrorEmail"] = "Podany adres email jest juz zajety, proszę podac inny";                   
+                    ViewData["ErrorEmail"] = "Podany adres email jest juz zajety, proszę podac inny";
                     return View();
                 }
             }
@@ -178,16 +287,18 @@ namespace app.Controllers
             return View("ConfirmUserRegistration");
         }
 
+
+
         [HttpPost]
         [Authorize(AuthenticationSchemes = "CookieAuthentication")]
-        public async Task<IActionResult> EditGeneral(PageUser user) 
+        public async Task<IActionResult> EditGeneral(PageUser user)
         {
             if (user.EmailAddress == null) return NotFound();
 
             _context.PageUser.Attach(user);
             _context.Entry(user).Property(u => u.FirstName).IsModified = true;
             _context.Entry(user).Property(u => u.Surname).IsModified = true;
-            if (user.Phonenumber == null) 
+            if (user.Phonenumber == null)
             {
                 ViewBag.Message = "Podano nieprawidłowy numer telefonu";
                 var dbUser = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == user.EmailAddress);
@@ -239,7 +350,7 @@ namespace app.Controllers
             Credentials credentials = user.Credentials;
             PageUser dbUser = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == user.EmailAddress);
 
-            if (!ValidateUser(dbUser, credentials.OldPassword)) 
+            if (!ValidateUser(dbUser, credentials.OldPassword))
             {
                 ViewBag.Message = "Podano nieprawidłowe hasło";
                 return View("Edit", dbUser);
@@ -280,7 +391,7 @@ namespace app.Controllers
             string url = HttpContext.Request.Host.Value;
             string ConfirmationLink = "https://" + url + "/User/ConfirmEmail?" + "token=" + token;
             //int x = Body.IndexOf("qq");
-            Body = Body.Insert(1736,ConfirmationLink);
+            Body = Body.Insert(1736, ConfirmationLink);
             mail.Body = Body;
             mail.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient();
@@ -292,7 +403,34 @@ namespace app.Controllers
             smtp.Send(mail);
 
         }
+        private void EmailPasswordAsync(PageUser pageuser)
+        {
 
+            MailPasswd mailInfo = new MailPasswd();
+            MailMessage mail = new MailMessage();
+            mail.To.Add(pageuser.EmailAddress);
+            mail.From = new MailAddress(mailInfo.SmtpEmailAdress);
+            mail.Subject = mailInfo.EmailSubject;
+            string Body = mailInfo.EmailBody;
+            string url = HttpContext.Request.Host.Value;
+            string ConfirmationLink = "https://" + url + "/User/Login";
+            string Psswd = GeneratePassword();
+            ResetPassword(pageuser, Psswd);
+            Body = Body.Insert(1947, ConfirmationLink);
+            Body = Body.Insert(1387, Psswd);
+            mail.Body = Body;
+            mail.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient
+            {
+                Host = mailInfo.SmtpHost,
+                Port = mailInfo.SmtpPort,
+                UseDefaultCredentials = false,
+                Credentials = new System.Net.NetworkCredential(_config.GetValue<String>("SmtpServers:login"), _config.GetValue<String>("SmtpServers:password")),
+                EnableSsl = true
+            };
+            smtp.Send(mail);
+
+        }
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(string token)
         {
@@ -346,9 +484,39 @@ namespace app.Controllers
                 {
                     "nameAndSurname", DateTime.Now.ToString()
                 }
-            }); 
+            });
             return token;
         }
 
-    } 
+        public string GeneratePassword()
+        {
+            char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*".ToCharArray();
+            byte[] data = new byte[1];
+            RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider();
+            crypto.GetBytes(data);
+            data = new byte[12];
+            crypto.GetBytes(data);
+            StringBuilder password = new StringBuilder(12);
+            foreach (byte b in data)
+            {
+                password.Append(chars[b % (chars.Length)]);
+            }
+            return password.ToString();
+        }
+
+        public async void ResetPassword(PageUser pageuser, string psswd)
+        {
+            Credentials credentials = pageuser.Credentials;
+            PageUser dbUser = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == pageuser.EmailAddress);
+            _context.Entry(dbUser).State = EntityState.Detached;
+            _context.Credentials.Attach(pageuser.Credentials);
+            var passwordHasher = new PasswordHasher<string>();
+            credentials.Password = passwordHasher.HashPassword(pageuser.EmailAddress, psswd);
+            _context.Entry(pageuser.Credentials).Property(u => u.Password).IsModified = true;
+
+            await _context.SaveChangesAsync();
+        }
+
+    }
+
 }

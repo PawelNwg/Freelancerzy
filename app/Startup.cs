@@ -31,7 +31,7 @@ namespace Freelancerzy
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<cb2020freedbContext>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<cb2020freedbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTokenGenerator(Configuration);
 
             services.AddAuthentication(o => {
@@ -72,7 +72,7 @@ namespace Freelancerzy
             app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

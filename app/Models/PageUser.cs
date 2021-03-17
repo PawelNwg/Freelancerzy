@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using MySql.Data.EntityFrameworkCore.DataAnnotations;
+
 
 namespace freelancerzy.Models
 {
@@ -13,8 +13,9 @@ namespace freelancerzy.Models
             MessageUserTo = new HashSet<Message>();
             Offer = new HashSet<Offer>();
             Permissionuser = new HashSet<Permissionuser>();
+            OfferReports = new HashSet<OfferReport>();
         }
-
+        [Display(Name = "Id Użytkownika")] 
         public int Userid { get; set; }
         public int TypeId { get; set; }
 
@@ -40,8 +41,9 @@ namespace freelancerzy.Models
         
         [MaxLength(12,ErrorMessage = "Numer telefonu nie może być dłuższy niż 12 znaków")] 
         public string Phonenumber { get; set; }
+        [Display(Name = "Potwierdzenia maila")]
         public bool emailConfirmation { get; set; }
-
+        [Display(Name = "Data rejestracji")]
         public DateTime registrationDate { get; set; }
 
 
@@ -52,5 +54,6 @@ namespace freelancerzy.Models
         public virtual ICollection<Message> MessageUserTo { get; set; }
         public virtual ICollection<Offer> Offer { get; set; }
         public virtual ICollection<Permissionuser> Permissionuser { get; set; }
+        public virtual ICollection<OfferReport> OfferReports { get; set; }
     }
 }

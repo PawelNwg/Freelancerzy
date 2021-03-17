@@ -1,0 +1,61 @@
+@model freelancerzy.Models.PaginatedList<freelancerzy.Models.PageUser>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<table class="table" id="userTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Userid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Type.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].EmailAddress)
+            </th>
+            <th></th>
+            </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => user.Userid)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => user.Type.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => user.EmailAddress)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@user.Userid">
+                        <span class="fa fa-reorder btn"></span>
+                    </a>
+                    <a>
+                        @Html.ActionLink("", "Delete", "User", new { id = user.Userid },
+                            new { @class="fa fa-trash btn", @OnClick = $"return confirm('Czy na pewno chcesz skasować użytkownika {user.Userid}?');" })
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <div style="float:right">
+        <button id="prev"
+                class="btn btn-default" @prevDisabled>
+            Poprzednia
+        </button>
+        <button id="next"
+                class="btn btn-default" @nextDisabled>
+            Następna
+        </button>
+    </div>
+</div>
