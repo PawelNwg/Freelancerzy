@@ -9,19 +9,21 @@ body {
     background-color: #b43939;
 }
 
-.content {
+.chatContent {
     position: absolute;
     width: 80vw;
+    right: 10px;
+    bottom: 10px;
     height: 150vh;
     background-color: transparent;
-    z-index: 100;
+    z-index: 1000;
 }
 
 .chatSquare {
     width: 100px;
     height: 100px;
     position: fixed;
-    right: 100px;
+    right: 10px;
     bottom: 10px;
     background-color: #D6E324;
     border-radius: 10px;
@@ -35,7 +37,7 @@ body {
     width: 400px;
     height: 400px;
     position: fixed;
-    right: 100px;
+    right: 10px;
     bottom: 10px;
     background-color: #E7E8E2;
     border-radius: 10px;
@@ -129,18 +131,46 @@ body {
     transform: translateY(-50%);
 }
 
-.parallax {
-    /* The image used */
-}
-
 span {
     font-size: 120%;
     font-weight: 600;
     font-kerning: auto;
 }
+.img-thumbnail {
+    display: block;
+    width: 200%;
+    height: auto;
+    background: transparent;
+    border-width: 0;
+}
 
-.icon {
-    width: 25%;
-    margin: 20px 2px 0px 2px;
-    /* margin-top: 5px; */
+@media(max-width: 990px) {
+    
+   
+    .p_t{
+        padding: 0!important;
+        margin: 10px 0 0 !important;
+        line-height: 20px;
+        letter-spacing: 0.1em;
+
+    }
+
+    .social{
+        justify-content: center;
+        
+    }
+    .col-sm-4{
+        width: 30% !important;
+        left:calc(10%);
+
+      
+    }
+    .img-thumbnail {
+        width: 30% !important;
+
+    }
+    .fluid{
+        margin-bottom:calc(130%) !important;
+        /* position: sticky; */
+    }
 }
