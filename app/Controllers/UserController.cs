@@ -210,6 +210,8 @@ namespace app.Controllers
                         return View();
                         break;
                 }
+                _context.Update(user);
+                await _context.SaveChangesAsync();
             }
            
                 user.Credentials = _context.Credentials.FirstOrDefault(u => u.Userid == user.Userid);
