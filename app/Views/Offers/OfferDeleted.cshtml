@@ -1,0 +1,99 @@
+﻿@model freelancerzy.Models.PageUser
+
+@{
+    ViewData["Title"] = "Oferta usunięta";
+}
+<head>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet">
+</head>
+<div class="d-flex flex-column mt-5">
+    <div class="justify-content-center text-center">
+        <h1>Oferta usunięta</h1>
+        @if (Model.isBlocked == false)
+        {
+            <h2>Czy chcesz zablokować tego użytkownika?</h2>
+            <dl>
+                <dt>
+                    Email:
+                </dt>
+                <dd>
+                    @Model.EmailAddress
+                </dd>
+                @if (Model.dateOfBlock != null)
+                {
+                    <dt>
+                        Data ostatniej blokady:
+                    </dt>
+                    <dd>
+                        @Model.dateOfBlock
+                    </dd>
+                    <dt>
+                        Czas trwania ostatniej blokady:
+                    </dt>
+                    <dd>
+                        @if (Model.blockType == 1)
+                        {
+                            <span>Tydzień</span>
+                        }
+                        else if (Model.blockType == 2)
+                        {
+                            <span>Miesiąc</span>
+                        }
+                    </dd>
+                }
+            </dl>
+            <button class="btn btn-outline-primary btn-dark" id="blockUser">Zablokuj</button>
+            <div id="blockUserDialog" title="Wybierz powód zgłoszeni">
+                <form id="blockUserForm" asp-action="BlockUser" method="post" asp-route-id="@Model.Userid">
+
+                    <select class="custom-select" name="ReasonId">
+                        <option value="1">Tydzień</option>
+                        <option value="2">Miesiąc</option>
+                        <option value="3">Na zawsze</option>
+                    </select>
+                </form>
+            </div>
+        }
+        else
+        {
+            <h2>Użytkownik jest juz zablokowany</h2>
+        }
+    </div>
+</div>
+<script>
+
+    $(function () {
+        $('#blockUserDialog').dialog({
+            autoOpen: false,
+            modal: true,
+            dialogClass: 'border border-dark rounded',
+            width: 500,
+            show: 'fold',
+            hide: 'fold',
+            resizable: false,
+            closeText: 'Zamknij',
+            draggable: false,
+            buttons: {
+                Potwierdź: function () {
+                    $("#blockUserForm").submit();
+                }
+
+            }
+
+        });
+
+
+        $('#blockUser').click(function () {
+            $('#blockUserDialog').dialog("open");
+        });
+
+
+
+    });
+</script>
+
+@section scripts{
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+}
