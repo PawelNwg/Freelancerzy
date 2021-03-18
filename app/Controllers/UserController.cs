@@ -175,8 +175,43 @@ namespace app.Controllers
                 ViewData["error"] = "Podana nazwa użytkownika nie istnieje";
                 return View();
             }
-            else
+            else if(user.isBlocked == true)
             {
+                switch (user.blockType)
+                {
+                    case 1: //blokada na tydzien
+                        if(user.dateOfBlock.GetValueOrDefault().AddDays(7) < DateTime.Now)
+                        {
+                            user.isBlocked = false;
+                            user.dateOfBlock = null;
+                            user.blockType = null;
+                        }
+                        else
+                        {
+                            ViewData["error"] = $"Twoje konto jest zablokowane. Odzyskasz dostęp {user.dateOfBlock.GetValueOrDefault().AddDays(7)}";
+                            return View();
+                        }
+                        break;
+                    case 2: //blokada na miesiac
+                        if(user.dateOfBlock.GetValueOrDefault().AddDays(30) < DateTime.Now)
+                        {
+                            user.isBlocked = false;
+                            user.dateOfBlock = null;
+                            user.blockType = null;
+                        }
+                        else
+                        {
+                            ViewData["error"] = $"Twoje konto jest zablokowane. Odzyskasz dostęp {user.dateOfBlock.GetValueOrDefault().AddDays(30)}";
+                            return View();
+                        }
+                        break;
+                    case 3: //blokada na zawsze
+                        ViewData["error"] = $"Twoje konto jest permamentnie zablokowane za łamanie zasad społeczności";
+                        return View();
+                        break;
+                }
+            }
+           
                 user.Credentials = _context.Credentials.FirstOrDefault(u => u.Userid == user.Userid);
                 user.Type = _context.Usertype.FirstOrDefault(u => u.Typeid == user.TypeId);
 
@@ -204,7 +239,7 @@ namespace app.Controllers
                     });
                     return Redirect(ReturnUrl);
                 }
-            }
+            
             ViewData["error"] = "Podano złe hasło";
             return View();
         }
