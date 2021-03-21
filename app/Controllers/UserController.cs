@@ -63,25 +63,19 @@ namespace app.Controllers
         }
 
         // GET: User/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _context.PageUser
-                .Include(u => u.Useraddress)
-                .Include(u => u.Type)
-                .FirstOrDefaultAsync(u => u.Userid == id);
-
+            String email = this.User.Identity.Name;
+            if (email == null) return NotFound();
+            var user = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == email);
+            ViewBag.Confirmation = user.emailConfirmation ? "Potwierdzono" : "Nie potwierdzono";
             if (user == null)
             {
                 return NotFound();
             }
-            ViewBag.Confirmation = user.emailConfirmation ? "Potwierdzono" : "Nie potwierdzono";
             return View(user);
         }
+        
 
         // GET: PageUser/Delete/5
         //[ValidateAntiForgeryToken]
