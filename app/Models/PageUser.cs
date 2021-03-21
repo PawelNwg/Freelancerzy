@@ -15,7 +15,7 @@ namespace freelancerzy.Models
             Permissionuser = new HashSet<Permissionuser>();
             OfferReports = new HashSet<OfferReport>();
         }
-        [Display(Name = "Id Użytkownika")] 
+        [Display(Name = "Id użytkownika")] 
         public int Userid { get; set; }
         public int TypeId { get; set; }
 
