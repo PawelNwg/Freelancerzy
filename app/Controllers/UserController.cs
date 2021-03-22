@@ -68,7 +68,7 @@ namespace app.Controllers
             String email = this.User.Identity.Name;
             if (email == null) return NotFound();
             var user = _context.PageUser.Include(u => u.Credentials).Include(t => t.Type).Include(a => a.Useraddress).FirstOrDefault(u => u.EmailAddress == email);
-            ViewBag.Confirmation = user.emailConfirmation ? "Potwierdzono" : "Nie potwierdzono";
+            ViewBag.Confirmation = user.emailConfirmation ? "Potwierdzony" : "Nie potwierdzony";
             if (user == null)
             {
                 return NotFound();
