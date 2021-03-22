@@ -41,7 +41,7 @@ namespace freelancerzy.Models
         
         [MaxLength(12,ErrorMessage = "Numer telefonu nie może być dłuższy niż 12 znaków")] 
         public string Phonenumber { get; set; }
-        [Display(Name = "Potwierdzenia maila")]
+        [Display(Name = "Potwierdzenie maila")]
         public bool emailConfirmation { get; set; }
         [Display(Name = "Data rejestracji")]
         public DateTime registrationDate { get; set; }
