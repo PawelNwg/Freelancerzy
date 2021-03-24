@@ -62,6 +62,51 @@ namespace app.Controllers
             return PartialView("_UserList", await PaginatedList<PageUser>.CreateAsync(users, pageNumber ?? 1, pageSize ?? 20));
         }
 
+        [HttpGet]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public IActionResult ReportedUsers()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> ReportedUsersListPartial(int? pageNumber, int type, string id, string email)
+        {
+
+            IQueryable<PageUser> Users = _context.PageUser.Include(u => u.Type).OrderBy(u => u.Userid);
+            var reportedUsers = Users.Where(o => o.isReported == true).OrderBy(u => u.Userid);
+            int userId;
+            if (id != null && Int32.TryParse(id, out userId))
+            {
+                Users = Users.Where(u => u.Userid == userId);
+            }
+
+            if (email != null)
+            {
+                Users = Users.Where(u => u.EmailAddress.Contains(email));
+            }
+            if (type != 0)
+            {
+                Users = Users.Where(u => u.TypeId == type);
+            }
+            int pageSize = 15;
+            return PartialView("_ReportedUserList", await PaginatedList<PageUser>.CreateAsync(reportedUsers, pageNumber ?? 1, pageSize));
+        }
+
+        private IQueryable<PageUser> SortedList(string order)
+        {
+            switch (order)
+            {
+                case "nameAsc":
+                    return _context.PageUser.OrderBy(o => o.Surname);
+                case "nameDesc":
+                    return _context.PageUser.OrderByDescending(o => o.Surname);
+                default:
+                    return _context.PageUser.OrderBy(o => o.Surname);
+            }
+        }
+
         // GET: User/Details/5
         public IActionResult Details()
         {

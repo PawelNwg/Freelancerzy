@@ -1,0 +1,64 @@
+﻿@model freelancerzy.Models.PaginatedList<freelancerzy.Models.PageUser>
+
+<table class="table" id="userTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Userid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Type.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].EmailAddress)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => user.Userid)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => user.Type.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => user.EmailAddress)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>  
+
+    <style>
+        div#text > table:hover {
+            color: ghostwhite !important;
+        }
+    </style>
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+
+    <div>
+        <div style="width:50%" class="d-inline-block ">
+            Jesteś na stronie: <input min="1" max="@Model.TotalPages" type="number" value="@Model.PageIndex" id="page" style="width:50px;" /> z @Model.TotalPages <button class="btn btn-default" id="goToPage">Przejdź</button>
+
+        </div>
+        <div style="float:right">
+            <button id="prev"
+                    class="btn btn-default" @prevDisabled>
+                Poprzednia
+            </button>
+            <button id="next"
+                    class="btn btn-default" @nextDisabled>
+                Następna
+            </button>
+        </div>
+    </div>
+    <script>
+    var totalPages = @Model.TotalPages;
+    </script>
