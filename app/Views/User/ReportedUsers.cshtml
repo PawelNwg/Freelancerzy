@@ -11,6 +11,8 @@
     <div id="content" class="container bg-white border border-primary rounded">
         <label>Sortuj według:</label>
         <select id="sort">
+            <option value="idAsc">Id: Rosnąco</option>
+            <option value="idDesc">Id: Malejąco</option>
             <option value="nameAsc">Nazwa: A-Z</option>
             <option value="nameDesc">Nazwa: Z-A</option>
         </select>
@@ -94,7 +96,8 @@
                 var userId = $('#userId').val();
                 var userEmail = $('#userEmail').val();
                 var typeId = $('#typeId').val()
-                $('#users').load('/User/ReportedUsersListPartial?pageNumber=' + pageId + '&email=' + userEmail + '&id=' + userId + '&type=' + typeId, function () {
+                $('#users').load('/User/ReportedUsersListPartial?pageNumber=' + pageId + '&order=' + sortorder + '&email=' + userEmail + '&id=' + userId + '&type=' + typeId,
+                    function () {
                     $('#loader').removeClass("loader");
                 });
 

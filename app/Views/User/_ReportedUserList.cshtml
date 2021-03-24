@@ -7,6 +7,12 @@
                 @Html.DisplayNameFor(model => model[0].Userid)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Surname)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model[0].Type.Name)
             </th>
             <th>
@@ -18,17 +24,26 @@
     <tbody>
         @foreach (var user in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(m => user.Userid)
-                </td>
-                <td>
-                    @Html.DisplayFor(m => user.Type.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(m => user.EmailAddress)
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(m => user.Userid)
+            </td>
+            <td>
+                @Html.DisplayFor(m => user.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(m => user.Surname)
+            </td>
+            <td>
+                @Html.DisplayFor(m => user.Type.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(m => user.EmailAddress)
+            </td>
+            <td>
+                <a class="btn btn-dark btn-outline-primary" asp-action="ReportedDetails" asp-route-id="@user.Userid">Szczegóły</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>  

@@ -71,17 +71,16 @@ namespace app.Controllers
 
         [HttpGet]
         [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
-        public async Task<IActionResult> ReportedUsersListPartial(int? pageNumber, int type, string id, string email)
+        public async Task<IActionResult> ReportedUsersListPartial(int? pageNumber, string order, int type, string id, string email)
         {
 
-            IQueryable<PageUser> Users = _context.PageUser.Include(u => u.Type).OrderBy(u => u.Userid);
-            var reportedUsers = Users.Where(o => o.isReported == true).OrderBy(u => u.Userid);
+            var Users= SortedList(order);
+            var reportedUsers = Users.Where(o => o.isReported == true);
             int userId;
             if (id != null && Int32.TryParse(id, out userId))
             {
                 Users = Users.Where(u => u.Userid == userId);
             }
-
             if (email != null)
             {
                 Users = Users.Where(u => u.EmailAddress.Contains(email));
@@ -98,15 +97,68 @@ namespace app.Controllers
         {
             switch (order)
             {
+                case "idAsc":
+                    return _context.PageUser.OrderBy(o => o.Userid);
+                case "idDesc":
+                    return _context.PageUser.OrderByDescending(o => o.Userid);
                 case "nameAsc":
-                    return _context.PageUser.OrderBy(o => o.Surname);
+                    return _context.PageUser.OrderBy(o => o.Surname);              
                 case "nameDesc":
                     return _context.PageUser.OrderByDescending(o => o.Surname);
                 default:
-                    return _context.PageUser.OrderBy(o => o.Surname);
+                    return _context.PageUser.OrderBy(o => o.Userid);
             }
         }
 
+        [HttpPost]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> BlockUser(int? id, int ReasonId)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.PageUser.FirstOrDefaultAsync(o => o.Userid == id);
+
+            user.isBlocked = true;
+            user.blockType = ReasonId;
+            user.dateOfBlock = DateTime.Now;
+            user.isReported = false;
+
+            _context.Update(user);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ReportedUsers");
+        }
+        [HttpPost]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]     
+        public async Task<IActionResult> RejectReport(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.PageUser.FirstOrDefaultAsync(o => o.Userid == id);
+            user.isReported = false;
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ReportedUsers");
+        }
+        public async Task<IActionResult> ReportedDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var User = await _context.PageUser.FirstOrDefaultAsync(o => o.Userid == id);
+            if (User == null)
+            {
+                return NotFound();
+            }
+            return View(User);
+        }
         // GET: User/Details/5
         public IActionResult Details()
         {
