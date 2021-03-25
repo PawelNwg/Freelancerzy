@@ -14,6 +14,7 @@ namespace freelancerzy.Models
             Offer = new HashSet<Offer>();
             Permissionuser = new HashSet<Permissionuser>();
             OfferReports = new HashSet<OfferReport>();
+            UserReport = new HashSet<UserReport>();
         }
         [Display(Name = "Id użytkownika")] 
         public int Userid { get; set; }
@@ -46,6 +47,7 @@ namespace freelancerzy.Models
         [Display(Name = "Data rejestracji")]
         public DateTime registrationDate { get; set; }
 
+        public bool isReported { get; set; }
         public bool isBlocked { get; set; }
         public DateTime? dateOfBlock { get; set; }
         public int? blockType { get; set; } // 1 - tydzien 2- miesiac 3 - na stałe
@@ -58,5 +60,6 @@ namespace freelancerzy.Models
         public virtual ICollection<Offer> Offer { get; set; }
         public virtual ICollection<Permissionuser> Permissionuser { get; set; }
         public virtual ICollection<OfferReport> OfferReports { get; set; }
+        public virtual ICollection<UserReport> UserReport { get; }
     }
 }

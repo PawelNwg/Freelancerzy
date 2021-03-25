@@ -118,6 +118,7 @@ namespace freelancerzy.Controllers
             user.isBlocked = true;
             user.blockType = ReasonId;
             user.dateOfBlock = DateTime.Now;
+            user.isReported = false;
 
             _context.Update(user);
 

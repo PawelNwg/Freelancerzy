@@ -31,6 +31,8 @@
     <Compile Include="Migrations\20210305201203_addofferreport2.Designer.cs" />
     <Compile Include="Migrations\20210317182736_AddBlockUserColumns.cs" />
     <Compile Include="Migrations\20210317182736_AddBlockUserColumns.Designer.cs" />
+    <Compile Include="Migrations\20210324172307_UserIsReported.cs" />
+    <Compile Include="Migrations\20210324172307_UserIsReported.Designer.cs" />
     <Compile Include="Migrations\cb2020freedbContextModelSnapshot.cs" />
   </ItemGroup>
 

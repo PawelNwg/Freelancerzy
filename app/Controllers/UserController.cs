@@ -62,6 +62,103 @@ namespace app.Controllers
             return PartialView("_UserList", await PaginatedList<PageUser>.CreateAsync(users, pageNumber ?? 1, pageSize ?? 20));
         }
 
+        [HttpGet]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public IActionResult ReportedUsers()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> ReportedUsersListPartial(int? pageNumber, string order, int type, string id, string email)
+        {
+
+            var Users= SortedList(order);
+            var reportedUsers = Users.Where(o => o.isReported == true);
+            int userId;
+            if (id != null && Int32.TryParse(id, out userId))
+            {
+                Users = Users.Where(u => u.Userid == userId);
+            }
+            if (email != null)
+            {
+                Users = Users.Where(u => u.EmailAddress.Contains(email));
+            }
+            if (type != 0)
+            {
+                Users = Users.Where(u => u.TypeId == type);
+            }
+            int pageSize = 15;
+            return PartialView("_ReportedUserList", await PaginatedList<PageUser>.CreateAsync(reportedUsers, pageNumber ?? 1, pageSize));
+        }
+
+        private IQueryable<PageUser> SortedList(string order)
+        {
+            switch (order)
+            {
+                case "idAsc":
+                    return _context.PageUser.OrderBy(o => o.Userid);
+                case "idDesc":
+                    return _context.PageUser.OrderByDescending(o => o.Userid);
+                case "nameAsc":
+                    return _context.PageUser.OrderBy(o => o.Surname);              
+                case "nameDesc":
+                    return _context.PageUser.OrderByDescending(o => o.Surname);
+                default:
+                    return _context.PageUser.OrderBy(o => o.Userid);
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> BlockUser(int? id, int ReasonId)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.PageUser.FirstOrDefaultAsync(o => o.Userid == id);
+
+            user.isBlocked = true;
+            user.blockType = ReasonId;
+            user.dateOfBlock = DateTime.Now;
+            user.isReported = false;
+
+            _context.Update(user);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ReportedUsers");
+        }
+        [HttpPost]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]     
+        public async Task<IActionResult> RejectReport(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.PageUser.FirstOrDefaultAsync(o => o.Userid == id);
+            user.isReported = false;
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ReportedUsers");
+        }
+        public async Task<IActionResult> ReportedDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var User = await _context.PageUser.FirstOrDefaultAsync(o => o.Userid == id);
+            if (User == null)
+            {
+                return NotFound();
+            }
+            return View(User);
+        }
         // GET: User/Details/5
         public IActionResult Details()
         {
