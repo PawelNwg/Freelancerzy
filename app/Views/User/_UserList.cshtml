@@ -16,14 +16,14 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model[0].EmailAddress)
-            </th>
+            </th>           
             <th></th>
-            </tr>
+        </tr>
     </thead>
     <tbody>
         @foreach (var user in Model)
         {
-            <tr>
+        <tr>
                 <td>
                     @Html.DisplayFor(m => user.Userid)
                 </td>
@@ -39,10 +39,10 @@
                     </a>
                     <a>
                         @Html.ActionLink("", "Delete", "User", new { id = user.Userid },
-                            new { @class="fa fa-trash btn", @OnClick = $"return confirm('Czy na pewno chcesz skasować użytkownika {user.Userid}?');" })
+                            new { @class = "fa fa-trash btn", @OnClick = $"return confirm('Czy na pewno chcesz skasować użytkownika {user.Userid}?');" })
                     </a>
                 </td>
-            </tr>
+        </tr>
         }
     </tbody>
 </table>

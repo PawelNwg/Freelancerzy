@@ -1,32 +1,15 @@
-@model freelancerzy.Models.PageUser
-
-<!DOCTYPE html>
-
-<html>
-
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
+﻿@model freelancerzy.Models.PageUser
+@{
+    ViewData["Title"] = "Szczegóły konta";
+}
 
 <body>
-    <h3 class="text-center" style="padding:2%">Szczegóły</h3>
-    <hr />
+    <h3 class="display-3 text-center mt-5 mb-5">Szczegóły konta:</h3>
+
     <div>
         <div class="container bg-white border border-primary rounded" style="width:40%; padding:3%">
+            <h3 class="text-center mb-4">Dane ogólne:</h3>
             <dl class="row">
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.Userid)
-                </dt>
-                <dd class="col-sm-6">
-                    @Html.DisplayFor(model => model.Userid)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.Type.Name)
-                </dt>
-                <dd class="col-sm-6">
-                    @Html.DisplayFor(model => model.Type.Name)
-                </dd>
                 <dt class="col-sm-4">
                     @Html.DisplayNameFor(model => model.FirstName)
                 </dt>
@@ -40,16 +23,60 @@
                     @Html.DisplayFor(model => model.Surname)
                 </dd>
                 <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Phonenumber)
+                </dt>
+                <dd class="col-sm-6" style="min-height:24px">
+                    @Html.DisplayFor(model => model.Phonenumber)
+                </dd>
+            </dl>
+            <hr />
+            <h3 class="text-center mt-4 mb-4">Adres:</h3>
+            <dl class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Useraddress.Street)
+                </dt>
+                <dd class="col-sm-6" style="min-height:24px">
+                    @Html.DisplayFor(model => model.Useraddress.Street)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Useraddress.Number)
+                </dt>
+                <dd class="col-sm-6" style="min-height:24px">
+                    @Html.DisplayFor(model => model.Useraddress.Number)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Useraddress.ApartmentNumber)
+                </dt>
+                <dd class="col-sm-6" style="min-height:24px">
+                    @Html.DisplayFor(model => model.Useraddress.ApartmentNumber)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Useraddress.ZipCode)
+                </dt>
+                <dd class="col-sm-6" style="min-height:24px">
+                    @Html.DisplayFor(model => model.Useraddress.ZipCode)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Useraddress.City)
+                </dt>
+                <dd class="col-sm-6" style="min-height:24px">
+                    @Html.DisplayFor(model => model.Useraddress.City)
+                </dd>
+            </dl>
+            <hr />
+            <h3 class="text-center mt-4 mb-4">Dane użytkownika:</h3>
+            <dl class="row">              
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Type.Name)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Type.Name)
+                </dd>
+                <dt class="col-sm-4">
                     @Html.DisplayNameFor(model => model.EmailAddress)
                 </dt>
                 <dd class="col-sm-6">
                     @Html.DisplayFor(model => model.EmailAddress)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.Phonenumber)
-                </dt>
-                <dd class="col-sm-6">
-                    @Html.DisplayFor(model => model.Phonenumber)
                 </dd>
                 <dt class="col-sm-4">
                     @Html.DisplayNameFor(model => model.emailConfirmation)
@@ -64,12 +91,15 @@
                     @Html.DisplayFor(model => model.registrationDate)
                 </dd>
             </dl>
+            <hr />
+            <br />
             <div style="text-align: center;">
-                <a asp-action="List"
-                    class="ml-3 align-middle btn btn-outline-primary btn-dark text-light submitButton">Cofnij</a>
+                <a class="btn btn-outline-primary btn-dark" href='javascript:history.go(-1)'>Powrót</a>
+                <a class="btn btn-outline-primary btn-dark" asp-action="Edit">Edytuj</a>
             </div>
         </div>
     </div>
 </body>
 
 </html>
+

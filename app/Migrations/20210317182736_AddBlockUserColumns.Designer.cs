@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using freelancerzy.Models;
 
 namespace freelancerzy.Migrations
 {
     [DbContext(typeof(cb2020freedbContext))]
-    partial class cb2020freedbContextModelSnapshot : ModelSnapshot
+    [Migration("20210317182736_AddBlockUserColumns")]
+    partial class AddBlockUserColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,9 +285,6 @@ namespace freelancerzy.Migrations
                         .HasDefaultValueSql("false");
 
                     b.Property<bool>("isBlocked")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("isReported")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime>("registrationDate")

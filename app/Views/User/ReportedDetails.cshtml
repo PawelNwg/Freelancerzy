@@ -1,0 +1,118 @@
+﻿@model freelancerzy.Models.PageUser
+
+@{
+    ViewData["Title"] = "Szczegóły: " + Model.EmailAddress;
+}
+
+<head>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet">
+</head>
+<div id="content" class="container bg-white border border-primary rounded mt-5">
+    <h3 class="text-center p-5">Kiedyś tu będzie powód</h3>
+    <h3 class="text-center p-5">A tu będą wiadomości jakie wysłał</h3>
+
+    <div class="text-center">
+
+        @if (Model.isBlocked == false)
+        {
+            <h2>Czy chcesz zablokować tego użytkownika?</h2>
+            <dl>
+                <dt>
+                    Email:
+                </dt>
+                <dd>
+                    @Model.EmailAddress
+                </dd>
+                @if (Model.dateOfBlock != null)
+                {
+                    <dt>
+                        Data ostatniej blokady:
+                    </dt>
+                    <dd>
+                        @Model.dateOfBlock
+                    </dd>
+                    <dt>
+                        Czas trwania ostatniej blokady:
+                    </dt>
+                    <dd>
+                        @if (Model.blockType == 1)
+                        {
+                            <span>Tydzień</span>
+                        }
+                        else if (Model.blockType == 2)
+                        {
+                            <span>Miesiąc</span>
+                        }
+                    </dd>
+                }
+            </dl>
+
+
+            <table class="m-auto">
+                <tr>
+                    <td>
+                        <form method="post" asp-action="RejectReport" asp-route-id="@Model.Userid">
+                            <button type="submit" class="btn btn-dark btn-outline-primary m-1 mb-3">Odrzuć</button>
+                        </form>
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-primary btn-dark m-1 mb-3" id="blockUser">Zablokuj</button>
+                    </td>
+                </tr>
+            </table>
+            <div id="blockUserDialog" title="Wybierz czas trwania blokady">
+                <form id="blockUserForm" asp-action="BlockUser" method="post" asp-route-id="@Model.Userid">
+
+                    <select class="custom-select" name="ReasonId">
+                        <option value="1">Tydzień</option>
+                        <option value="2">Miesiąc</option>
+                        <option value="3">Na zawsze</option>
+                    </select>
+                </form>
+            </div>
+        }
+        else
+        {
+            <h2>Użytkownik jest juz zablokowany</h2>
+        }
+
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+        $('#blockUserDialog').dialog({
+            autoOpen: false,
+            modal: true,
+            dialogClass: 'border border-dark rounded',
+            width: 500,
+            show: 'fold',
+            hide: 'fold',
+            resizable: false,
+            closeText: 'Zamknij',
+            draggable: false,
+            buttons: {
+                Potwierdź: function () {
+                    $("#blockUserForm").submit();
+                }
+
+            }
+
+        });
+
+
+        $('#blockUser').click(function () {
+            $('#blockUserDialog').dialog("open");
+        });
+
+
+
+    });
+</script>
+
+@section scripts{
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+}
