@@ -517,7 +517,8 @@ namespace app.Controllers
             var token = generateToken(pageuser);
             string Body = mailInfo.EmailBody;
             string url = HttpContext.Request.Host.Value;
-            string ConfirmationLink = "https://" + url + "/User/ConfirmEmail?" + "token=" + token;
+            string protocol = HttpContext.Request.Scheme;
+            string ConfirmationLink = protocol + "://" + url + "/User/ConfirmEmail?" + "token=" + token;
             Body = Body.Replace("<insert_confirmation_link_here>", ConfirmationLink);
             mail.Body = Body;
             mail.IsBodyHtml = true;

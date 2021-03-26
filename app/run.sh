@@ -1,5 +1,10 @@
 #/bin/bash
 
-docker build -t freelancerzy .
-heroku container:push -a freelancerzy web
-heroku container:release -a freelancerzy web
+if [ -z $1]
+then
+    echo "Wprowadź nazwę projektu"
+else
+    docker build -t $1 .
+    heroku container:push -a $1 web
+    heroku container:release -a $1 web
+fi
