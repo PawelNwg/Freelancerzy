@@ -1,0 +1,254 @@
+﻿
+@{
+    ViewData["Title"] = "Zablokowani użytkownicy";
+}
+<head>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet">
+</head>
+<section class="front">
+    <div id="header">
+        <h1 class="display-3 text-center mt-4 mb-4">Zablokowani użytkownicy</h1>
+        <br />
+    </div>
+    <div id="filtr">
+        <input id="phrase" class="form-control-lg" type="text" style="padding:3px; width:30%" placeholder="Wyszukaj po mailu">
+        <button id="searchBtn" type="button" style="padding:7px 30px; margin:0px 0px 10px 10px" class="btn btn-outline-primary btn-dark">Szukaj</button>
+    </div>
+    <div id="nav" class="container bg-white border border-primary rounded">
+
+        <h3>Filtry:</h3>
+
+        <label for="check2">Data blokady od</label><br />
+        <div class="m-auto form-group">
+            <input type="date" name="check2" id="dateLower" placeholder="od" />
+        </div>
+        <label for="check3">Data blokady do</label><br />
+        <div class="m-auto form-group">
+            <input type="date" name="check3" id="dateUpper" placeholder="do" />
+        </div>
+
+        <br /><br />
+        <button type="button" style="padding:7px 15px;" class="btn btn-outline-primary btn-dark" id="FilterButton">Zastosuj</button>
+        <button class="btn btn-outline-primary btn-dark" style="padding:7px 15px;" id="resetBtn">Resetuj filtry</button>
+    </div>
+    <div id="content" class="container bg-white border border-primary rounded">
+        <label>Sortuj według: </label>
+        <select id="sort">
+            <option value="nameAsc">Nazwa: A-Z</option>
+            <option value="nameDesc">Nazwa: Z-A</option>
+            <option value="dateDesc">Data założenia blokady: od najnowszych</option>
+            <option value="dateAsc">Data założenia blokady: od najstarszych</option>
+        </select>
+        <br><br />
+
+        <div id="loader">
+
+        </div>
+        <div id="users">
+
+        </div>
+        <div id="dialog" title="Czy na pewno chcesz odblokować użytkownika?">
+
+        </div>
+
+    </div>
+</section>
+
+<style>
+
+    .loader {
+        margin: auto;
+        border: 2px solid #f3f3f3; /* Light grey */
+        border-top: 2px solid #383838;
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    table.table-bordered {
+        border: 1px solid #d6e324;
+        margin-top: 20px;
+    }
+
+        table.table-bordered > thead > tr > th {
+            border: 1px solid #d6e324;
+        }
+
+        table.table-bordered > tbody > tr > td {
+            border: 1px solid #d6e324;
+        }
+
+
+    #header {
+        text-align: center;
+        padding: 20px;
+    }
+
+    #filtr {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .border {
+        border-width: 2px !important;
+    }
+
+    #nav {
+        margin: 3%;
+        margin-top: 0px;
+        width: 16%;
+        padding: 20px;
+        text-align: center;
+        float: left;
+        min-height: 350px;
+    }
+
+    #content {
+        width: 73%;
+        min-height: 650px;
+        float: left;
+        padding: 20px;
+        background-color: lightgray;
+        margin-right: 5%;
+        margin-bottom: 616px;
+    }
+</style>
+@section Scripts
+{
+    <script>
+
+       
+
+
+        $(function () {
+            $('#dialog').dialog({
+                autoOpen: false,
+                modal: true,
+                dialogClass: 'border border-dark rounded',
+                width: 600,
+                show: 'fold',
+                hide: 'fold',
+                resizable: false,
+                closeText: 'Zamknij',
+                draggable: false,
+                buttons: {
+                    TAK: function () {
+                        UnlockUser(userId);
+                    },
+                    NIE: function () {
+                        $(this).dialog('close');
+                    }
+                }
+
+            });
+
+            const UnlockUser = (id) => {
+                $.ajax({
+                    method: "PUT",
+                    url: "/Admin/UnlockUser?id=" + id,
+                    cache: false
+
+                }
+                ).fail(() => alert("Błąd podczas odblokowywania użytkownika"))
+                    .done(() => {
+                        $('#dialog').dialog("close");
+                        loadTable(1);
+                        
+                    })
+            }
+
+            let userId = 0;
+            var pageId = 1;
+            var categotyId = 0;
+            var sortorder = $('#sort').val();
+            
+            $(document).on('click', '.unlockUserBtn', null, event => {
+                console.log(event.target);
+                userId = event.currentTarget.value;
+                console.log(userId);
+                $('#dialog').dialog("open");
+            })
+
+
+            var loadTable = function (pageId) {
+                $('#offers').empty();
+                $('#loader').addClass("loader");
+
+                var searchvalue = $('#phrase').val().replaceAll(' ', '+');
+
+                var DateLow = $('#dateLower').val();
+                var DateUp = $('#dateUpper').val();
+
+                var searchstring = searchvalue == '' ? '' : '&searchString=' + searchvalue;
+
+
+                $('#users').load('/Admin/BlockedUsersPartial?pageNumber=' + pageId + '&order=' + sortorder + searchstring,
+                    {
+                        DateLow: DateLow,
+                        DateUp: DateUp
+                    }, function () {
+                        $('#loader').removeClass("loader");
+
+                    });
+
+
+            }
+
+            loadTable(pageId);
+
+            $(document).on('click', '#goToPage', null, function () {
+                var pageNr = $('#page').val();
+
+                if (pageNr <= 0) pageId = 1;
+                else if (pageNr > totalPages) pageId = totalPages;
+                else pageId = pageNr;
+
+                loadTable(pageId);
+            })
+
+            $(document).on('click', '#searchBtn', function () { loadTable(pageId) });
+
+            $(document).on('keypress', function (e) {
+                if (e.which == 13) {
+                    loadTable(pageId);
+                }
+            });
+
+            $(document).on('click', '#FilterButton', function () { loadTable(pageId) });
+
+            $(document).on('click', '#next', null, function () { loadTable(++pageId); });
+
+            $(document).on('click', '#prev', null, function () { loadTable(--pageId); });
+
+            $(document).on('click', '#resetBtn', function () {
+
+                $('#dateLower').val('');
+                $('#dateUpper').val('');
+
+                loadTable(pageId);
+            });
+
+            $(document).on('change', '#sort', null, function () {
+                sortorder = $('#sort').val();
+                pageId = 1;
+                loadTable(pageId)
+            })
+        });
+    </script>
+    
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    
+}

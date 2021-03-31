@@ -49,7 +49,9 @@ namespace freelancerzy.Models
 
         public bool isReported { get; set; }
         public bool isBlocked { get; set; }
+        [Display(Name = "Data zablokowania")]
         public DateTime? dateOfBlock { get; set; }
+        [Display(Name = "Rodzaj blokady")]
         public int? blockType { get; set; } // 1 - tydzien 2- miesiac 3 - na stałe
 
         public virtual Usertype Type { get; set; }
