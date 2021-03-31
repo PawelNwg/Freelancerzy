@@ -5,23 +5,23 @@
 }
 
 <h1 class="text-center" style=" padding:20px">Edytuj dane:</h1>
-<section class="front">
-    <div class="text-center w-50"
-        style="background-color:lightgray; margin-right: 25%; margin-left: 25%; margin-bottom: 16px; padding-bottom:40px">
+<section class="front ">
+    <div class="text-center bg-white rounded bg-white border border-dark" style="width:70%;  margin: 0 auto; border-width:4px;">
         <div>
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="active" style="width:34%"><a style="color:black; padding:5px" href="#ogolne" role="tab"
-                        data-toggle="tab">Ogólne</a></li>
-                <li style="width:32%"><a href="#adres" style="color:black; padding:5px" role="tab"
-                        data-toggle="tab">Adres</a></li>
-                <!--<li style="width:25%"><a style="color:black; padding:5px" href="#email" role="tab"
-                        data-toggle="tab">Email</a></li>-->
-                <li style="width:34%"><a style="color:black; padding:5px" href="#haslo" role="tab"
-                        data-toggle="tab">Hasło</a></li>
+            <ul class="nav nav-tabs bg-dark" style="padding: 2%;" role="tablist"> 
+                <li  class="active" style="width:34%">
+                    <a id="nav" class="text-light text-uppercase font-weight-normal text-decoration-none" href="#ogolne" role="tab" data-toggle="tab">Ogólne
+                    </a>
+                </li>
+                <li  style="width:32%">
+                    <a id="nav" class="text-light text-uppercase font-weight-normal text-decoration-none" href="#adres" role="tab" data-toggle="tab">Adres</a>
+                </li>
+                <li  style="width:34%">
+                    <a  id="nav" class="text-light text-uppercase font-weight-normal text-decoration-none" href="#haslo" role="tab" data-toggle="tab">Hasło</a>
+                </li>
             </ul>
         </div>
         <br />
-
         <div class="tab-content">
 
             <div class="tab-pane active" id="ogolne">
@@ -30,15 +30,15 @@
                     <div class="input">
                         <input type="hidden" asp-for="EmailAddress"/>
                         <input type="hidden" asp-for="Userid"/>
-                        <input style="padding:3px; width:70%" asp-for="FirstName"
+                        <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="FirstName"
                             placeholder="@Html.DisplayNameFor(model => model.FirstName)"/> <br/>
                         <span asp-validation-for="FirstName" class="text-danger" style="font-size: small;"></span>
                         <br />
-                        <input style="padding:3px; width:70%" asp-for="Surname"
+                        <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Surname"
                             placeholder="@Html.DisplayNameFor(model => model.Surname)"> <br/>
                         <span asp-validation-for="Surname" class="text-danger" style="font-size: small;"></span>
                         <br />
-                        <input style="padding:3px; width:70%" asp-for="Phonenumber"
+                        <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Phonenumber"
                             placeholder="@Html.DisplayNameFor(model => model.Phonenumber)"><br/>
                         <span asp-validation-for="Phonenumber" class="text-danger" style="font-size: small;"></span>
                         <br />
@@ -56,30 +56,30 @@
                     asp-action="EditAddress">
                     <input type="hidden" asp-for="Userid"/>
                     <input type="hidden" asp-for="Useraddress.Userid"/>
-                    <input style="padding:3px; width:70%" asp-for="Useraddress.Street"
+                    <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Useraddress.Street"
                             placeholder="@Html.DisplayNameFor(model => model.Useraddress.Street)"/><br />
                     <span asp-validation-for="Useraddress.Street" class="text-danger" style="font-size: small;"></span>
                     <br />
-                    <input style="padding:3px; width:70%" asp-for="Useraddress.Number"
+                    <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Useraddress.Number"
                             placeholder="@Html.DisplayNameFor(model => model.Useraddress.Number)"/><br />
                     <span asp-validation-for="Useraddress.Number" class="text-danger" style="font-size: small;"></span>
                     <br />
-                    <input style="padding:3px; width:70%" asp-for="Useraddress.ApartmentNumber"
+                    <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Useraddress.ApartmentNumber"
                             placeholder="@Html.DisplayNameFor(model => model.Useraddress.ApartmentNumber)"/><br />
                     <span asp-validation-for="Useraddress.ApartmentNumber" class="text-danger" style="font-size: small;"></span>
                     <br />
-                    <input style="padding:3px; width:70%" asp-for="Useraddress.ZipCode"
+                    <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Useraddress.ZipCode"
                             placeholder="@Html.DisplayNameFor(model => model.Useraddress.ZipCode)"/><br />
                     <span asp-validation-for="Useraddress.ZipCode" class="text-danger" style="font-size: small;"></span>
                     <br />
-                    <input style="padding:3px; width:70%" asp-for="Useraddress.City"
+                    <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Useraddress.City"
                             placeholder="@Html.DisplayNameFor(model => model.Useraddress.City)"/><br />
                     <span asp-validation-for="Useraddress.City" class="text-danger" style="font-size: small;"></span>
-                    <br />
-                    <br />
+<br/>                    <br />
                     <div class="text-center">
                         <input type="submit" style="padding:15px 50px;font-size:large;"
-                            class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
+                                class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
+                    
                     </div>
                 </form>
             </div>
@@ -109,19 +109,19 @@
                     <!-- TODO: rozdzielić pola z hasłami -->
                     <input type="hidden" asp-for="EmailAddress"/>
                     <input type="hidden" asp-for="Credentials.Userid"/>
-                    <input style="padding:3px; width:70%" placeholder="Stare hasło" asp-for="Credentials.OldPassword"> <br />
+                    <input  class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" placeholder="Stare hasło" asp-for="Credentials.OldPassword"> <br />
                     <span asp-validation-for="Credentials.OldPassword" class="text-danger" style="font-size: small;"></span>
                     <br />
-                    <input style="padding:3px; width:70%" placeholder="Nowe hasło" asp-for="Credentials.Password"> <br />
+                    <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" placeholder="Nowe hasło" asp-for="Credentials.Password"> <br />
                     <span asp-validation-for="Credentials.Password" class="text-danger" style="font-size: small;"></span>
                     <br />
-                    <input style="padding:3px; width:70%" placeholder="Powtórz hasło" asp-for="Credentials.PasswordConfirmed"> <br />
+                    <input  class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" placeholder="Powtórz hasło" asp-for="Credentials.PasswordConfirmed"> <br />
                     <span asp-validation-for="Credentials.PasswordConfirmed" class="text-danger" style="font-size: small;"></span>
                     <br />
                     <br />
                     <div class="text-center">
                         <input type="submit" style="padding:15px 50px;font-size:large;"
-                            class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
+                                class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
                     </div>
                 </form>
             </div>
@@ -138,8 +138,9 @@
     }
 </section>
 
+
  @section scripts{
 
         <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <scrip src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></scrip>
     }
