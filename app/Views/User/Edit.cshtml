@@ -8,16 +8,16 @@
 <section class="front ">
     <div class="text-center bg-white rounded bg-white border border-dark" style="width:70%;  margin: 0 auto; border-width:4px;">
         <div>
-            <ul class="nav nav-tabs bg-dark" style="padding: 2%;" role="tablist"> 
-                <li  class="active" style="width:34%">
-                    <a id="nav" class="text-light text-uppercase font-weight-normal text-decoration-none" href="#ogolne" role="tab" data-toggle="tab">Ogólne
+            <ul class="nav nav-tabs bg-dark " style="padding: 2%;" role="tablist"> 
+                <li  style="width:34%">
+                    <a id="1" class="navigation h5 text-uppercase font-weight-normal text-decoration-none" href="#ogolne" role="tab" data-toggle="tab">Ogólne
                     </a>
                 </li>
                 <li  style="width:32%">
-                    <a id="nav" class="text-light text-uppercase font-weight-normal text-decoration-none" href="#adres" role="tab" data-toggle="tab">Adres</a>
+                    <a id="2" class="navigation h5 text-uppercase font-weight-normal text-decoration-none" href="#adres" role="tab" data-toggle="tab">Adres</a>
                 </li>
                 <li  style="width:34%">
-                    <a  id="nav" class="text-light text-uppercase font-weight-normal text-decoration-none" href="#haslo" role="tab" data-toggle="tab">Hasło</a>
+                    <a  id="3" class="navigation h5  text-uppercase font-weight-normal text-decoration-none" href="#haslo" role="tab" data-toggle="tab">Hasło</a>
                 </li>
             </ul>
         </div>
@@ -25,8 +25,9 @@
         <div class="tab-content">
 
             <div class="tab-pane active" id="ogolne">
-                <form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
+                <form id="1" method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
                     asp-action="EditGeneral">
+                    <br><br>
                     <div class="input">
                         <input type="hidden" asp-for="EmailAddress"/>
                         <input type="hidden" asp-for="Userid"/>
@@ -47,13 +48,16 @@
                             <input type="submit" style="padding:15px 50px;font-size:large;"
                                 class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
                         </div>
+                        <br />
+
                     </div>
                 </form>
             </div>
 
             <div class="tab-pane" id="adres">
-                <form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
+                <form id="2" method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
                     asp-action="EditAddress">
+                    <br><br>
                     <input type="hidden" asp-for="Userid"/>
                     <input type="hidden" asp-for="Useraddress.Userid"/>
                     <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Useraddress.Street"
@@ -75,12 +79,14 @@
                     <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Useraddress.City"
                             placeholder="@Html.DisplayNameFor(model => model.Useraddress.City)"/><br />
                     <span asp-validation-for="Useraddress.City" class="text-danger" style="font-size: small;"></span>
-<br/>                    <br />
+                    <br/><br />
                     <div class="text-center">
                         <input type="submit" style="padding:15px 50px;font-size:large;"
                                 class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
                     
                     </div>
+                    <br />
+
                 </form>
             </div>
 
@@ -104,8 +110,9 @@
             </div> -->
 
             <div class="tab-pane" id="haslo">
-                <form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
+                <form id="3" method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
                     asp-action="EditCredentials">
+                    <br><br>
                     <!-- TODO: rozdzielić pola z hasłami -->
                     <input type="hidden" asp-for="EmailAddress"/>
                     <input type="hidden" asp-for="Credentials.Userid"/>
@@ -123,6 +130,8 @@
                         <input type="submit" style="padding:15px 50px;font-size:large;"
                                 class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
                     </div>
+                    <br />
+
                 </form>
             </div>
         </div>
@@ -136,6 +145,28 @@
         };
         </script>
     }
+
+    <script type="text/javascript">
+    let nav = document.getElementsByClassName("navigation");
+    console.log(nav);
+
+    for (n of nav) {
+        n.style.color="#e7e8e1";
+        n.addEventListener("click", (event) => selected(event));
+    }
+
+    function selected(event) {
+        for(n of nav){
+            n.style.backgroundColor=null;
+            n.style.color="#e7e8e1";
+        }
+        event.target.style.fontWeight = "bold";
+        event.target.style.color = "#d6e324";
+        console.log(event.target.id);
+        console.log(event.target.style.backgroundColor);
+    }
+
+</script>
 </section>
 
 
