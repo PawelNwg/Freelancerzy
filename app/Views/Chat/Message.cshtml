@@ -1,0 +1,34 @@
+﻿@model freelancerzy.Models.Message
+
+@{
+    ViewData["Title"] = "Nowa wiadomość do " + Model.UserTo.EmailAddress;
+}
+
+<h1>Nowa wiadomość do @Model.UserTo.EmailAddress</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Message">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <textarea asp-for="Content" class="form-control" ></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            @Html.HiddenFor(model => model.UserToId)
+            <div class="form-group">
+                <input type="submit" value="Wyślij" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-controller="Home">Wróć</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
