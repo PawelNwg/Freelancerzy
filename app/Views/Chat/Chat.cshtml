@@ -1,0 +1,71 @@
+﻿@model IEnumerable<freelancerzy.Models.Message>
+@{ 
+    ViewData["Title"] = "Chat";
+    var userName = User.Identity.Name;
+
+}
+<h3>Rozmowa z @ViewBag.UserToName</h3>
+<div class="container ">
+    <div class="row">&nbsp;</div>
+    <div class="row" >
+        <div class="col-md-12" id="chat" style="max-height:500px; overflow:scroll;">
+            @if (Model != null)
+            {
+                @foreach(var message in Model.OrderBy(m => m.Date))
+                {
+                    string containerClass, timePosition, textAlign, contColor, offset;
+                    if(userName == message.UserFrom.EmailAddress)
+                    {
+                        containerClass = "container primary";
+                        timePosition = "time-right ";
+                        textAlign = "text-right ";
+                        contColor = "bg-primary";
+                        offset = "col-md-6 offset-md-6";
+                    }
+                    else
+                    {
+                        containerClass = "container ";
+                        timePosition = "time-left";
+                        textAlign = "text-left";
+                        contColor = "bg-white";
+                        offset = "";
+                    }
+                    <div class="row m-2">
+                        <div class="@offset">
+                            <div class="@containerClass @contColor">
+                                <p class="sender @textAlign">@message.UserFrom.EmailAddress</p>
+                                <p class="@textAlign">@message.Content</p>
+                                <span class="@timePosition">@message.Date</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="col-md-12">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" value="@ViewBag.UserToId" name="UserToId" id="UserToId"/>
+                <div class="form-group">
+                    <input name="Content" class="form-control" id="messageText" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Send" id="submitButton" class="btn btn-outline-primary" />
+                </div>
+            </form>
+            <a asp-action="Chat" asp-route-userId="@ViewBag.UserToId">Przeładuj strone</a>
+        </div>
+    </div>
+    </div>
+
+<style>
+    .bg-white {
+        background-color: white;
+    }
+</style>
+<script>
+    $(function () {
+        
+        document.getElementById('chat').scrollTo(0, document.getElementById('chat').scrollHeight);
+    })
+</script>
