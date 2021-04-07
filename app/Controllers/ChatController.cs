@@ -20,9 +20,17 @@ namespace freelancerzy.Controllers
             _context = context;
         }
 
-        public ActionResult Index()
+        public async Task  <IActionResult> Index()
         {
-            return View();
+            var currUser = await _context.PageUser.FirstOrDefaultAsync(u => u.EmailAddress == HttpContext.User.Identity.Name);
+            var messages = await _context.Message.Include(m => m.UserTo).Include(m => m.UserFrom).
+                Where(m => m.UserFromId == currUser.Userid || m.UserToId == currUser.Userid).OrderBy(m => m.Date).ToListAsync();
+          
+            var users = messages.Select(message => message.UserFrom).Distinct();
+            var users2 = messages.Select(message => message.UserTo).Distinct();
+            var together = users.Concat(users2).Distinct().ToList();
+            together.Remove(currUser);
+            return View(together);
         }
 
         // GET: ChatController/Create
@@ -61,46 +69,45 @@ namespace freelancerzy.Controllers
             else return View();
         }
 
-        // GET: ChatController1cs/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
 
-        // POST: ChatController1cs/Edit/5
+        public async Task<IActionResult> Chat(int userId)
+        {
+            var currentUser = await _context.PageUser.FirstOrDefaultAsync(u => u.EmailAddress
+            == HttpContext.User.Identity.Name);
+            var userTo = await _context.PageUser.FirstOrDefaultAsync(u => u.Userid == userId);
+            if (userTo == null) return NotFound();
+            var messages = await _context.Message.Include(m => m.UserFrom).
+                Include(m => userTo).Where(m => (m.UserFromId == currentUser.Userid && m.UserToId == userId) 
+                || (m.UserFromId == userId && m.UserToId == currentUser.Userid))
+                .ToListAsync();
+            if (messages.Count == 0) return RedirectToAction("Message", new { id = userId });
+            foreach(var message in messages)
+            {
+                message.Seen = true;
+                message.Status = "Wyświetlona";
+                _context.Update(message);
+            }
+            await _context.SaveChangesAsync();
+            ViewBag.CurrentUserName = currentUser.EmailAddress;
+            ViewBag.UserToId = userId;
+            ViewBag.UserToName = userTo.EmailAddress;
+            return View(messages);
+        }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Create(Message message)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            
+                message.UserFrom = await _context.PageUser.FirstOrDefaultAsync
+                    (u => u.EmailAddress == HttpContext.User.Identity.Name);
+                message.Date = DateTime.Now;
+                message.Seen = false;
+                message.Status = "Wysłana";
+                await _context.AddAsync(message);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Chat", new { userId = message.UserToId });
+            
         }
 
-        // GET: ChatController1cs/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ChatController1cs/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+       
     }
 }
