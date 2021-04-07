@@ -91,6 +91,7 @@ namespace freelancerzy.Controllers
             ViewBag.CurrentUserName = currentUser.EmailAddress;
             ViewBag.UserToId = userId;
             ViewBag.UserToName = userTo.EmailAddress;
+            ViewBag.Username = userTo.FirstName +" "+ userTo.Surname;
             return View(messages);
         }
         [HttpPost]
