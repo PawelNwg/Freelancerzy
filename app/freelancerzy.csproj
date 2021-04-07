@@ -33,6 +33,8 @@
     <Compile Include="Migrations\20210317182736_AddBlockUserColumns.Designer.cs" />
     <Compile Include="Migrations\20210324172307_UserIsReported.cs" />
     <Compile Include="Migrations\20210324172307_UserIsReported.Designer.cs" />
+    <Compile Include="Migrations\20210404130827_messageseen.cs" />
+    <Compile Include="Migrations\20210404130827_messageseen.Designer.cs" />
     <Compile Include="Migrations\cb2020freedbContextModelSnapshot.cs" />
   </ItemGroup>
 

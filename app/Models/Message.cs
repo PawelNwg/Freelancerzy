@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace freelancerzy.Models
 {
@@ -14,8 +15,13 @@ namespace freelancerzy.Models
         public int UserFromId { get; set; }
         public int UserToId { get; set; }
         public DateTime Date { get; set; }
+        [Display(Name="Treść")]
+        [Required(ErrorMessage ="Nie możesz wysłać wiadomości bez treści")]
+        [MaxLength(250,ErrorMessage ="Pojedyńcza wiadomość może mieć 250 znaków")]
         public string Content { get; set; }
         public string Status { get; set; }
+        
+        public bool Seen { get; set; }
 
         public virtual PageUser UserFrom { get; set; }
         public virtual PageUser UserTo { get; set; }
