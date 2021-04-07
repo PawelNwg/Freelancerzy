@@ -1,0 +1,90 @@
+﻿@model IEnumerable<freelancerzy.Models.Message>
+@{ 
+    ViewData["Title"] = "Chat";
+    var userName = User.Identity.Name;
+
+}
+<h3 class="text-center" style=" padding:20px">Rozmowa z @ViewBag.UserToName</h3>
+<hr />
+
+<div class="text-center bg-white rounded bg-white border border-dark" style="width:70%;  margin: 0 auto; border-width:4px;">
+        <div>
+            <ul class="nav nav-tabs bg-dark " style="padding: 2%;" role="tablist"> 
+                <li  style="width:34%">
+                    <span class="navigation text-primary h5 text-uppercase font-weight-bold text-decoration-none">@ViewBag.Username</span>
+                    &nbsp;
+                    &nbsp;
+                    <span class="navigation text-light h5 font-weight-normal text-decoration-none">@ViewBag.UserToName</span>
+                </li>
+            </ul>
+        </div>
+        <br />
+        <div class="container ">
+    <div class="row">&nbsp;</div>
+    <div class="row" >
+        @* @TODO domyślna szerokość jest spowodowana prawdopodobnie tym ze bootsrap dzieli kolumny na 12 czesci *@
+        <div class="col-md-12" id="chat" style="max-height:500px; overflow:scroll; overflow-x: hidden; ">
+            @if (Model != null)
+            {
+                @foreach(var message in Model.OrderBy(m => m.Date))
+                {
+                    string containerClass,textAlign, contColor, offset;
+                    if(userName == message.UserFrom.EmailAddress)
+                    {
+                        containerClass = "container primary";
+                        textAlign = "text-left ";
+                        contColor = "bg-primary";
+                        offset = "flex-row-reverse";
+                    }
+                    else
+                    {
+                        containerClass = "container ";
+                        textAlign = "text-left";
+                        contColor = "bg-light";
+                        offset = "flex-row";
+                    }
+                    <div class="row m-2 d-flex @offset">
+                        <div class="@offset ">
+                           <br>
+                            <div class="@containerClass">
+                               <div class = "font-weight-bold text-left" > @message.Date</div>
+
+@* jak chcem miec zawijane to max-width zamiast width *@
+                                <div style="max-width: 400px; overflow-wrap: break-word; " class="@textAlign @contColor p-2 ml-2">@message.Content</div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="col-md-12">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" value="@ViewBag.UserToId" name="UserToId" id="UserToId"/>
+                <div class="form-group">
+                    <input placeholder="prowadź tekst" name="Content" class="form-control rounded bg-white border border-5 border-dark" id="messageText" />
+                </div>
+                <div class="form-group ">
+                <a class="text-dark" asp-action="Chat" asp-route-userId="@ViewBag.UserToId">Przeładuj strone</a>
+                &nbsp;
+                <input type="submit" value="Wyślij" id="submitButton" class="btn btn-dark"/>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+<style>
+    .bg-white {
+        background-color: white;
+    }
+</style>
+<script>
+    $(function () {
+        
+        document.getElementById('chat').scrollTo(0, document.getElementById('chat').scrollHeight);
+    })
+</script>
