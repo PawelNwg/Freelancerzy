@@ -15,6 +15,7 @@ namespace freelancerzy.Models
             Permissionuser = new HashSet<Permissionuser>();
             OfferReports = new HashSet<OfferReport>();
             UserReport = new HashSet<UserReport>();
+            ChatUsers = new HashSet<ChatUser>();
         }
         [Display(Name = "Id użytkownika")] 
         public int Userid { get; set; }
@@ -63,5 +64,6 @@ namespace freelancerzy.Models
         public virtual ICollection<Permissionuser> Permissionuser { get; set; }
         public virtual ICollection<OfferReport> OfferReports { get; set; }
         public virtual ICollection<UserReport> UserReport { get; }
+        public virtual ICollection<ChatUser> ChatUsers { get; }
     }
 }

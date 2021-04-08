@@ -1,4 +1,4 @@
-﻿@model IEnumerable<freelancerzy.Models.PageUser> 
+﻿@model IEnumerable<freelancerzy.Models.UserWithLastMessage> 
 @{ 
     ViewData["title"] = "Rozmowy";
 }
@@ -6,9 +6,21 @@
 <div class="container">
     <h2>Wybierz wątek</h2>
     <ul>
-        @foreach (var user in Model)
+        @foreach (var chat in Model.OrderByDescending(m => m.LastMessage.Date))
         {
-            <li><a class="text-dark" asp-action="Chat" asp-route-userId="@user.Userid">@user.EmailAddress (@user.FirstName @user.Surname)</a></li>
+        <li>
+            <a class="text-dark" asp-action="Chat" asp-route-chatId="@chat.ChatId">
+                @chat.User.EmailAddress (@chat.User.FirstName @chat.User.Surname)
+            </a> <br />
+            @if (chat.LastMessage.Seen == true)
+            {
+                @chat.LastMessage.Date @chat.LastMessage.Content
+            }
+            else
+            {
+                @chat.LastMessage.Date <b>@chat.LastMessage.Content</b>
+            }
+        </li>
         }
     </ul>
     @if (Model.Count() == 0)

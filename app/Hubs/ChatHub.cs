@@ -9,9 +9,14 @@ namespace freelancerzy.Hubs
 {
     public class ChatHub : Hub
     {
-        public async Task SendMessage(Message message)
+        public Task JoinRoom(string roomId)
         {
-            await Clients.All.SendAsync("ReceiveMessage", message);
+            return Groups.AddToGroupAsync(Context.ConnectionId, roomId);
+        }
+
+        public Task LeaveRoom(string roomId)
+        {
+            return Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId);
         }
     }
 }
