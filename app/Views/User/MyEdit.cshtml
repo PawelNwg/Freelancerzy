@@ -8,16 +8,17 @@
 <section class="front ">
     <div class="text-center bg-white rounded bg-white border border-dark" style="width:70%;  margin: 0 auto; border-width:4px;">
         <div>
-            <ul class="nav nav-tabs bg-dark " style="padding: 2%;" role="tablist"> 
-                <li  style="width:34%">
-                    <a id="1" class="navigation h5 text-uppercase font-weight-normal text-decoration-none" href="#ogolne" role="tab" data-toggle="tab">Ogólne
+            <ul class="nav nav-tabs bg-dark " style="padding: 2%;" role="tablist">
+                <li style="width:33%">
+                    <a id="1" class="navigation h5 text-uppercase font-weight-normal text-decoration-none" href="#ogolne" role="tab" data-toggle="tab">
+                        Ogólne
                     </a>
                 </li>
-                <li  style="width:32%">
+                <li style="width:32%">
                     <a id="2" class="navigation h5 text-uppercase font-weight-normal text-decoration-none" href="#adres" role="tab" data-toggle="tab">Adres</a>
                 </li>
-                <li  style="width:34%">
-                    <a  id="3" class="navigation h5  text-uppercase font-weight-normal text-decoration-none" href="#haslo" role="tab" data-toggle="tab">Hasło</a>
+                <li style="width:33%">
+                    <a id="3" class="navigation h5  text-uppercase font-weight-normal text-decoration-none" href="#haslo" role="tab" data-toggle="tab">Hasło</a>
                 </li>
             </ul>
         </div>
@@ -26,67 +27,64 @@
 
             <div class="tab-pane active" id="ogolne">
                 <form id="1" method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
-                    asp-action="EditGeneral">
+                      asp-action="EditGeneral">
                     <br><br>
                     <div class="input">
-                        <input type="hidden" asp-for="EmailAddress"/>
-                        <input type="hidden" asp-for="Userid"/>
+                        <input type="hidden" asp-for="EmailAddress" />
+                        <input type="hidden" asp-for="Userid" />
                         <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="FirstName"
-                            placeholder="@Html.DisplayNameFor(model => model.FirstName)"/> <br/>
+                               placeholder="@Html.DisplayNameFor(model => model.FirstName)" /> <br />
                         <span asp-validation-for="FirstName" class="text-danger" style="font-size: small;"></span>
                         <br />
                         <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Surname"
-                            placeholder="@Html.DisplayNameFor(model => model.Surname)"> <br/>
+                               placeholder="@Html.DisplayNameFor(model => model.Surname)"> <br />
                         <span asp-validation-for="Surname" class="text-danger" style="font-size: small;"></span>
                         <br />
                         <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Phonenumber"
-                            placeholder="@Html.DisplayNameFor(model => model.Phonenumber)"><br/>
+                               placeholder="@Html.DisplayNameFor(model => model.Phonenumber)"><br />
                         <span asp-validation-for="Phonenumber" class="text-danger" style="font-size: small;"></span>
                         <br />
                         <br />
                         <div class="text-center">
                             <input type="submit" style="padding:15px 50px;font-size:large;"
-                                class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
+                                   class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
                         </div>
                         <br />
-
                     </div>
                 </form>
             </div>
 
             <div class="tab-pane" id="adres">
                 <form id="2" method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
-                    asp-action="EditAddress">
+                      asp-action="EditAddress">
                     <br><br>
-                    <input type="hidden" asp-for="Userid"/>
-                    <input type="hidden" asp-for="Useraddress.Userid"/>
+                    <input type="hidden" asp-for="Userid" />
+                    <input type="hidden" asp-for="Useraddress.Userid" />
                     <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Useraddress.Street"
-                            placeholder="@Html.DisplayNameFor(model => model.Useraddress.Street)"/><br />
+                           placeholder="@Html.DisplayNameFor(model => model.Useraddress.Street)" /><br />
                     <span asp-validation-for="Useraddress.Street" class="text-danger" style="font-size: small;"></span>
                     <br />
                     <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Useraddress.Number"
-                            placeholder="@Html.DisplayNameFor(model => model.Useraddress.Number)"/><br />
+                           placeholder="@Html.DisplayNameFor(model => model.Useraddress.Number)" /><br />
                     <span asp-validation-for="Useraddress.Number" class="text-danger" style="font-size: small;"></span>
                     <br />
                     <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Useraddress.ApartmentNumber"
-                            placeholder="@Html.DisplayNameFor(model => model.Useraddress.ApartmentNumber)"/><br />
+                           placeholder="@Html.DisplayNameFor(model => model.Useraddress.ApartmentNumber)" /><br />
                     <span asp-validation-for="Useraddress.ApartmentNumber" class="text-danger" style="font-size: small;"></span>
                     <br />
                     <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Useraddress.ZipCode"
-                            placeholder="@Html.DisplayNameFor(model => model.Useraddress.ZipCode)"/><br />
+                           placeholder="@Html.DisplayNameFor(model => model.Useraddress.ZipCode)" /><br />
                     <span asp-validation-for="Useraddress.ZipCode" class="text-danger" style="font-size: small;"></span>
                     <br />
                     <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" asp-for="Useraddress.City"
-                            placeholder="@Html.DisplayNameFor(model => model.Useraddress.City)"/><br />
+                           placeholder="@Html.DisplayNameFor(model => model.Useraddress.City)" /><br />
                     <span asp-validation-for="Useraddress.City" class="text-danger" style="font-size: small;"></span>
-                    <br/><br />
+                    <br /><br />
                     <div class="text-center">
                         <input type="submit" style="padding:15px 50px;font-size:large;"
-                                class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
-                    
+                               class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
                     </div>
                     <br />
-
                 </form>
             </div>
 
@@ -111,29 +109,30 @@
 
             <div class="tab-pane" id="haslo">
                 <form id="3" method="post" asp-route-returnurl="@ViewData["ReturnUrl"]" asp-controller="User"
-                    asp-action="EditCredentials">
+                      asp-action="EditCredentials">
                     <br><br>
                     <!-- TODO: rozdzielić pola z hasłami -->
-                    <input type="hidden" asp-for="EmailAddress"/>
-                    <input type="hidden" asp-for="Credentials.Userid"/>
-                    <input  class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" placeholder="Stare hasło" asp-for="Credentials.OldPassword"> <br />
+                    <input type="hidden" asp-for="EmailAddress" />
+                    <input type="hidden" asp-for="Credentials.Userid" />
+                    <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" placeholder="Stare hasło" asp-for="Credentials.OldPassword"> <br />
                     <span asp-validation-for="Credentials.OldPassword" class="text-danger" style="font-size: small;"></span>
                     <br />
                     <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" placeholder="Nowe hasło" asp-for="Credentials.Password"> <br />
                     <span asp-validation-for="Credentials.Password" class="text-danger" style="font-size: small;"></span>
                     <br />
-                    <input  class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" placeholder="Powtórz hasło" asp-for="Credentials.PasswordConfirmed"> <br />
+                    <input class="valid rounded bg-white border border-5 border-dark" style="padding:3px; width:70%" placeholder="Powtórz hasło" asp-for="Credentials.PasswordConfirmed"> <br />
                     <span asp-validation-for="Credentials.PasswordConfirmed" class="text-danger" style="font-size: small;"></span>
                     <br />
                     <br />
                     <div class="text-center">
                         <input type="submit" style="padding:15px 50px;font-size:large;"
-                                class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
+                               class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
                     </div>
                     <br />
-
                 </form>
             </div>
+
+
         </div>
     </div>
 
@@ -147,31 +146,29 @@
     }
 
     <script type="text/javascript">
-    let nav = document.getElementsByClassName("navigation");
-    console.log(nav);
+        let nav = document.getElementsByClassName("navigation");
+        console.log(nav);
 
-    for (n of nav) {
-        n.style.color="#e7e8e1";
-        n.addEventListener("click", (event) => selected(event));
-    }
-
-    function selected(event) {
-        for(n of nav){
-            n.style.backgroundColor=null;
-            n.style.color="#e7e8e1";
+        for (n of nav) {
+            n.style.color = "#e7e8e1";
+            n.addEventListener("click", (event) => selected(event));
         }
-        event.target.style.fontWeight = "bold";
-        event.target.style.color = "#d6e324";
-        console.log(event.target.id);
-        console.log(event.target.style.backgroundColor);
-    }
 
-</script>
+        function selected(event) {
+            for (n of nav) {
+                n.style.backgroundColor = null;
+                n.style.color = "#e7e8e1";
+            }
+            event.target.style.fontWeight = "bold";
+            event.target.style.color = "#d6e324";
+            console.log(event.target.id);
+            console.log(event.target.style.backgroundColor);
+        }
+    </script>
 </section>
 
+@section scripts{
 
- @section scripts{
-
-        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <scrip src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></scrip>
-    }
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <scrip src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></scrip>
+}
