@@ -22,9 +22,10 @@ namespace freelancerzy.Models
         public string Status { get; set; }
         
         public bool Seen { get; set; }
-
+        public int ChatId { get; set; }
         public virtual PageUser UserFrom { get; set; }
         public virtual PageUser UserTo { get; set; }
         public virtual ICollection<Messagereport> Messagereport { get; set; }
+        public virtual Chat Chat { get; set; }
     }
 }

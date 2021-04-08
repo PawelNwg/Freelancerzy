@@ -28,6 +28,8 @@ namespace freelancerzy.Models
         public virtual DbSet<Usertype> Usertype { get; set; }
         public virtual DbSet<OfferReport> OfferReport { get; set; }
         public virtual DbSet<OfferReportReason> OfferReportReason { get; set; }
+        public virtual DbSet<Chat> Chats { get; set; }
+        public virtual DbSet<ChatUser> ChatUsers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -39,6 +41,9 @@ namespace freelancerzy.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            
+
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.ToTable("category");
