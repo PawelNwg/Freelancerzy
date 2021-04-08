@@ -34,6 +34,9 @@
                     @Html.DisplayFor(m => user.EmailAddress)
                 </td>
                 <td>
+                    <a asp-action="Edit" asp-route-id="@user.Userid">
+                        <span class="fa fa-pencil btn"></span>
+                    </a>
                     <a asp-action="Details" asp-route-id="@user.Userid">
                         <span class="fa fa-reorder btn"></span>
                     </a>
