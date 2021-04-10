@@ -533,14 +533,39 @@ namespace app.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost]
-        [Authorize(AuthenticationSchemes = "CookieAuthentication")]
-        public async Task<IActionResult> EditPermissions(PageUser user)
+        [HttpGet]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> Edit(int? id)
         {
-            ViewData["TypeId"] = user.Type.ToString(); ;
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.PageUser
+                .Include(u => u.Type)
+                .FirstOrDefaultAsync(u => u.Userid == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["UserTypes"] = new SelectList(_context.Usertype, "Typeid", "Name");
+            return View(user);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> EditPermission(PageUser user)
+        {
+            if (user.TypeId == null) return NotFound();
+
+            _context.PageUser.Attach(user);
+            _context.Entry(user).Property(u => u.TypeId).IsModified = true;
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("List", "User");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

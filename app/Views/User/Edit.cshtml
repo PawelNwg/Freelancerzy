@@ -1,0 +1,77 @@
+﻿@model freelancerzy.Models.PageUser
+
+@{
+    ViewData["Title"] = "Edytuj dane";
+}
+
+<h1 class="text-center" style=" padding:20px">Edytuj dane użytkownika <span style="color: #d6e324">@Html.DisplayFor(model => model.FirstName)</span></h1>
+<section class="front ">
+    <div class="text-center bg-white rounded bg-white border border-dark" style="width:70%;  margin: 0 auto; border-width:4px;">
+        <div>
+            <ul class="nav nav-tabs bg-dark " style="padding: 2%;" role="tablist">
+                <li style="width:100%">
+                    <a id="1" class="navigation h5 text-uppercase font-weight-normal text-decoration-none" href="#uprawnienia" role="tab" data-toggle="tab">
+                        Uprawnienia
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <br />
+        <div class="tab-content">
+            <div class="tab-pane active" id="uprawnienia">
+                <form id="1" method="post" asp-controller="User"
+                      asp-action="EditPermission">
+                    <br><br>
+
+                    <select class="text-center" asp-for="TypeId" asp-items="ViewBag.UserTypes" style="padding:3px; width:30%">
+                        <option value="" disabled selected hidden>@Html.DisplayFor(model => model.Type.Name)</option>
+                    </select>
+                    <input type="hidden" asp-for="@Model.Userid" />
+                    <br>
+                    <br>
+                    <div class="text-center">
+                        <input type="submit" style="padding:15px 50px;font-size:large;"
+                               class="btn btn-outline-primary btn-dark text-light" value="Zatwierdź" />
+                    </div>
+                    <br />
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+        };
+        </script>
+    }
+
+    <script type="text/javascript">
+        let nav = document.getElementsByClassName("navigation");
+        console.log(nav);
+
+        for (n of nav) {
+            n.style.color = "#e7e8e1";
+            n.addEventListener("click", (event) => selected(event));
+        }
+
+        function selected(event) {
+            for (n of nav) {
+                n.style.backgroundColor = null;
+                n.style.color = "#e7e8e1";
+            }
+            event.target.style.fontWeight = "bold";
+            event.target.style.color = "#d6e324";
+            console.log(event.target.id);
+            console.log(event.target.style.backgroundColor);
+        }
+    </script>
+</section>
+
+@section scripts{
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <scrip src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></scrip>
+}
