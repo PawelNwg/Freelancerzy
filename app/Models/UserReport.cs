@@ -12,16 +12,16 @@ namespace freelancerzy.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ReportId { get; set; }
-        [ForeignKey("ReportedUser")]
-        public int UserId { get; set; }
-        [ForeignKey("ReportingUser")]
-        public int ReportingUserId { get; set; }
+        //[ForeignKey("ReportedInUser")]
+        public int UserReportedId { get; set; }
+        //[ForeignKey("ReportedByUser")]
+        public int UserReporterId { get; set; }
         public DateTime? ReportDate { get; set; }
         public int ReasonId { get; set; }
         public bool IsActive { get; set; }
 
-        public virtual PageUser ReportingUser { get; set; }
-        public virtual PageUser ReportedUser { get; set; }
+        public virtual PageUser UserReported { get; set; }
+        public virtual PageUser UserReporter { get; set; }
         public virtual OfferReportReason OfferReportReason { get; set; }
     }
 }
