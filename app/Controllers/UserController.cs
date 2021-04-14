@@ -124,7 +124,7 @@ namespace app.Controllers
                 return NotFound();
             }
             var user = await _context.PageUser.FirstOrDefaultAsync(o => o.Userid == id);
-
+            
             user.isBlocked = true;
             user.blockType = ReasonId;
             user.dateOfBlock = DateTime.Now;
