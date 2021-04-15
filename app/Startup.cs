@@ -15,6 +15,7 @@ using freelancerzy.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using TokenGenerator.Extensions;
+using freelancerzy.Hubs;
 
 namespace Freelancerzy
 {
@@ -33,6 +34,8 @@ namespace Freelancerzy
             services.AddControllersWithViews();
             services.AddDbContext<cb2020freedbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTokenGenerator(Configuration);
+
+            services.AddSignalR();
 
             services.AddAuthentication(o => {
                 
@@ -78,6 +81,7 @@ namespace Freelancerzy
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
         }
     }

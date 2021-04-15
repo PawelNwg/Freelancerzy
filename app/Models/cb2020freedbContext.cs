@@ -28,6 +28,8 @@ namespace freelancerzy.Models
         public virtual DbSet<Usertype> Usertype { get; set; }
         public virtual DbSet<OfferReport> OfferReport { get; set; }
         public virtual DbSet<OfferReportReason> OfferReportReason { get; set; }
+        public virtual DbSet<Chat> Chats { get; set; }
+        public virtual DbSet<ChatUser> ChatUsers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -39,6 +41,9 @@ namespace freelancerzy.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+
+
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.ToTable("category");
@@ -253,7 +258,7 @@ namespace freelancerzy.Models
                 entity.Property(e => e.ReasonId).HasColumnType("int(11)").UseIdentityColumn();
 
                 entity.Property(e => e.Description).HasColumnType("varchar(50)").HasMaxLength(50).IsRequired(true);
-                
+
             });
 
             modelBuilder.Entity<PageUser>(entity =>
@@ -286,7 +291,7 @@ namespace freelancerzy.Models
                     .HasColumnName("phonenumber")
                     .HasColumnType("varchar(12)")
                     .HasMaxLength(12);
-                    
+
 
                 entity.Property(e => e.Surname)
                     .IsRequired()
@@ -302,7 +307,7 @@ namespace freelancerzy.Models
                     .IsRequired()
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("NOW()");
-                    ;
+                ;
 
                 entity.Property(e => e.TypeId).HasColumnType("int(11)");
 
@@ -436,6 +441,23 @@ namespace freelancerzy.Models
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<UserReport>(entity =>
+            {
+                entity.HasKey(e => e.ReportId)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("userreport");
+
+                entity.HasOne(e => e.UserReported)
+                    .WithMany(e => e.UserReportedIn)
+                    .HasForeignKey(e => e.UserReportedId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasOne(e => e.UserReporter)
+                    .WithMany(e => e.ReportReporter)
+                    .HasForeignKey(e => e.UserReporterId)
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
             OnModelCreatingPartial(modelBuilder);
         }
 

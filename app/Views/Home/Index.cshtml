@@ -4,33 +4,8 @@
 
 <div class="text-center">
     
-<div class="chatContent">
-
-        <div id="chatBox" class="chatBox" style="display:none;" >
-            <div class="keeper">
-                <div class="label">Nazwa kontaktu</div>
-                <div id="chatClose" onclick="CloseChat()">X</div>
-                <div class="chatCloudContact">wiadomosc</div>
-                <div class="chatCloudUser">wiadomosc</div>
-                <div class="chatLabel">Chat</div>
-            </div>
-          
-        </div>
-        <input id="chatSquare" type="button"  class="chatSquare" onclick="ShowChat()" value="Chat "/>
-</div>
 
 
-
-    <script>
-        let ShowChat = () => {
-            document.getElementById("chatSquare").style.display = "none";
-            document.getElementById("chatBox").style.display = "";
-        }
-        let CloseChat = () => {
-            document.getElementById("chatBox").style.display = "none";
-            document.getElementById("chatSquare").style.display = "";
-        }
-    </script>
 
     <div class="frontImage parallax ">
 
@@ -44,14 +19,14 @@
                 <button type="button"
                         style="margin-left: 10%;"
                         class="btn btn-outline-primary text-white btn-sm">
-                    <a class="nav-link  text-light" asp-area="" asp-controller="Home" asp-action="Search"><span>Zatrudnij</span></a>
+                    <a class="nav-link  text-light" asp-area="" asp-controller="Offers" asp-action="Search"><span>Zatrudnij</span></a>
                 </button>
                 </button>
 
                 <button type="button"
                         style="margin-left: 1%;"
                         class="btn btn-outline-primary text-white btn-sm">
-                    <a class="nav-link  text-light" asp-area="" asp-controller="Home" asp-action="Offert"><span>Zarabiaj online</span></a>
+                    <a class="nav-link  text-light" asp-area="" asp-controller="Offers" asp-action="NewOffer"><span>Zarabiaj online</span></a>
                 </button>
                 </button>
 
@@ -64,19 +39,19 @@
 
             <h2 class="row justify-content-center m-5">Pytania i odpowiedzi</h2>
             <div class="row justify-content-center mt-4">
-                <div class="col-sm-2 about-title"><h4>Co to za strona?</h4>Jesteśmy kimś kimś tam </br> robimy coś tam</p></div>
-                <div class="col-sm-2 about-title"><h4>Co to za strona?</h4>Jesteśmy kimś kimś tam </br> robimy coś tam</p></div>
-                <div class="col-sm-2 about-title"><h4>Co to za strona?</h4>Jesteśmy kimś kimś tam </br> robimy coś tam</p></div>
+                <div class="col-sm-2 about-title"><h4>Co to za strona?</h4>Jesteśmy pośrednikami w poszukiwaniu pracy </br> Dzięki nam zatrudnisz siebie albo innych</p></div>
+                <div class="col-sm-2 about-title"><h4>Czy zakładanie konta jest konieczne?</h4>Tak</br> owszem</p></div>
+                <div class="col-sm-2 about-title"><h4>Czy moge odzyskać utracone hasło?</h4>Tak, w razie problemów </br> skontaktuj się z administacją</p></div>
             </div>
             <div class="row justify-content-center mt-4 mb-4">
-                <div class="col-sm-2 about-title"><h4>Co to za strona?</h4>Jesteśmy kimś kimś tam </br> robimy coś tam</p></div>
-                <div class="col-sm-2 about-title"><h4>Co to za strona?</h4>Jesteśmy kimś kimś tam </br> robimy coś tam</p></div>
-                <div class="col-sm-2 about-title"><h4>Co to za strona?</h4>Jesteśmy kimś kimś tam </br> robimy coś tam</p></div>
+                <div class="col-sm-2 about-title"><h4>Jak założyć konto?</h4>Aby założyć konto należy </br> wejść w zakładkę Rejestracja</p></div>
+                <div class="col-sm-2 about-title"><h4>Jak się zalogować?</h4>Aby się zalogować należy</br> wejść w zakładkę Login</p></div>
+                <div class="col-sm-2 about-title"><h4>Jak wyszukać ofery pracy?</h4>W celu wybrania ofery pracy</br>wjedź w zakładkę Szukaj ofert</p></div>
             </div>
             <div class="row justify-content-center mt-4 mb-4">
-                <div class="col-sm-2 about-title"><h4>Co to za strona?</h4>Jesteśmy kimś kimś tam </br> robimy coś tam</p></div>
-                <div class="col-sm-2 about-title"><h4>Co to za strona?</h4>Jesteśmy kimś kimś tam </br> robimy coś tam</p></div>
-                <div class="col-sm-2 about-title"><h4>Co to za strona?</h4>Jesteśmy kimś kimś tam </br> robimy coś tam</p></div>
+                <div class="col-sm-2 about-title"><h4>Dlaczego warto się zarejestrować?</h4>Rejestracja jest niezbędna do korzystania ze wszystkich zasobów </br>strony freelancerzy</p></div>
+                <div class="col-sm-2 about-title"><h4>Jak zmienić moje dane?</h4>W celu zmiany danych po zalogowaniu</br>wyszukaj nad nazwą swojego konta opcji edytuj dane</p></div>
+                <div class="col-sm-2 about-title"><h4>Jak mogę reagować na hejt?</h4>Portal Freelancerzy czuwa nad wszystkimi zgłoszeniami</br> wystarczy przy ofercie zgłosić dane konto</p></div>
             </div>
         </div>
 

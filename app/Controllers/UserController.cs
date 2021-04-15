@@ -20,6 +20,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
 namespace app.Controllers
 {
     public class UserController : Controller
@@ -29,6 +30,7 @@ namespace app.Controllers
         private readonly cb2020freedbContext _context;
 
         private readonly ITokenManager _tokenManager;
+
         // GET: User List
         public async Task<IActionResult> List()
         {
@@ -73,8 +75,7 @@ namespace app.Controllers
         [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> ReportedUsersListPartial(int? pageNumber, string order, int type, string id, string email)
         {
-
-            var Users= SortedList(order);
+            var Users = SortedList(order);
             var reportedUsers = Users.Where(o => o.isReported == true);
             int userId;
             if (id != null && Int32.TryParse(id, out userId))
@@ -99,12 +100,16 @@ namespace app.Controllers
             {
                 case "idAsc":
                     return _context.PageUser.OrderBy(o => o.Userid);
+
                 case "idDesc":
                     return _context.PageUser.OrderByDescending(o => o.Userid);
+
                 case "nameAsc":
-                    return _context.PageUser.OrderBy(o => o.Surname);              
+                    return _context.PageUser.OrderBy(o => o.Surname);
+
                 case "nameDesc":
                     return _context.PageUser.OrderByDescending(o => o.Surname);
+
                 default:
                     return _context.PageUser.OrderBy(o => o.Userid);
             }
@@ -119,7 +124,7 @@ namespace app.Controllers
                 return NotFound();
             }
             var user = await _context.PageUser.FirstOrDefaultAsync(o => o.Userid == id);
-
+            
             user.isBlocked = true;
             user.blockType = ReasonId;
             user.dateOfBlock = DateTime.Now;
@@ -131,11 +136,12 @@ namespace app.Controllers
 
             return RedirectToAction("ReportedUsers");
         }
+
         [HttpPost]
-        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]     
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> RejectReport(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -146,6 +152,7 @@ namespace app.Controllers
 
             return RedirectToAction("ReportedUsers");
         }
+
         public async Task<IActionResult> ReportedDetails(int? id)
         {
             if (id == null)
@@ -159,8 +166,9 @@ namespace app.Controllers
             }
             return View(User);
         }
+
         // GET: User/Details/5
-        public IActionResult Details()
+        public IActionResult MyDetails()
         {
             String email = this.User.Identity.Name;
             if (email == null) return NotFound();
@@ -172,7 +180,27 @@ namespace app.Controllers
             }
             return View(user);
         }
-        
+
+        // GET: User/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.PageUser
+                .Include(u => u.Useraddress)
+                .Include(u => u.Type)
+                .FirstOrDefaultAsync(u => u.Userid == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            ViewBag.Confirmation = user.emailConfirmation ? "Potwierdzono" : "Nie potwierdzono";
+            return View(user);
+        }
 
         // GET: PageUser/Delete/5
         //[ValidateAntiForgeryToken]
@@ -191,7 +219,6 @@ namespace app.Controllers
             }
 
             List<Offer> offers = await _context.Offer.Where(o => o.UserId == user.Userid).ToListAsync();
-
 
             foreach (Offer o in offers)
             {
@@ -223,13 +250,15 @@ namespace app.Controllers
         {
             return View();
         }
+
         public IActionResult Login(string ReturnUrl = "/Home/Index")
         {
             ViewData["ReturnUrl"] = ReturnUrl;
             return View();
         }
+
         [Authorize(AuthenticationSchemes = "CookieAuthentication")]
-        public async Task<IActionResult> Edit()
+        public async Task<IActionResult> MyEdit()
         {
             //TODO: error handling
             String email = this.User.Identity.Name;
@@ -241,14 +270,17 @@ namespace app.Controllers
             }
             return View(user);
         }
+
         public IActionResult Register()
         {
             return View();
         }
+
         public IActionResult PasswordReset()
         {
             return View();
         }
+
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
@@ -256,6 +288,7 @@ namespace app.Controllers
 
             return RedirectToAction("Login");
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password, string ReturnUrl) //TODO: pass user credentials
         {
@@ -266,12 +299,12 @@ namespace app.Controllers
                 ViewData["error"] = "Podana nazwa użytkownika nie istnieje";
                 return View();
             }
-            else if(user.isBlocked == true)
+            else if (user.isBlocked == true)
             {
                 switch (user.blockType)
                 {
                     case 1: //blokada na tydzien
-                        if(user.dateOfBlock.GetValueOrDefault().AddDays(7) < DateTime.Now)
+                        if (user.dateOfBlock.GetValueOrDefault().AddDays(7) < DateTime.Now)
                         {
                             user.isBlocked = false;
                             user.dateOfBlock = null;
@@ -283,8 +316,9 @@ namespace app.Controllers
                             return View();
                         }
                         break;
+
                     case 2: //blokada na miesiac
-                        if(user.dateOfBlock.GetValueOrDefault().AddDays(30) < DateTime.Now)
+                        if (user.dateOfBlock.GetValueOrDefault().AddDays(30) < DateTime.Now)
                         {
                             user.isBlocked = false;
                             user.dateOfBlock = null;
@@ -296,6 +330,7 @@ namespace app.Controllers
                             return View();
                         }
                         break;
+
                     case 3: //blokada na zawsze
                         ViewData["error"] = $"Twoje konto jest permamentnie zablokowane za łamanie zasad społeczności";
                         return View();
@@ -304,38 +339,39 @@ namespace app.Controllers
                 _context.Update(user);
                 await _context.SaveChangesAsync();
             }
-           
-                user.Credentials = _context.Credentials.FirstOrDefault(u => u.Userid == user.Userid);
-                user.Type = _context.Usertype.FirstOrDefault(u => u.Typeid == user.TypeId);
 
-                if (user.emailConfirmation != true)
-                {
-                    ViewData["error"] = "Email nie został potwierdzony";
-                    return View();
-                }
+            user.Credentials = _context.Credentials.FirstOrDefault(u => u.Userid == user.Userid);
+            user.Type = _context.Usertype.FirstOrDefault(u => u.Typeid == user.TypeId);
 
-                if (ValidateUser(user, password))
-                {
-                    var claims = new List<Claim>()
+            if (user.emailConfirmation != true)
+            {
+                ViewData["error"] = "Email nie został potwierdzony";
+                return View();
+            }
+
+            if (ValidateUser(user, password))
+            {
+                var claims = new List<Claim>()
                     {
                         new Claim(ClaimTypes.Name,user.EmailAddress),
                         new Claim(ClaimTypes.Role,user.Type.Name),
                         new Claim("nameandsurname",user.FirstName + " " + user.Surname),
                     };
-                    var claimsIdentity = new ClaimsIdentity(claims, "CookieAuthentication");
+                var claimsIdentity = new ClaimsIdentity(claims, "CookieAuthentication");
 
-                    await HttpContext.SignInAsync("CookieAuthentication", new
-                    ClaimsPrincipal(claimsIdentity), new AuthenticationProperties
-                    {
-                        IsPersistent = true,
-                        ExpiresUtc = DateTime.UtcNow.AddMinutes(20)
-                    });
-                    return Redirect(ReturnUrl);
-                }
-            
+                await HttpContext.SignInAsync("CookieAuthentication", new
+                ClaimsPrincipal(claimsIdentity), new AuthenticationProperties
+                {
+                    IsPersistent = true,
+                    ExpiresUtc = DateTime.UtcNow.AddMinutes(20)
+                });
+                return Redirect(ReturnUrl);
+            }
+
             ViewData["error"] = "Podano złe hasło";
             return View();
         }
+
         private bool ValidateUser(PageUser user, string password)
         {
             var hasher = new PasswordHasher<string>();
@@ -349,7 +385,6 @@ namespace app.Controllers
         [HttpPost]
         public IActionResult PasswordReset(string email)
         {
-
             PageUser user = _context.PageUser.Include(user => user.Credentials).FirstOrDefault(user => user.EmailAddress == email);
             if (user == null)
             {
@@ -414,8 +449,6 @@ namespace app.Controllers
             //TODO: check user credentials
             return View("ConfirmUserRegistration");
         }
-
-
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = "CookieAuthentication")]
@@ -500,6 +533,41 @@ namespace app.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.PageUser
+                .Include(u => u.Type)
+                .FirstOrDefaultAsync(u => u.Userid == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["UserTypes"] = new SelectList(_context.Usertype, "Typeid", "Name");
+            return View(user);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
+        public async Task<IActionResult> EditPermission(PageUser user)
+        {
+            if (user.TypeId == null) return NotFound();
+
+            _context.PageUser.Attach(user);
+            _context.Entry(user).Property(u => u.TypeId).IsModified = true;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("List", "User");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -508,7 +576,6 @@ namespace app.Controllers
 
         private void EmailAsync(PageUser pageuser)
         {
-
             Mail mailInfo = new Mail();
             MailMessage mail = new MailMessage();
             mail.To.Add(pageuser.EmailAddress);
@@ -517,7 +584,8 @@ namespace app.Controllers
             var token = generateToken(pageuser);
             string Body = mailInfo.EmailBody;
             string url = HttpContext.Request.Host.Value;
-            string ConfirmationLink = "https://" + url + "/User/ConfirmEmail?" + "token=" + token;
+            string protocol = HttpContext.Request.Scheme;
+            string ConfirmationLink = protocol + "://" + url + "/User/ConfirmEmail?" + "token=" + token;
             Body = Body.Replace("<insert_confirmation_link_here>", ConfirmationLink);
             mail.Body = Body;
             mail.IsBodyHtml = true;
@@ -528,11 +596,10 @@ namespace app.Controllers
             smtp.Credentials = new System.Net.NetworkCredential(_config.GetValue<String>("SmtpServers:login"), _config.GetValue<String>("SmtpServers:password"));
             smtp.EnableSsl = true;
             smtp.Send(mail);
-
         }
+
         private void EmailPasswordAsync(PageUser pageuser)
         {
-
             MailPasswd mailInfo = new MailPasswd();
             MailMessage mail = new MailMessage();
             mail.To.Add(pageuser.EmailAddress);
@@ -556,8 +623,8 @@ namespace app.Controllers
                 EnableSsl = true
             };
             smtp.Send(mail);
-
         }
+
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(string token)
         {
@@ -574,7 +641,6 @@ namespace app.Controllers
                 var userId = claims["userId"];
                 var email = claims["userEmail"];
                 DateTime date = DateTime.Parse((claims["nameAndSurname"] as string));
-
 
                 var user = _context.PageUser.FirstOrDefault(u => u.EmailAddress == email);
                 if (user == null)
@@ -643,7 +709,5 @@ namespace app.Controllers
 
             await _context.SaveChangesAsync();
         }
-
     }
-
 }

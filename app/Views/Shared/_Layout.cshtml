@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    
+
     <!--<link rel="stylesheet" type="text/css" href="my_bs.css">-->
     <link rel="stylesheet" href="~/css/my_bs.css">
     <link rel="stylesheet" href="~/css/main.css">
@@ -34,10 +34,16 @@
                             </a>
                         </button>
                     </li>
-                    <li class="nav-item ml-4 mr-4">
+                    <li class="nav-item ml-4">
                         <button type="button" class="btn btn-outline-primary text-white mt-1">
                             <a class="nav-link  text-light" asp-area="" asp-controller="Offers"
                                asp-action="Search"><span>Szukaj Ofert</span></a>
+                        </button>
+                    </li> 
+                    <li class="nav-item ml-4 mr-4">
+                        <button type="button" class="btn btn-outline-primary text-white mt-1">
+                            <a class="nav-link  text-light" asp-area="" asp-controller="Chat"
+                               asp-action="Index"><span>Chat</span></a>
                         </button>
                     </li>
 
@@ -55,6 +61,7 @@
                                     <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="List">Lista użytkowników</a>
                                     <a class="dropdown-item nav-link" asp-area="" asp-controller="Offers" asp-action="ReportedOffers">Zgłoszone oferty</a>
                                     <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="ReportedUsers">Zgłoszeni użytkownicy</a>
+                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="Admin" asp-action="BlockedUsers">Zablokowani użytkownicy</a>
                                 </div>
                             </li>
 
@@ -65,15 +72,15 @@
                                 Zalogowany
                                 <br /><span>@Context.User.Claims.FirstOrDefault(c => c.Type == "nameandsurname")?.Value</span>
                             </a>
-                        <div id="text" class="dropdown-menu bg-dark text-light" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Details">Szczegóły konta</a>
-                                <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Edit">Edytuj dane</a>
+                            <div id="text" class="dropdown-menu bg-dark text-light" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="MyDetails">Szczegóły konta</a>
+                                <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="MyEdit">Edytuj dane</a>
                                 <a class="dropdown-item nav-link" asp-area="" asp-controller="Offers" asp-action="MyOffers">Moje oferty</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item nav-link" asp-area="" asp-controller="User" asp-action="Logout">Wyloguj się</a>
                             </div>
                         </li>
-                        
+
                     }
                     else
                     {
@@ -95,7 +102,6 @@
             </div>
         </div>
     </nav>
-
 
     <div class="fluid " style="margin-bottom: 50em;">
         @RenderBody()
@@ -131,7 +137,7 @@
                 <div class="col-lg-3 h-200 mt-5 text-center text-lg-left  text-light ">
                     <h4>Kategorie </h4>
                     <ul class="list-unstyled p_t">
-                        <li >Programista</li>
+                        <li>Programista</li>
                         <li>Projektant Wnętrz</li>
                         <li>Architekt</li>
                         <li>Grafik</li>
@@ -144,15 +150,12 @@
 
                     <div class="row social justify-content-center">
                         <div class="col-sm-4">
-                            
-                                <img src="~/css/in.png" alt="1" class="img-thumbnail img-fluid" type="png"
-                                     style="background: transparent; border-width: 0;">
-                            
-                           
-                                <img src="~/css/wu.png" alt="2" class="img-thumbnail img-fluid" type="png"
-                                     style="background: transparent; border-width: 0;">
-                           
 
+                            <img src="~/css/in.png" alt="1" class="img-thumbnail img-fluid" type="png"
+                                 style="background: transparent; border-width: 0;">
+
+                            <img src="~/css/wu.png" alt="2" class="img-thumbnail img-fluid" type="png"
+                                 style="background: transparent; border-width: 0;">
                         </div>
                         <div class="col-sm-4">
                             <div>
@@ -175,27 +178,19 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
-
             </div>
 
-            <p class="text-muted small mb-4 mb-lg-0">&copy;2020 - Freelancerzy. Wszystkie prawa zastrzerzone.</p>
+            <p class="text-muted small mb-4 mb-lg-0">Freelancerzy. Projekt zespołowy 2020-2021.</p>
         </div>
     </footer>
-    
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-
-
     @RenderSection("Scripts", required: false)
 </body>
-
 </html>
 <style>
     div#text > :hover {

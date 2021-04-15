@@ -1,0 +1,157 @@
+﻿@model IEnumerable<freelancerzy.Models.Message>
+@{ 
+    ViewData["Title"] = "Chat";
+    var userName = User.Identity.Name;
+
+}
+<h3 class="text-center" style=" padding:20px">Rozmowa z @ViewBag.UserToName</h3>
+<hr />
+
+<div class="text-center bg-white rounded bg-white border border-dark" style="width:70%;  margin: 0 auto; border-width:4px;">
+        <div>
+            <ul class="nav nav-tabs bg-dark " style="padding: 2%;" role="tablist"> 
+                <li  style="width:34%">
+                    <span class="navigation text-primary h5 text-uppercase font-weight-bold text-decoration-none">@ViewBag.Username</span>
+                    &nbsp;
+                    &nbsp;
+                    <span class="navigation text-light h5 font-weight-normal text-decoration-none">@ViewBag.UserToName</span>
+                </li>
+            </ul>
+        </div>
+        <br />
+        <div class="container ">
+    <div class="row">&nbsp;</div>
+    <div class="row" >
+        @* @TODO domyślna szerokość jest spowodowana prawdopodobnie tym ze bootsrap dzieli kolumny na 12 czesci *@
+        <div class="col-md-12 chat-body" id="chat" style="max-height:500px; overflow:scroll; overflow-x: hidden; ">
+            @if (Model != null)
+            {
+                @foreach(var message in Model.OrderBy(m => m.Date))
+                {
+                    string containerClass,textAlign, contColor, offset;
+                    if(userName == message.UserFrom.EmailAddress)
+                    {
+                        containerClass = "container primary";
+                        textAlign = "text-left ";
+                        contColor = "bg-primary";
+                        offset = "flex-row-reverse";
+                    }
+                    else
+                    {
+                        containerClass = "container ";
+                        textAlign = "text-left";
+                        contColor = "bg-light";
+                        offset = "flex-row";
+                    }
+                    <div class="row m-2 d-flex @offset">
+                        <div class="@offset ">
+                           <br>
+                            <div class="@containerClass">
+                               <div class = "font-weight-bold text-left" > @message.Date.ToString("d.M.yyyy, HH:mm:ss")</div>
+
+@* jak chcem miec zawijane to max-width zamiast width *@
+                                <div style="max-width: 400px; overflow-wrap: break-word; " class="@textAlign @contColor p-2 ml-2">@message.Content</div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="col-md-12">
+            <form asp-action="Create" method="post" onsubmit="sendMessage(event)">
+                <div asp-validation-summary="ModelOnly"  class="text-danger"></div>
+                <input type="hidden" value="@ViewBag.UserToId" name="UserToId" id="UserToId"/>
+                <input type="hidden" value="@ViewBag.chatId" name="ChatId" id="ChatId"/>
+                <div class="form-group">
+                    <input placeholder="wprowadź tekst" id="message-input" name="Content" class="form-control rounded bg-white border border-5 border-dark" id="messageText" />
+                </div>
+                <div class="form-group ">
+                <a class="text-dark" asp-action="Chat" asp-route-chatId="@ViewBag.chatId">Przeładuj strone</a>
+                &nbsp;
+                <input type="submit" value="Wyślij" id="submitButton" class="btn btn-dark"/>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+<style>
+    .bg-white {
+        background-color: white;
+    }
+</style>
+
+@section scripts {
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/js/messageBuilder.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    var connection = new signalR.HubConnectionBuilder()
+        .withUrl("/chatHub")
+        .build();
+    var _connectionId = '';
+
+    connection.on("RecieveMessage",
+        function (data) {
+            console.log(data);
+            var date = new Date(data.date).toLocaleString();
+            var classList = [];
+            var offsetClass = '';
+            var containerClasses = [];
+            var contentClasses = [];
+            
+            if (data.userName == '@userName') {
+                classList = ['row', 'm-2', 'd-flex', 'flex-row-reverse']
+                offsetClass = 'flex-row-reverse';
+                containerClasses = ['container', 'primary']
+                contentClasses = ['text-left', 'bg-primary'];
+            }
+            else {
+                classList = ['row', 'm-2', 'd-flex', 'flex-row']
+                offsetClass = 'flex-row';
+                containerClasses = ['container']
+                contentClasses = ['text-left', 'bg-light'];
+            }
+            var message = messageBuilder()
+                .createMessage(classList, offsetClass, containerClasses)
+                .withHeader(date)
+                .withContent(data.text, contentClasses)
+            .build();
+            document.querySelector('.chat-body').append(message);
+            document.getElementById('chat').scrollTo(0, document.getElementById('chat').scrollHeight);
+    })
+    connection.start()
+        .then(function () {
+            connection.invoke('joinRoom', '@ViewBag.chatId');
+        })
+        .catch(function (err) {
+            console.log(err)
+        })
+
+    window.addEventListener('onunload', function () {
+        connection.invoke('leaveRoom', '@ViewBag.chatId');
+    })
+    var sendMessage = function (event) {
+        event.preventDefault();
+        var data = new FormData(event.target);
+        document.getElementById('message-input').value = '';
+        axios.post('/Chat/Create', data)
+            .then(res => {
+                console.log("Message Sent!")
+            })
+            .catch(err => {
+                console.log("Failed to send message!")
+            })
+    }
+</script>
+}
+<script>
+    $(function () {
+        
+        document.getElementById('chat').scrollTo(0, document.getElementById('chat').scrollHeight);
+    })
+</script>

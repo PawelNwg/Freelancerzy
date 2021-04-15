@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using freelancerzy.Models;
 
 namespace freelancerzy.Migrations
 {
     [DbContext(typeof(cb2020freedbContext))]
-    partial class cb2020freedbContextModelSnapshot : ModelSnapshot
+    [Migration("20210404130827_messageseen")]
+    partial class messageseen
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,38 +36,6 @@ namespace freelancerzy.Migrations
                     b.HasKey("Categoryid");
 
                     b.ToTable("category");
-                });
-
-            modelBuilder.Entity("freelancerzy.Models.Chat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Chats");
-                });
-
-            modelBuilder.Entity("freelancerzy.Models.ChatUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("ChatId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int(11)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChatId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ChatUsers");
                 });
 
             modelBuilder.Entity("freelancerzy.Models.Credentials", b =>
@@ -98,9 +68,6 @@ namespace freelancerzy.Migrations
                         .HasColumnName("messageid")
                         .HasColumnType("int(11)");
 
-                    b.Property<int>("ChatId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("varchar(250) CHARACTER SET utf8mb4")
@@ -126,8 +93,6 @@ namespace freelancerzy.Migrations
                         .HasColumnType("int(11)");
 
                     b.HasKey("Messageid");
-
-                    b.HasIndex("ChatId");
 
                     b.HasIndex("UserFromId")
                         .HasName("message_user_fk");
@@ -407,42 +372,6 @@ namespace freelancerzy.Migrations
                     b.ToTable("reason");
                 });
 
-            modelBuilder.Entity("freelancerzy.Models.UserReport", b =>
-                {
-                    b.Property<int>("ReportId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<int?>("OfferReportReasonReasonId")
-                        .HasColumnType("int(11)");
-
-                    b.Property<int>("ReasonId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ReportDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("UserReportedId")
-                        .HasColumnType("int(11)");
-
-                    b.Property<int>("UserReporterId")
-                        .HasColumnType("int(11)");
-
-                    b.HasKey("ReportId")
-                        .HasName("PRIMARY");
-
-                    b.HasIndex("OfferReportReasonReasonId");
-
-                    b.HasIndex("UserReportedId");
-
-                    b.HasIndex("UserReporterId");
-
-                    b.ToTable("userreport");
-                });
-
             modelBuilder.Entity("freelancerzy.Models.Useraddress", b =>
                 {
                     b.Property<int>("Userid")
@@ -502,21 +431,6 @@ namespace freelancerzy.Migrations
                     b.ToTable("usertype");
                 });
 
-            modelBuilder.Entity("freelancerzy.Models.ChatUser", b =>
-                {
-                    b.HasOne("freelancerzy.Models.Chat", "Chat")
-                        .WithMany("ChatUsers")
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("freelancerzy.Models.PageUser", "User")
-                        .WithMany("ChatUsers")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("freelancerzy.Models.Credentials", b =>
                 {
                     b.HasOne("freelancerzy.Models.PageUser", "User")
@@ -529,12 +443,6 @@ namespace freelancerzy.Migrations
 
             modelBuilder.Entity("freelancerzy.Models.Message", b =>
                 {
-                    b.HasOne("freelancerzy.Models.Chat", "Chat")
-                        .WithMany("Messages")
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("freelancerzy.Models.PageUser", "UserFrom")
                         .WithMany("MessageUserFrom")
                         .HasForeignKey("UserFromId")
@@ -624,25 +532,6 @@ namespace freelancerzy.Migrations
                         .WithMany("Permissionuser")
                         .HasForeignKey("Userid")
                         .HasConstraintName("permissionuser_user_fk")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("freelancerzy.Models.UserReport", b =>
-                {
-                    b.HasOne("freelancerzy.Models.OfferReportReason", "OfferReportReason")
-                        .WithMany()
-                        .HasForeignKey("OfferReportReasonReasonId");
-
-                    b.HasOne("freelancerzy.Models.PageUser", "UserReported")
-                        .WithMany("UserReportedIn")
-                        .HasForeignKey("UserReportedId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("freelancerzy.Models.PageUser", "UserReporter")
-                        .WithMany("ReportReporter")
-                        .HasForeignKey("UserReporterId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

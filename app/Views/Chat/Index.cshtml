@@ -1,0 +1,93 @@
+﻿@model IEnumerable<freelancerzy.Models.UserWithLastMessage> 
+@{ 
+    ViewData["title"] = "Rozmowy";
+}
+<h3 class="text-center" style=" padding:20px">Twoja skrzynka odbiorcza</h3>
+<hr />
+<div class="text-center bg-white rounded bg-white border border-dark" style="width:70%;  margin: 0 auto; border-width:4px;">
+        <div class="nav nav-tabs bg-dark " style="padding: 2%;" role="tablist">
+             <p class=" text-center  text-primary h5 text-uppercase font-weight-bold text-decoration-none">Wybierz wiadomość</p>
+
+            @* <ul class="nav nav-tabs bg-dark " style="padding: 2%;" role="tablist"> 
+                <li  style="width:34%">
+                </li>
+            </ul> *@
+        </div>
+<div class="container">
+    <div>
+        @foreach (var chat in Model.OrderByDescending(m => m.LastMessage.Date))
+        {
+        @* <li style="list-style-type: none;">
+            <a class="text-dark" asp-action="Chat" asp-route-chatId="@chat.ChatId">
+                @chat.User.EmailAddress @chat.User.FirstName @chat.User.Surname)
+            </a> <br />
+            @if (chat.LastMessage.Seen == true)
+            {
+                @chat.LastMessage.Date @chat.LastMessage.Content
+            }
+            else
+            {
+                @chat.LastMessage.Date <b>@chat.LastMessage.Content</b>
+            }
+        </li> *@
+        @* <a asp-action="Chat" asp-route-chatId="@chat.ChatId">
+        <div class="bg-light mt-5 rounded " style=" height:120px; position:relative; ">
+
+        <div class="bg-white rounded-circle" style="width: 100px; height:100px; display:inline-block; margin:auto; position:absolute; left:10px; top:10px"></div>      
+                        <div style="left:130px;top:10px; position:absolute;">
+                            <span class="text-dark h4 font-weight-normal" style="text-align: left; text-transform: uppercase;" >
+                                @chat.User.FirstName @chat.User.Surname
+                            </span> 
+
+                            <span class="text-dark h5" tyle="text-align: right; text-transform: uppercase; left:0px; right:10px">
+                                @chat.LastMessage.Date;
+                            </span>
+                            
+                                @chat.User.EmailAddress
+                                @chat.LastMessage.Content;
+                        </div>
+                        
+                       
+         </div>
+        </a> *@
+
+        
+        
+
+        <a asp-action="Chat" asp-route-chatId="@chat.ChatId" style="text-decoration:none;"  >
+        <div class="bg-light mt-4 mb-4 rounded selected" style="display: flex;">
+
+        <div class="bg-white rounded-circle" 
+         style="width: 80px;  height: 80px;  border-radius: 100%;  margin: 20px;  "></div>      
+                        <div style=" position: relative; margin-top:20px;">
+                            <span class="text-dark h4 font-weight-normal " style=" text-transform: uppercase;  display:block; text-align: left;" >
+                                @chat.User.FirstName @chat.User.Surname
+                            </span> 
+                            <span class="text-dark h5 font-weight-normal" style="display:block; text-align: left;" >
+                                 @if(chat.LastMessage.Content.Length > 20)
+                                 {
+                                     @(chat.LastMessage.Content.Substring(0, 20)+"...")
+                                 }
+                                 else
+                                 @chat.LastMessage.Content                      
+                            </span> 
+                          
+                            
+                               
+                        </div>
+                        <span class="text-dark h5" style="  margin-left: auto;   margin-top:20px; ">
+                                @chat.LastMessage.Date
+                            </span>
+                       
+         </div>
+        </a>
+
+
+        }
+    </div>
+    @if (Model.Count() == 0)
+    {
+        <h1 class="text-danger">Nie masz wiadomości</h1>
+    }</div>
+</div>
+

@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    image: freelancerzy_loc
+    ports:
+    - "8000:8000"
+    - "587:587"
+    environment:
+    - PORT=8000
