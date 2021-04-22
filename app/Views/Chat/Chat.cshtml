@@ -29,12 +29,14 @@
                 @foreach(var message in Model.OrderBy(m => m.Date))
                 {
                     string containerClass,textAlign, contColor, offset;
+                    bool canBeRemoved = false;
                     if(userName == message.UserFrom.EmailAddress)
                     {
                         containerClass = "container primary";
                         textAlign = "text-left ";
                         contColor = "bg-primary";
                         offset = "flex-row-reverse";
+                        canBeRemoved = true;
                     }
                     else
                     {
@@ -43,14 +45,15 @@
                         contColor = "bg-light";
                         offset = "flex-row";
                     }
-                    <div class="row m-2 d-flex @offset">
+                    <div class="row m-2 d-flex @offset" >
                         <div class="@offset ">
                            <br>
-                            <div class="@containerClass">
-                               <div class = "font-weight-bold text-left" > @message.Date.ToString("d.M.yyyy, HH:mm:ss")</div>
+                            <div class="@containerClass" id="message+@message.Messageid">
+                               <div class = "font-weight-bold text-left" > @message.Date.ToString("d.M.yyyy, HH:mm:ss") 
+                                @if (canBeRemoved && message.Status!= "Usunięta") {<button class="btn btn-outline-info deleteBtn" onclick="deleteMessage(@message.Messageid)">Usuń</button> }</div>
 
 @* jak chcem miec zawijane to max-width zamiast width *@
-                                <div style="max-width: 400px; overflow-wrap: break-word; " class="@textAlign @contColor p-2 ml-2">@message.Content</div>
+                                <div style="max-width: 400px; overflow-wrap: break-word; " class="@textAlign content @contColor p-2 ml-2">@message.Content</div>
 
                             </div>
                         </div>
@@ -90,20 +93,48 @@
 <script src="~/js/messageBuilder.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
+
+    const deleteMessage = (id) => {
+        console.log(id)
+        axios.delete('/Chat/Delete', {
+            params: {
+                id:id
+            }
+        })
+            .then(res => {
+                
+            })
+            .catch(err => {
+                console.log("Failed to delete message!")
+            })
+    }
+
+
     var connection = new signalR.HubConnectionBuilder()
         .withUrl("/chatHub")
         .build();
     var _connectionId = '';
 
+    connection.on("DeleteMessage",
+        function (data) {
+            const container = document.getElementById(`message+${data.id}`)
+            const content = container.getElementsByClassName("content")[0]
+            content.innerHTML = "Wiadomość została usunięta przez użytkownika"
+
+            const button = container.getElementsByClassName("deleteBtn")[0]
+            button.style.display = "none"
+
+        })
+
     connection.on("RecieveMessage",
         function (data) {
-            console.log(data);
+            
             var date = new Date(data.date).toLocaleString();
             var classList = [];
             var offsetClass = '';
             var containerClasses = [];
             var contentClasses = [];
-            
+
             if (data.userName == '@userName') {
                 classList = ['row', 'm-2', 'd-flex', 'flex-row-reverse']
                 offsetClass = 'flex-row-reverse';
@@ -141,7 +172,7 @@
         document.getElementById('message-input').value = '';
         axios.post('/Chat/Create', data)
             .then(res => {
-                console.log("Message Sent!")
+               
             })
             .catch(err => {
                 console.log("Failed to send message!")

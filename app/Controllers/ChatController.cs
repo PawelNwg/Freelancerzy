@@ -123,6 +123,7 @@ namespace freelancerzy.Controllers
             foreach(var message in messages)
             {
                 message.Seen = true;
+                if(message.Status != "Usunięta")
                 message.Status = "Wyświetlona";
                 _context.Update(message);
             }
@@ -159,6 +160,26 @@ namespace freelancerzy.Controllers
                 return Ok();
             }
             return BadRequest();
+        }
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int? id, [FromServices] IHubContext<ChatHub> chat)
+        {
+            if (id == null) return BadRequest();
+            var message = await _context.Message.FirstOrDefaultAsync(m => m.Messageid == id);
+            if (message == null) return BadRequest();
+
+            message.Content = "Wiadomość została usunięta przez użytkownika";
+            message.Status = "Usunięta";
+            _context.Update(message);
+            await _context.SaveChangesAsync();
+
+            await chat.Clients.Group(message.ChatId.ToString())
+                    .SendAsync("DeleteMessage", new
+                    {
+                        id = message.Messageid
+                    });
+
+            return Ok();
         }
 
        
