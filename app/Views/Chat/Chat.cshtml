@@ -70,8 +70,7 @@
                     <input placeholder="wprowadź tekst" id="message-input" name="Content" class="form-control rounded bg-white border border-5 border-dark" id="messageText" />
                 </div>
                 <div class="form-group ">
-                <a class="text-dark" asp-action="Chat" asp-route-chatId="@ViewBag.chatId">Przeładuj strone</a>
-                &nbsp;
+                
                 <input type="submit" value="Wyślij" id="submitButton" class="btn btn-dark"/>
                 </div>
             </form>
@@ -90,99 +89,17 @@
 @section scripts {
 
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
-<script src="~/js/messageBuilder.js"></script>
+@*<script src="~/js/messageBuilder.js"></script>*@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-
-    const deleteMessage = (id) => {
-        console.log(id)
-        axios.delete('/Chat/Delete', {
-            params: {
-                id:id
-            }
-        })
-            .then(res => {
-                
-            })
-            .catch(err => {
-                console.log("Failed to delete message!")
-            })
-    }
+    var userName = "@User.Identity.Name"
+    var connectionID = @ViewBag.chatId
 
 
-    var connection = new signalR.HubConnectionBuilder()
-        .withUrl("/chatHub")
-        .build();
-    var _connectionId = '';
+        $(function () {
 
-    connection.on("DeleteMessage",
-        function (data) {
-            const container = document.getElementById(`message+${data.id}`)
-            const content = container.getElementsByClassName("content")[0]
-            content.innerHTML = "Wiadomość została usunięta przez użytkownika"
-
-            const button = container.getElementsByClassName("deleteBtn")[0]
-            button.style.display = "none"
-
-        })
-
-    connection.on("RecieveMessage",
-        function (data) {
-            
-            var date = new Date(data.date).toLocaleString();
-            var classList = [];
-            var offsetClass = '';
-            var containerClasses = [];
-            var contentClasses = [];
-
-            if (data.userName == '@userName') {
-                classList = ['row', 'm-2', 'd-flex', 'flex-row-reverse']
-                offsetClass = 'flex-row-reverse';
-                containerClasses = ['container', 'primary']
-                contentClasses = ['text-left', 'bg-primary'];
-            }
-            else {
-                classList = ['row', 'm-2', 'd-flex', 'flex-row']
-                offsetClass = 'flex-row';
-                containerClasses = ['container']
-                contentClasses = ['text-left', 'bg-light'];
-            }
-            var message = messageBuilder()
-                .createMessage(classList, offsetClass, containerClasses)
-                .withHeader(date)
-                .withContent(data.text, contentClasses)
-            .build();
-            document.querySelector('.chat-body').append(message);
-            document.getElementById('chat').scrollTo(0, document.getElementById('chat').scrollHeight);
-    })
-    connection.start()
-        .then(function () {
-            connection.invoke('joinRoom', '@ViewBag.chatId');
-        })
-        .catch(function (err) {
-            console.log(err)
-        })
-
-    window.addEventListener('onunload', function () {
-        connection.invoke('leaveRoom', '@ViewBag.chatId');
-    })
-    var sendMessage = function (event) {
-        event.preventDefault();
-        var data = new FormData(event.target);
-        document.getElementById('message-input').value = '';
-        axios.post('/Chat/Create', data)
-            .then(res => {
-               
-            })
-            .catch(err => {
-                console.log("Failed to send message!")
-            })
-    }
-</script>
-}
-<script>
-    $(function () {
-        
         document.getElementById('chat').scrollTo(0, document.getElementById('chat').scrollHeight);
     })
 </script>
+<script src="~/js/Chat.js"></script>
+}

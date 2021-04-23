@@ -154,7 +154,8 @@ namespace freelancerzy.Controllers
                     {
                         text = message.Content,
                         userName = message.UserFrom.EmailAddress,
-                        date = message.Date
+                        date = message.Date,
+                        id = message.Messageid
                     });
 
                 return Ok();
@@ -176,7 +177,8 @@ namespace freelancerzy.Controllers
             await chat.Clients.Group(message.ChatId.ToString())
                     .SendAsync("DeleteMessage", new
                     {
-                        id = message.Messageid
+                        id = message.Messageid,
+                        
                     });
 
             return Ok();
