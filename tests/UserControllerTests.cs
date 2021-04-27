@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using freelancerzy.Controllers;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace tests
 {
@@ -28,20 +29,7 @@ namespace tests
             var tokenManager = new Mock<ITokenManager>();
             userController = new UserController(context, config.Object, tokenManager.Object);
 
-            Credentials credentials = new Credentials() { Userid = 1, Password = "123", PasswordConfirmed = "123" };
-            Credentials credentials2 = new Credentials() { Userid = 2, Password = "123", PasswordConfirmed = "123" };
-            Credentials credentials3 = new Credentials() { Userid = 3, Password = "123", PasswordConfirmed = "123" };
-            Usertype type = new Usertype() { Typeid = 1, Name = "user" };
-            PageUser user1 = new PageUser { Userid = 1, TypeId = 1, FirstName = "John", Surname = "Doe", EmailAddress = "test1@user.com", emailConfirmation = true, isBlocked = false, isReported = false, Type = type, Credentials = credentials };
-            PageUser user2 = new PageUser { Userid = 2, TypeId = 1, FirstName = "John", Surname = "Doe", EmailAddress = "test2@user.com", emailConfirmation = true, isBlocked = false, isReported = false, Type = type, Credentials = credentials2 };
-            PageUser user3 = new PageUser { Userid = 3, TypeId = 1, FirstName = "John", Surname = "Doe", EmailAddress = "test3@user.com", emailConfirmation = false, isBlocked = false, isReported = false, Type = type, Credentials = credentials3 };
-            context.Usertype.Add(type);
-            context.PageUser.Add(user1);
-            context.PageUser.Add(user2);
-            context.PageUser.Add(user3);
-            context.Credentials.Add(credentials);
-            context.Credentials.Add(credentials2);
-            context.Credentials.Add(credentials3);
+            TestData.InitializeUsers(context);
             context.SaveChangesAsync();
         }
 
@@ -223,16 +211,6 @@ namespace tests
             Assert.IsNull(result);
         }
 
-        // [TestMethod]
-        // public void UserLoginTest()
-        // {
-        //     // Act
-        //     var result = userController.Login("test1@user.com", "123", "").Result as ViewResult;
-
-        //     //Assert
-        //     Assert.IsNull(result);
-        // }
-
         [TestMethod]
         public void UserEmailNotConfirmedLogin()
         {
@@ -255,15 +233,26 @@ namespace tests
             Assert.AreEqual("Podana nazwa użytkownika nie istnieje", result.ViewData["error"]);
         }
 
-        // [TestMethod]
-        // public void UserInvalidPasswordLoginTest()
-        // {
-        //     // Act
-        //     var result = userController.Login("test1@user.com", "abc", "").Result as ViewResult;
+        [TestMethod]
+        public void UserInvalidPasswordLoginTest()
+        {
+            // Act
+            var result = userController.Login("test1@user.com", "abc", "").Result as ViewResult;
 
-        //     //Assert
-        //     Assert.IsNotNull(result);
-        //     Assert.AreEqual("Podano złe hasło", result.ViewData["error"]);
-        // }
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Podano złe hasło", result.ViewData["error"]);
+        }
+
+        [TestMethod]
+        public void UserLoginTest()
+        {
+            // Act
+            var result = userController.Login("test1@user.com", "123", "").Result as ViewResult;
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Podana nazwa użytkownika nie istnieje", result.ViewData["error"]);
+        }
     }
 }
