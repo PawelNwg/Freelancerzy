@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace freelancerzy.Models
 {
@@ -7,6 +8,7 @@ namespace freelancerzy.Models
     {
         public int Reportid { get; set; }
         public int MessageId { get; set; }
+        [Display(Name ="Powód")]
         public int ReasonId { get; set; }
 
         public virtual Message Message { get; set; }

@@ -7,6 +7,7 @@ using freelancerzy.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,7 +44,7 @@ namespace freelancerzy.Controllers
             return View(userWithLastMessages);
         }
 
-        // GET: ChatController/Create
+       
         public async Task<IActionResult> Message(int? id)
         {
             if(id == null)
@@ -62,7 +63,7 @@ namespace freelancerzy.Controllers
             return View(message);
         }
 
-        // POST: ChatController1cs/Create
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task <IActionResult> Message(Message message)
@@ -166,7 +167,7 @@ namespace freelancerzy.Controllers
         public async Task<IActionResult> Delete(int? id, [FromServices] IHubContext<ChatHub> chat)
         {
             if (id == null) return BadRequest();
-            var message = await _context.Message.FirstOrDefaultAsync(m => m.Messageid == id);
+            var message = await _context.Message.Include(m => m.UserFrom).FirstOrDefaultAsync(m => m.Messageid == id);
             if (message == null) return BadRequest();
 
             message.Content = "Wiadomość została usunięta przez użytkownika";
@@ -178,12 +179,53 @@ namespace freelancerzy.Controllers
                     .SendAsync("DeleteMessage", new
                     {
                         id = message.Messageid,
-                        
+                        userName = message.UserFrom.EmailAddress
                     });
 
             return Ok();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Report(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var message = await _context.Message.Include(m => m.UserFrom).Include(m => m.UserTo).FirstOrDefaultAsync(m => m.Messageid == id);
+            if (message == null) return BadRequest();
+
+            if (message.UserTo.EmailAddress != HttpContext.User.Identity.Name) return Unauthorized();
+
+            ViewBag.ReasonId =  new SelectList(_context.Reason, "Reasonid", "Description");
+
+            Messagereport report = new Messagereport()
+            {
+                MessageId = message.Messageid,
+                Message= message
+            };
+            return View(report);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Report(Messagereport messagereport)
+        {
+            await _context.AddAsync(messagereport);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ReportSuccess", new { id = messagereport.Reportid }); 
+        }
        
+
+        public async Task<IActionResult> ReportSuccess(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var messagereport = await _context.Messagereport.Include(mr => mr.Message).ThenInclude(m => m.UserFrom)
+                .Include(mr => mr.Message).ThenInclude(m => m.UserTo).FirstOrDefaultAsync(m => m.Reportid == id);
+
+            if (messagereport == null) return NotFound();
+
+            if (messagereport.Message.UserTo.EmailAddress != HttpContext.User.Identity.Name) return Unauthorized();
+
+            return View(messagereport);
+        }
     }
 }

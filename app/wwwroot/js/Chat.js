@@ -21,6 +21,7 @@ const messageBuilder = function () {
     let header = null;
     let content = null;
     let deletebutton = null;
+    let reportButton = null;
 
     return {
         createMessage: function (classList, offsetClass, containerClasses,id) {
@@ -75,6 +76,18 @@ const messageBuilder = function () {
             }
             return this;
         },
+        withReportButton: function (id, reportable) {
+            if (reportable) {
+                reportButton = document.createElement("a")
+                reportButton.classList.add("btn")
+                reportButton.classList.add("btn-outline-info")
+                reportButton.classList.add("ReportBtn")
+                reportButton.href = "Report/" + id
+                reportButton.innerHTML = "Zgłoś"
+                header.appendChild(reportButton)
+            }
+            return this;
+        },
         withContent: function (text, classes) {
             content = document.createElement("div")
             if (classes === undefined) classes = [];
@@ -117,8 +130,14 @@ connection.on("DeleteMessage",
         const content = container.getElementsByClassName("content")[0]
         content.innerHTML = "Wiadomość została usunięta przez użytkownika"
 
-        const button = container.getElementsByClassName("deleteBtn")[0]
-        button.style.display = "none"
+        if (data.userName == userName) {
+            const button = container.getElementsByClassName("deleteBtn")[0]
+            button.style.display = "none"
+        }
+        else {
+            const reportBtn = container.getElementsByClassName("ReportBtn")[0]
+            reportBtn.style.display = "none"
+        }
 
     })
 
@@ -131,6 +150,7 @@ connection.on("RecieveMessage",
         var containerClasses = [];
         var contentClasses = [];
         var deletable = false;
+        var removable = false;
 
         if (data.userName == userName) {
             classList = ['row', 'm-2', 'd-flex', 'flex-row-reverse']
@@ -144,6 +164,7 @@ connection.on("RecieveMessage",
             offsetClass = 'flex-row';
             containerClasses = ['container']
             contentClasses = ['text-left', 'bg-light'];
+            removable = true;
         }
 
         
@@ -152,6 +173,7 @@ connection.on("RecieveMessage",
             .createMessage(classList, offsetClass, containerClasses,data.id)
             .withHeader(date)
             .withDeleteButton(data.id, deletable)
+            .withReportButton(data.id, removable)
             .withContent(data.text, contentClasses)
             .build();
         document.querySelector('.chat-body').append(message);

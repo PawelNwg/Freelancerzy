@@ -1,0 +1,19 @@
+﻿@model freelancerzy.Models.Messagereport;
+
+<div class="d-flex flex-column justify-content-center align-items-center">
+
+    <h2 class="pt-4">Zgłoszenie przyjęte</h2>
+    <h5>Nasza administracja rozpatrzy je najszybciej jak to możliwe</h5>
+
+    <div class="m-2">
+        <b>ID zgłoszenia: </b>@Model.Reportid
+    </div>
+    <div class="m-2">
+        <h3>Czy chcesz podjąć dalsze działania?</h3>
+        <div  class="m-2 d-flex justify-content-center">
+            <a  class="m-3 btn btn-danger">Zgłoś uzytkownika</a>
+            <a asp-action="Index" class="m-3 btn btn-outline-dark">Wróć do chatu</a>
+        </div>
+    </div>
+
+</div>

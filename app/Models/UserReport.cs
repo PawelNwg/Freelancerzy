@@ -19,9 +19,13 @@ namespace freelancerzy.Models
         public DateTime? ReportDate { get; set; }
         public int ReasonId { get; set; }
         public bool IsActive { get; set; }
-
+        public UserReportReason OfferReportReason { get; set; }
         public virtual PageUser UserReported { get; set; }
         public virtual PageUser UserReporter { get; set; }
-        public virtual OfferReportReason OfferReportReason { get; set; }
+        
+    }
+    public enum UserReportReason
+    {
+        spam,nękanie
     }
 }

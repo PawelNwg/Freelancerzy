@@ -29,7 +29,7 @@
                 @foreach(var message in Model.OrderBy(m => m.Date))
                 {
                     string containerClass,textAlign, contColor, offset;
-                    bool canBeRemoved = false;
+                    bool canBeRemoved = false,canBeReported = false;
                     if(userName == message.UserFrom.EmailAddress)
                     {
                         containerClass = "container primary";
@@ -44,13 +44,22 @@
                         textAlign = "text-left";
                         contColor = "bg-light";
                         offset = "flex-row";
+                        canBeReported = true;
                     }
                     <div class="row m-2 d-flex @offset" >
                         <div class="@offset ">
                            <br>
                             <div class="@containerClass" id="message+@message.Messageid">
-                               <div class = "font-weight-bold text-left" > @message.Date.ToString("d.M.yyyy, HH:mm:ss") 
-                                @if (canBeRemoved && message.Status!= "Usunięta") {<button class="btn btn-outline-info deleteBtn" onclick="deleteMessage(@message.Messageid)">Usuń</button> }</div>
+                                <div class="font-weight-bold text-left">
+                                    @message.Date.ToString("d.M.yyyy, HH:mm:ss")
+                                    @if (canBeRemoved && message.Status != "Usunięta")
+                                    {<button class="btn btn-outline-info deleteBtn" onclick="deleteMessage(@message.Messageid)">Usuń</button>
+                                        }
+                                    @if(canBeReported && message.Status != "Usunięta")
+                    {
+                                <a class="btn btn-outline-info ReportBtn" asp-action="Report" asp-route-id="@message.Messageid">Zgłoś</a>
+                    }
+                                </div>
 
 @* jak chcem miec zawijane to max-width zamiast width *@
                                 <div style="max-width: 400px; overflow-wrap: break-word; " class="@textAlign content @contColor p-2 ml-2">@message.Content</div>
