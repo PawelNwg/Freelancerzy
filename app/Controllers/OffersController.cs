@@ -436,6 +436,7 @@ namespace freelancerzy.Controllers
         }
 
         // GET: Offers/Delete/5
+        [Authorize(AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> Delete(int? id)
         {
            
