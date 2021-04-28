@@ -709,5 +709,48 @@ namespace app.Controllers
 
             await _context.SaveChangesAsync();
         }
+
+        #region Userreporting
+        [Authorize]
+        public async Task<IActionResult> UserReport(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var reporteduser = await _context.PageUser.FirstOrDefaultAsync(u => u.Userid == id);
+
+            if (reporteduser == null) return NotFound();
+
+            UserReport report = new UserReport()
+            {
+                UserReportedId = reporteduser.Userid,
+                UserReported = reporteduser
+            };
+            ViewBag.ReasonId = new SelectList(_context.UserReportReasons, "Id", "Description");
+            return View(report);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> UserReport(UserReport userReport)
+        {
+            var currUser = await _context.PageUser.FirstOrDefaultAsync(u => u.EmailAddress == HttpContext.User.Identity.Name);
+
+            userReport.UserReporterId = currUser.Userid;
+            userReport.ReportDate = DateTime.Now;
+            userReport.IsActive = true;
+
+            await _context.AddAsync(userReport);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ReportSuccess", userReport);
+
+        }
+
+        public IActionResult ReportSuccess(UserReport userReport)
+        {
+
+            return View(userReport);
+        }
+        #endregion
     }
 }

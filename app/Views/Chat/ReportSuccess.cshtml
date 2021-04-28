@@ -11,7 +11,7 @@
     <div class="m-2">
         <h3>Czy chcesz podjąć dalsze działania?</h3>
         <div  class="m-2 d-flex justify-content-center">
-            <a  class="m-3 btn btn-danger">Zgłoś uzytkownika</a>
+            <a asp-action="UserReport" asp-controller="User" asp-route-id="@Model.Message.UserFromId" class="m-3 btn btn-danger">Zgłoś uzytkownika</a>
             <a asp-action="Index" class="m-3 btn btn-outline-dark">Wróć do chatu</a>
         </div>
     </div>

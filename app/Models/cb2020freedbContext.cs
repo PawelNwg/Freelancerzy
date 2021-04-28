@@ -31,6 +31,7 @@ namespace freelancerzy.Models
         public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<ChatUser> ChatUsers { get; set; }
         public virtual DbSet<UserReport> UserReports { get; set; }
+        public virtual DbSet<UserReportReason> UserReportReasons { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

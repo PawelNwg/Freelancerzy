@@ -1,0 +1,15 @@
+﻿@model freelancerzy.Models.UserReport;
+
+<div class="d-flex flex-column justify-content-center align-items-center">
+
+    <h2 class="pt-4">Użytkownik został zgłoszony</h2>
+    <h5>Nasza administracja rozpatrzy je najszybciej jak to możliwe</h5>
+
+    <div class="m-2">
+        <b>ID zgłoszenia: </b>@Model.ReportId
+    </div>
+    <div class="m-2 d-flex justify-content-center">
+        <a class="btn btn-link" asp-action="Index" asp-controller="Home">Wroć do strony głównej</a>
+    </div>
+</div>
+

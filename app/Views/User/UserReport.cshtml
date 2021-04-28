@@ -1,0 +1,26 @@
+﻿@model freelancerzy.Models.UserReport
+
+<div class="container">
+    <div class="d-flex justify-content-center align-items-center flex-column">
+        <div class="row pt-4"><h2>Czy na pewno chcesz zgłosić użytkownika?</h2></div>
+        <div class="row">
+            <p>@Model.UserReported.EmailAddress</p>ty 
+        </div>
+
+        <form method="post">
+            <div class="row">
+                <div class="form-group">
+                    <label>Wybierz powód zgłoszenia</label>
+                    <select class="form-control" asp-for="ReportReasonId" asp-items="ViewBag.ReasonId">
+                    </select>
+                </div>
+            </div>
+            <input type="hidden" asp-for="UserReportedId" />
+
+            <button type="submit" class="btn btn-primary">Zgłoś</button>
+
+
+        </form>
+
+    </div>
+</div>
