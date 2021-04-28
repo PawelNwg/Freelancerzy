@@ -25,7 +25,7 @@ namespace freelancerzy.Controllers
         #region Admin - oferty zgłoszone
 
         [HttpGet]
-        [Authorize(Roles = "administrator",AuthenticationSchemes = "CookieAuthentication")]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public IActionResult ReportedOffers()
         {
             return View();
@@ -35,7 +35,7 @@ namespace freelancerzy.Controllers
         [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> ReportedOffersListPartial(int? pageNumber, string order)
         {
-            
+
             var Offers = SortedList(order);
             var reportedOffers = Offers.Where(o => o.IsReported == true).Include(o => o.OfferReports);
             int pageSize = 15;
@@ -59,7 +59,7 @@ namespace freelancerzy.Controllers
 
             var reports = offer.OfferReports.Where(r => r.IsActive == true).ToList();
 
-            foreach(var report in reports)
+            foreach (var report in reports)
             {
                 report.OfferReportReason = await _context.OfferReportReason.FirstOrDefaultAsync(ors => ors.ReasonId == report.ReasonId);
             }
@@ -74,19 +74,19 @@ namespace freelancerzy.Controllers
             return View(offer);
         }
         [HttpDelete]
-        [Authorize(Roles ="administrator", AuthenticationSchemes = "CookieAuthentication")]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> DeleteReported(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
             var Offer = await _context.Offer.Include(o => o.User).Include(o => o.OfferReports).FirstOrDefaultAsync(o => o.Offerid == id);
-            if(Offer == null)
+            if (Offer == null)
             {
                 return NotFound();
             }
-            foreach(var report in Offer.OfferReports)
+            foreach (var report in Offer.OfferReports)
             {
                 _context.OfferReport.Remove(report);
             }
@@ -105,11 +105,11 @@ namespace freelancerzy.Controllers
 
             return View(user);
         }
-        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")] 
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         [HttpPost]
         public async Task<IActionResult> BlockUser(int? id, int ReasonId)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -139,7 +139,7 @@ namespace freelancerzy.Controllers
             {
                 return NotFound();
             }
-            foreach(var report in Offer.OfferReports)
+            foreach (var report in Offer.OfferReports)
             {
                 report.IsActive = false;
                 _context.Update(report);
@@ -149,7 +149,7 @@ namespace freelancerzy.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
-        
+
         #endregion
 
 
@@ -259,14 +259,14 @@ namespace freelancerzy.Controllers
                 .Include(o => o.User)
                 .FirstOrDefaultAsync(m => m.Offerid == id);
 
-            offer.ViewCounter++;
-            _context.Update(offer);
-            await _context.SaveChangesAsync();
-
             if (offer == null)
             {
                 return NotFound();
             }
+
+            offer.ViewCounter++;
+            _context.Update(offer);
+            await _context.SaveChangesAsync();
 
             ViewBag.ReasonId = new SelectList(_context.OfferReportReason, "ReasonId", "Description");
 
@@ -404,7 +404,8 @@ namespace freelancerzy.Controllers
                 if (decimal.TryParse(offer.WageValue, out wage))
                     offer.Wage = wage;
                 if (offer.Wage == 0) offer.Wage = null;
-            }else offer.Wage = null;
+            }
+            else offer.Wage = null;
 
             if (ModelState.IsValid)
             {
@@ -438,7 +439,7 @@ namespace freelancerzy.Controllers
         // GET: Offers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-           
+
             if (id == null)
             {
                 return NotFound();

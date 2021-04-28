@@ -137,20 +137,22 @@ namespace tests
         public void NullUserDetailsTest()
         {
             // Act
-            var result = userController.Details(null).Result as ViewResult;
+            var result = userController.Details(null).Result;
 
             //Assert
-            Assert.IsNull(result);
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
         [TestMethod]
         public void UserNotExistsDetailsTest()
         {
             // Act
-            var result = userController.Details(12).Result as ViewResult;
+            var result = userController.Details(12).Result;
 
             //Assert
-            Assert.IsNull(result);
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
         [TestMethod]
@@ -195,20 +197,22 @@ namespace tests
         public void NullUserDeleteTest()
         {
             // Act
-            var result = userController.Delete(null).Result as ViewResult;
+            var result = userController.Delete(null).Result;
 
             //Assert
-            Assert.IsNull(result);
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
         [TestMethod]
         public void UserNotExistsDeleteTest()
         {
             // Act
-            var result = userController.Delete(12).Result as ViewResult;
+            var result = userController.Delete(12).Result;
 
             //Assert
-            Assert.IsNull(result);
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
         [TestMethod]

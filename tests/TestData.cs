@@ -9,7 +9,7 @@ namespace tests
         private static Credentials credentials1, credentials2, credentials3;
         private static Usertype type;
         private static PageUser user1, user2, user3;
-        private static Offer offer1, offer2, offer3;
+        private static Offer offer1, offer2, offer3, offer4, offer5;
         private static Category category1, category2, category3;
         public static void InitializeCredentials(cb2020freedbContext context)
         {
@@ -56,11 +56,15 @@ namespace tests
             InitializeCategory(context);
 
             offer1 = new Offer { Offerid = 1, UserId = 1, CategoryId = 1, Title = "AAA", Description = "AAA", CreationDate = DateTime.Now, ExpirationDate = DateTime.Now.AddDays(14), ViewCounter = 0, Wage = 1, IsReported = false };
-            offer2 = new Offer { Offerid = 2, UserId = 1, CategoryId = 1, Title = "BBB", Description = "BBB", CreationDate = DateTime.Now, ExpirationDate = DateTime.Now.AddDays(14), ViewCounter = 0, Wage = 1, IsReported = false };
+            offer2 = new Offer { Offerid = 2, UserId = 2, CategoryId = 1, Title = "BBB", Description = "BBB", CreationDate = DateTime.Now, ExpirationDate = DateTime.Now.AddDays(14), ViewCounter = 0, Wage = 1, IsReported = false };
             offer3 = new Offer { Offerid = 3, UserId = 1, CategoryId = 1, Title = "CCC", Description = "CCC", CreationDate = DateTime.Now, ExpirationDate = DateTime.Now.AddDays(14), ViewCounter = 0, Wage = 1, IsReported = false };
+            offer4 = new Offer { Offerid = 4, UserId = 2, CategoryId = 1, Title = "DDD", Description = "DDD", CreationDate = DateTime.Now, ExpirationDate = DateTime.Now.AddDays(14), ViewCounter = 0, Wage = 1, IsReported = true };
+            offer5 = new Offer { Offerid = 5, UserId = 1, CategoryId = 1, Title = "EEE", Description = "EEE", CreationDate = DateTime.Now, ExpirationDate = DateTime.Now.AddDays(14), ViewCounter = 0, Wage = 1, IsReported = true };
             context.Offer.Add(offer1);
             context.Offer.Add(offer2);
             context.Offer.Add(offer3);
+            context.Offer.Add(offer4);
+            context.Offer.Add(offer5);
         }
     }
 }
