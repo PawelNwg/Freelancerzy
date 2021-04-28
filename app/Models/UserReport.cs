@@ -17,11 +17,12 @@ namespace freelancerzy.Models
         //[ForeignKey("ReportedByUser")]
         public int UserReporterId { get; set; }
         public DateTime? ReportDate { get; set; }
-        public int ReasonId { get; set; }
         public bool IsActive { get; set; }
-
+        public int ReportReasonId { get; set; }
+        public UserReportReason ReportReason { get; set; }
         public virtual PageUser UserReported { get; set; }
         public virtual PageUser UserReporter { get; set; }
-        public virtual OfferReportReason OfferReportReason { get; set; }
+        
     }
+   
 }

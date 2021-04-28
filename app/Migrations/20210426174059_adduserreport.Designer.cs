@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using freelancerzy.Models;
 
 namespace freelancerzy.Migrations
 {
     [DbContext(typeof(cb2020freedbContext))]
-    partial class cb2020freedbContextModelSnapshot : ModelSnapshot
+    [Migration("20210426174059_adduserreport")]
+    partial class adduserreport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -416,11 +418,14 @@ namespace freelancerzy.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<int>("OfferReportReason")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReasonId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("ReportDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int>("ReportReasonId")
-                        .HasColumnType("int");
 
                     b.Property<int>("UserReportedId")
                         .HasColumnType("int(11)");
@@ -431,30 +436,11 @@ namespace freelancerzy.Migrations
                     b.HasKey("ReportId")
                         .HasName("PRIMARY");
 
-                    b.HasIndex("ReportReasonId");
-
                     b.HasIndex("UserReportedId");
 
                     b.HasIndex("UserReporterId");
 
                     b.ToTable("userreport");
-                });
-
-            modelBuilder.Entity("freelancerzy.Models.UserReportReason", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserReportReasons");
                 });
 
             modelBuilder.Entity("freelancerzy.Models.Useraddress", b =>
@@ -643,12 +629,6 @@ namespace freelancerzy.Migrations
 
             modelBuilder.Entity("freelancerzy.Models.UserReport", b =>
                 {
-                    b.HasOne("freelancerzy.Models.UserReportReason", "ReportReason")
-                        .WithMany("ReportedOffers")
-                        .HasForeignKey("ReportReasonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("freelancerzy.Models.PageUser", "UserReported")
                         .WithMany("UserReportedIn")
                         .HasForeignKey("UserReportedId")
