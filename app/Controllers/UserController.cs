@@ -31,7 +31,21 @@ namespace app.Controllers
 
         private readonly ITokenManager _tokenManager;
 
+        //private readonly ILogger<UserController> _logger;
+        public UserController(cb2020freedbContext context, IConfiguration config, ITokenManager tokenManager)
+        {
+            _context = context;
+            _config = config;
+            _tokenManager = tokenManager;
+        }
+
+        //public UserController(ILogger<UserController> logger)
+        //{
+        //    _logger = logger;
+        //}
+
         // GET: User List
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> List()
         {
             ViewData["TypeId"] = new SelectList(_context.Usertype, "Typeid", "Name");
@@ -124,7 +138,7 @@ namespace app.Controllers
                 return NotFound();
             }
             var user = await _context.PageUser.FirstOrDefaultAsync(o => o.Userid == id);
-            
+
             user.isBlocked = true;
             user.blockType = ReasonId;
             user.dateOfBlock = DateTime.Now;
@@ -153,6 +167,7 @@ namespace app.Controllers
             return RedirectToAction("ReportedUsers");
         }
 
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> ReportedDetails(int? id)
         {
             if (id == null)
@@ -168,6 +183,7 @@ namespace app.Controllers
         }
 
         // GET: User/Details/5
+        [Authorize(AuthenticationSchemes = "CookieAuthentication")]
         public IActionResult MyDetails()
         {
             String email = this.User.Identity.Name;
@@ -182,6 +198,7 @@ namespace app.Controllers
         }
 
         // GET: User/Details/5
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -204,6 +221,7 @@ namespace app.Controllers
 
         // GET: PageUser/Delete/5
         //[ValidateAntiForgeryToken]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -234,18 +252,7 @@ namespace app.Controllers
             return RedirectToAction(nameof(List));
         }
 
-        //private readonly ILogger<UserController> _logger;
-        public UserController(cb2020freedbContext context, IConfiguration config, ITokenManager tokenManager)
-        {
-            _context = context;
-            _config = config;
-            _tokenManager = tokenManager;
-        }
 
-        //public UserController(ILogger<UserController> logger)
-        //{
-        //    _logger = logger;
-        //}
         public IActionResult ConfirmUserRegistration()
         {
             return View();
@@ -282,6 +289,7 @@ namespace app.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("CookieAuthentication");
