@@ -12,7 +12,6 @@ using System.Collections;
 
 namespace freelancerzy.Controllers
 {
-
     public class OffersController : Controller
     {
         private readonly cb2020freedbContext _context;
@@ -25,7 +24,7 @@ namespace freelancerzy.Controllers
         #region Admin - oferty zgłoszone
 
         [HttpGet]
-        [Authorize(Roles = "administrator",AuthenticationSchemes = "CookieAuthentication")]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public IActionResult ReportedOffers()
         {
             return View();
@@ -35,7 +34,6 @@ namespace freelancerzy.Controllers
         [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> ReportedOffersListPartial(int? pageNumber, string order)
         {
-            
             var Offers = SortedList(order);
             var reportedOffers = Offers.Where(o => o.IsReported == true).Include(o => o.OfferReports);
             int pageSize = 15;
@@ -59,7 +57,7 @@ namespace freelancerzy.Controllers
 
             var reports = offer.OfferReports.Where(r => r.IsActive == true).ToList();
 
-            foreach(var report in reports)
+            foreach (var report in reports)
             {
                 report.OfferReportReason = await _context.OfferReportReason.FirstOrDefaultAsync(ors => ors.ReasonId == report.ReasonId);
             }
@@ -73,20 +71,21 @@ namespace freelancerzy.Controllers
 
             return View(offer);
         }
+
         [HttpDelete]
-        [Authorize(Roles ="administrator", AuthenticationSchemes = "CookieAuthentication")]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> DeleteReported(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
             var Offer = await _context.Offer.Include(o => o.User).Include(o => o.OfferReports).FirstOrDefaultAsync(o => o.Offerid == id);
-            if(Offer == null)
+            if (Offer == null)
             {
                 return NotFound();
             }
-            foreach(var report in Offer.OfferReports)
+            foreach (var report in Offer.OfferReports)
             {
                 _context.OfferReport.Remove(report);
             }
@@ -105,11 +104,12 @@ namespace freelancerzy.Controllers
 
             return View(user);
         }
-        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")] 
+
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         [HttpPost]
         public async Task<IActionResult> BlockUser(int? id, int ReasonId)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -139,7 +139,7 @@ namespace freelancerzy.Controllers
             {
                 return NotFound();
             }
-            foreach(var report in Offer.OfferReports)
+            foreach (var report in Offer.OfferReports)
             {
                 report.IsActive = false;
                 _context.Update(report);
@@ -149,20 +149,19 @@ namespace freelancerzy.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
-        
-        #endregion
 
+        #endregion Admin - oferty zgłoszone
 
         public IActionResult Index()
         {
             return RedirectToAction(nameof(Search));
         }
+
         // GET: Offers
         public IActionResult Search()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "Categoryid", "CategoryName");
             return View();
-
         }
 
         [Authorize]
@@ -204,9 +203,10 @@ namespace freelancerzy.Controllers
                 }
                 Offers = Offers.Search(o => o.Title, o => o.Description).Containing(words); //https://ninjanye.github.io/SearchExtensions/
             }
-            int pageSize = 15;
+            int pageSize = 15; Offers = Offers.OrderByDescending(x => x.status == 1);
             return PartialView("_OfferList", await PaginatedList<Offer>.CreateAsync(Offers, pageNumber ?? 1, pageSize));
         }
+
         private IQueryable<Offer> Filters(IQueryable<Offer> offers, Filter filter)
         {
             var offerList = offers;
@@ -220,32 +220,41 @@ namespace freelancerzy.Controllers
             }
             return offerList;
         }
+
         private IQueryable<Offer> SortedList(string order)
         {
             switch (order)
             {
                 case "nameAsc":
                     return _context.Offer.Include(o => o.Category).OrderBy(o => o.Title);
+
                 case "nameDesc":
                     return _context.Offer.Include(o => o.Category).OrderByDescending(o => o.Title);
+
                 case "wageAsc":
                     return _context.Offer.Include(o => o.Category).OrderBy(o => o.Wage);
+
                 case "wageDesc":
                     return _context.Offer.Include(o => o.Category).OrderByDescending(o => o.Wage);
+
                 case "dateAsc":
                     return _context.Offer.Include(o => o.Category).OrderBy(o => o.CreationDate);
+
                 case "dateDesc":
                     return _context.Offer.Include(o => o.Category).OrderByDescending(o => o.CreationDate);
+
                 default:
                     return _context.Offer.Include(o => o.Category).OrderBy(o => o.Title);
             }
         }
+
         [Authorize]
         [HttpGet]
         public IActionResult MyOffers()
         {
             return View();
         }
+
         // GET: Offers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -283,7 +292,7 @@ namespace freelancerzy.Controllers
         }
 
         // POST: Offers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize(AuthenticationSchemes = "CookieAuthentication")]
         [HttpPost]
@@ -378,7 +387,7 @@ namespace freelancerzy.Controllers
         }
 
         // POST: Offers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -404,7 +413,8 @@ namespace freelancerzy.Controllers
                 if (decimal.TryParse(offer.WageValue, out wage))
                     offer.Wage = wage;
                 if (offer.Wage == 0) offer.Wage = null;
-            }else offer.Wage = null;
+            }
+            else offer.Wage = null;
 
             if (ModelState.IsValid)
             {
@@ -438,7 +448,6 @@ namespace freelancerzy.Controllers
         // GET: Offers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-           
             if (id == null)
             {
                 return NotFound();
@@ -478,13 +487,37 @@ namespace freelancerzy.Controllers
         {
             return _context.Offer.Any(e => e.Offerid == id);
         }
+
         public class Filter
         {
             public int? WageLow { get; set; }
             public int? WageUp { get; set; }
             public DateTime? DateLow { get; set; }
             public DateTime? DateUp { get; set; }
+        }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Promote(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var promotedOffer = _context.Offer.FirstOrDefault(x => x.Offerid == id);
+
+            if (promotedOffer.status == 0) promotedOffer.status = 1;
+            else promotedOffer.status = 0;
+
+            _context.Offer.Update(promotedOffer);
+            _context.Entry(promotedOffer).Property(x => x.status).IsModified = true;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("MyOffers");
+        }
+
+        public ActionResult Static(String name)
+        {
+            return View(name);
         }
     }
 }

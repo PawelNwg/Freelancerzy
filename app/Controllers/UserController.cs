@@ -535,7 +535,7 @@ namespace app.Controllers
 
         [HttpGet]
         [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id) // Edycja Userow z userListy
         {
             if (id == null)
             {
@@ -557,7 +557,7 @@ namespace app.Controllers
 
         [HttpPost]
         [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
-        public async Task<IActionResult> EditPermission(PageUser user)
+        public async Task<IActionResult> EditPermission(PageUser user) // Edycja premisji z userListy
         {
             if (user.TypeId == null) return NotFound();
 

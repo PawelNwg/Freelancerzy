@@ -1,11 +1,9 @@
 ﻿@model freelancerzy.Models.PaginatedList<freelancerzy.Models.Offer>
 
-
 @{
     var reportConfirmation = false;
     var confirmation = false;
 }
-
 
 @foreach (var offer in Model)
 {
@@ -14,7 +12,13 @@
             <tbody>
                 <tr>
                     <td width="70%">
-                        <h4 class="p-1">@offer.Title</h4>
+                        <h4 class="p-1">
+                            @offer.Title
+                            @if (offer.status == 1)
+                            {
+                                <a href="@Url.Action("Static","Offers",  new { name = "Promote" } )" id="btn" class="btn btn-primary">Oferta Promowana</a>
+                            }
+                        </h4>
                     </td>
                     <td width="30%" class="text-center">
                         @if (offer.Wage != null)
@@ -41,21 +45,12 @@
                     </td>
                     <td class="text-center align-bottom">
                         <a id="btn" class="btn btn-dark btn-outline-primary" asp-action="Details" asp-route-id="@offer.Offerid">Szczegóły</a>
-
-                       
-                        
-                        
-                        
-                       
-
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 }
-
-
 
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
@@ -65,7 +60,6 @@
 <div>
     <div style="width:50%" class="d-inline-block ">
         Jesteś na stronie: <input min="1" max="@Model.TotalPages" type="number" value="@Model.PageIndex" id="page" style="width:50px;" /> z @Model.TotalPages <button class="btn btn-default" id="goToPage">Przejdź</button>
-
     </div>
     <div style="float:right">
         <button id="prev"
@@ -86,4 +80,3 @@
         color: ghostwhite !important;
     }
 </style>
-

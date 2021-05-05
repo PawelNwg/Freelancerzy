@@ -37,6 +37,8 @@
     <Compile Include="Migrations\20210404130827_messageseen.Designer.cs" />
     <Compile Include="Migrations\20210408105523_fix.cs" />
     <Compile Include="Migrations\20210408105523_fix.Designer.cs" />
+    <Compile Include="Migrations\20210505084236_OfferStatus.cs" />
+    <Compile Include="Migrations\20210505084236_OfferStatus.Designer.cs" />
     <Compile Include="Migrations\cb2020freedbContextModelSnapshot.cs" />
   </ItemGroup>
 

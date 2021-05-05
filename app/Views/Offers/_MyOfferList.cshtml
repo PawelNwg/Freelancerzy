@@ -21,7 +21,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td width="70%" class="mb-0 pb-0">
+                    <td class="mb-0 pb-0">
 
                         @if (offer.Description?.Length > 300)
                         {
@@ -33,27 +33,27 @@
                         }
                     </td>
                     <td class="text-center align-bottom">
-                        <a class="btn btn-dark btn-outline-primary" asp-action="Details" asp-route-id="@offer.Offerid">Szczegóły</a>
-                        
-                        <a class="btn btn-dark btn-outline-primary" asp-action="Edit" asp-route-id="@offer.Offerid">Edytuj</a>
+                        <div style="width: 400px">
 
-                        <a class="btn btn-dark btn-outline-primary" asp-action="Delete" asp-route-id="@offer.Offerid">Usuń</a>
+                            <a class="btn btn-primary" asp-action="Promote" asp-route-id="@offer.Offerid">Promuj</a>
 
-                        @if (offer.ExpirationDate < DateTime.Now)
-                        {
-                        <div style="clear:both; margin-top:10px;">
-                            <span class="text-danger">Oferta wygasła</span>
+                            <a class="btn btn-dark btn-outline-primary" asp-action="Details" asp-route-id="@offer.Offerid">Szczegóły</a>
+
+                            <a class="btn btn-dark btn-outline-primary" asp-action="Edit" asp-route-id="@offer.Offerid">Edytuj</a>
+
+                            <a class="btn btn-dark btn-outline-primary" asp-action="Delete" asp-route-id="@offer.Offerid">Usuń</a>
+
+                            @if (offer.ExpirationDate < DateTime.Now)
+                            {
+                                <div style="clear:both; margin-top:10px;">
+                                    <span class="text-danger">Oferta wygasła</span>
+                                </div>
+                            }
                         </div>
-                        }
                     </td>
-
                 </tr>
-
             </tbody>
         </table>
-
-
-
     </div>
 }
 
@@ -70,7 +70,6 @@
 <div>
     <div style="width:50%" class="d-inline-block ">
         Jesteś na stronie: <input min="1" max="@Model.TotalPages" type="number" value="@Model.PageIndex" id="page" style="width:50px;" /> z @Model.TotalPages <button class="btn btn-default" id="goToPage">Przejdź</button>
-
     </div>
     <div style="float:right">
         <button id="prev"
@@ -86,6 +85,3 @@
 <script>
     var totalPages = @Model.TotalPages;
 </script>
-
-
-

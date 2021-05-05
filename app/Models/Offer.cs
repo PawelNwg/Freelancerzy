@@ -32,7 +32,7 @@ namespace freelancerzy.Models
         public int ViewCounter { get; set; }
 
         public bool IsReported { get; set; }
-
+        public int status { get; set; }
 
         [Display(Name = "Stawka")]
         [DataType(DataType.Currency)]
