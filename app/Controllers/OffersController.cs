@@ -104,7 +104,6 @@ namespace freelancerzy.Controllers
 
             return View(user);
         }
-
         [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         [HttpPost]
         public async Task<IActionResult> BlockUser(int? id, int ReasonId)
@@ -268,14 +267,14 @@ namespace freelancerzy.Controllers
                 .Include(o => o.User)
                 .FirstOrDefaultAsync(m => m.Offerid == id);
 
-            offer.ViewCounter++;
-            _context.Update(offer);
-            await _context.SaveChangesAsync();
-
             if (offer == null)
             {
                 return NotFound();
             }
+
+            offer.ViewCounter++;
+            _context.Update(offer);
+            await _context.SaveChangesAsync();
 
             ViewBag.ReasonId = new SelectList(_context.OfferReportReason, "ReasonId", "Description");
 
@@ -446,6 +445,7 @@ namespace freelancerzy.Controllers
         }
 
         // GET: Offers/Delete/5
+        [Authorize(AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

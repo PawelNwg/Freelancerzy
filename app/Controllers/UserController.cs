@@ -31,7 +31,21 @@ namespace app.Controllers
 
         private readonly ITokenManager _tokenManager;
 
+        //private readonly ILogger<UserController> _logger;
+        public UserController(cb2020freedbContext context, IConfiguration config, ITokenManager tokenManager)
+        {
+            _context = context;
+            _config = config;
+            _tokenManager = tokenManager;
+        }
+
+        //public UserController(ILogger<UserController> logger)
+        //{
+        //    _logger = logger;
+        //}
+
         // GET: User List
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> List()
         {
             ViewData["TypeId"] = new SelectList(_context.Usertype, "Typeid", "Name");
@@ -153,6 +167,7 @@ namespace app.Controllers
             return RedirectToAction("ReportedUsers");
         }
 
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> ReportedDetails(int? id)
         {
             if (id == null)
@@ -168,6 +183,7 @@ namespace app.Controllers
         }
 
         // GET: User/Details/5
+        [Authorize(AuthenticationSchemes = "CookieAuthentication")]
         public IActionResult MyDetails()
         {
             String email = this.User.Identity.Name;
@@ -182,6 +198,7 @@ namespace app.Controllers
         }
 
         // GET: User/Details/5
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -204,6 +221,7 @@ namespace app.Controllers
 
         // GET: PageUser/Delete/5
         //[ValidateAntiForgeryToken]
+        [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -234,18 +252,7 @@ namespace app.Controllers
             return RedirectToAction(nameof(List));
         }
 
-        //private readonly ILogger<UserController> _logger;
-        public UserController(cb2020freedbContext context, IConfiguration config, ITokenManager tokenManager)
-        {
-            _context = context;
-            _config = config;
-            _tokenManager = tokenManager;
-        }
 
-        //public UserController(ILogger<UserController> logger)
-        //{
-        //    _logger = logger;
-        //}
         public IActionResult ConfirmUserRegistration()
         {
             return View();
@@ -282,6 +289,7 @@ namespace app.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "CookieAuthentication")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("CookieAuthentication");
@@ -709,5 +717,48 @@ namespace app.Controllers
 
             await _context.SaveChangesAsync();
         }
+
+        #region Userreporting
+        [Authorize]
+        public async Task<IActionResult> UserReport(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var reporteduser = await _context.PageUser.FirstOrDefaultAsync(u => u.Userid == id);
+
+            if (reporteduser == null) return NotFound();
+
+            UserReport report = new UserReport()
+            {
+                UserReportedId = reporteduser.Userid,
+                UserReported = reporteduser
+            };
+            ViewBag.ReasonId = new SelectList(_context.UserReportReasons, "Id", "Description");
+            return View(report);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> UserReport(UserReport userReport)
+        {
+            var currUser = await _context.PageUser.FirstOrDefaultAsync(u => u.EmailAddress == HttpContext.User.Identity.Name);
+
+            userReport.UserReporterId = currUser.Userid;
+            userReport.ReportDate = DateTime.Now;
+            userReport.IsActive = true;
+
+            await _context.AddAsync(userReport);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ReportSuccess", userReport);
+
+        }
+
+        public IActionResult ReportSuccess(UserReport userReport)
+        {
+
+            return View(userReport);
+        }
+        #endregion
     }
 }

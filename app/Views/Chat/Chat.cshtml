@@ -29,12 +29,14 @@
                 @foreach(var message in Model.OrderBy(m => m.Date))
                 {
                     string containerClass,textAlign, contColor, offset;
+                    bool canBeRemoved = false,canBeReported = false;
                     if(userName == message.UserFrom.EmailAddress)
                     {
                         containerClass = "container primary";
                         textAlign = "text-left ";
                         contColor = "bg-primary";
                         offset = "flex-row-reverse";
+                        canBeRemoved = true;
                     }
                     else
                     {
@@ -42,15 +44,25 @@
                         textAlign = "text-left";
                         contColor = "bg-light";
                         offset = "flex-row";
+                        canBeReported = true;
                     }
-                    <div class="row m-2 d-flex @offset">
+                    <div class="row m-2 d-flex @offset" >
                         <div class="@offset ">
                            <br>
-                            <div class="@containerClass">
-                               <div class = "font-weight-bold text-left" > @message.Date.ToString("d.M.yyyy, HH:mm:ss")</div>
+                            <div class="@containerClass" id="message+@message.Messageid">
+                                <div class="font-weight-bold text-left">
+                                    @message.Date.ToString("d.M.yyyy, HH:mm:ss")
+                                    @if (canBeRemoved && message.Status != "Usunięta")
+                                    {<button class="btn btn-outline-info deleteBtn" onclick="deleteMessage(@message.Messageid)">Usuń</button>
+                                        }
+                                    @if(canBeReported && message.Status != "Usunięta")
+                    {
+                                <a class="btn btn-outline-info ReportBtn" asp-action="Report" asp-route-id="@message.Messageid">Zgłoś</a>
+                    }
+                                </div>
 
 @* jak chcem miec zawijane to max-width zamiast width *@
-                                <div style="max-width: 400px; overflow-wrap: break-word; " class="@textAlign @contColor p-2 ml-2">@message.Content</div>
+                                <div style="max-width: 400px; overflow-wrap: break-word; " class="@textAlign content @contColor p-2 ml-2">@message.Content</div>
 
                             </div>
                         </div>
@@ -67,8 +79,7 @@
                     <input placeholder="wprowadź tekst" id="message-input" name="Content" class="form-control rounded bg-white border border-5 border-dark" id="messageText" />
                 </div>
                 <div class="form-group ">
-                <a class="text-dark" asp-action="Chat" asp-route-chatId="@ViewBag.chatId">Przeładuj strone</a>
-                &nbsp;
+                
                 <input type="submit" value="Wyślij" id="submitButton" class="btn btn-dark"/>
                 </div>
             </form>
@@ -87,71 +98,17 @@
 @section scripts {
 
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
-<script src="~/js/messageBuilder.js"></script>
+@*<script src="~/js/messageBuilder.js"></script>*@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-    var connection = new signalR.HubConnectionBuilder()
-        .withUrl("/chatHub")
-        .build();
-    var _connectionId = '';
+    var userName = "@User.Identity.Name"
+    var connectionID = @ViewBag.chatId
 
-    connection.on("RecieveMessage",
-        function (data) {
-            console.log(data);
-            var date = new Date(data.date).toLocaleString();
-            var classList = [];
-            var offsetClass = '';
-            var containerClasses = [];
-            var contentClasses = [];
-            
-            if (data.userName == '@userName') {
-                classList = ['row', 'm-2', 'd-flex', 'flex-row-reverse']
-                offsetClass = 'flex-row-reverse';
-                containerClasses = ['container', 'primary']
-                contentClasses = ['text-left', 'bg-primary'];
-            }
-            else {
-                classList = ['row', 'm-2', 'd-flex', 'flex-row']
-                offsetClass = 'flex-row';
-                containerClasses = ['container']
-                contentClasses = ['text-left', 'bg-light'];
-            }
-            var message = messageBuilder()
-                .createMessage(classList, offsetClass, containerClasses)
-                .withHeader(date)
-                .withContent(data.text, contentClasses)
-            .build();
-            document.querySelector('.chat-body').append(message);
-            document.getElementById('chat').scrollTo(0, document.getElementById('chat').scrollHeight);
-    })
-    connection.start()
-        .then(function () {
-            connection.invoke('joinRoom', '@ViewBag.chatId');
-        })
-        .catch(function (err) {
-            console.log(err)
-        })
 
-    window.addEventListener('onunload', function () {
-        connection.invoke('leaveRoom', '@ViewBag.chatId');
-    })
-    var sendMessage = function (event) {
-        event.preventDefault();
-        var data = new FormData(event.target);
-        document.getElementById('message-input').value = '';
-        axios.post('/Chat/Create', data)
-            .then(res => {
-                console.log("Message Sent!")
-            })
-            .catch(err => {
-                console.log("Failed to send message!")
-            })
-    }
-</script>
-}
-<script>
-    $(function () {
-        
+        $(function () {
+
         document.getElementById('chat').scrollTo(0, document.getElementById('chat').scrollHeight);
     })
 </script>
+<script src="~/js/Chat.js"></script>
+}

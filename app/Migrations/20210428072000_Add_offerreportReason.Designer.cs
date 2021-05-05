@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using freelancerzy.Models;
 
 namespace freelancerzy.Migrations
 {
     [DbContext(typeof(cb2020freedbContext))]
-    partial class cb2020freedbContextModelSnapshot : ModelSnapshot
+    [Migration("20210428072000_Add_offerreportReason")]
+    partial class Add_offerreportReason
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -207,9 +209,6 @@ namespace freelancerzy.Migrations
                     b.Property<decimal?>("Wage")
                         .HasColumnName("wage")
                         .HasColumnType("decimal(10,2)");
-
-                    b.Property<int>("status")
-                        .HasColumnType("int");
 
                     b.HasKey("Offerid");
 
@@ -418,6 +417,9 @@ namespace freelancerzy.Migrations
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("ReasonId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ReportDate")
                         .HasColumnType("datetime(6)");
