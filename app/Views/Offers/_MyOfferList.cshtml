@@ -37,7 +37,6 @@
 
                             @if (offer.ExpirationDate > DateTime.Now)
                             {
-
                                     @if (offer.status == 1)
                                     {<a class="btn btn-primary" asp-action="Promote" asp-route-id="@offer.Offerid">Usun Promowanie</a>}
                                     else

@@ -511,7 +511,6 @@ namespace freelancerzy.Controllers
             _context.Entry(promotedOffer).Property(x => x.status).IsModified = true;
 
             await _context.SaveChangesAsync();
-
             return RedirectToAction("MyOffers");
         }
 
