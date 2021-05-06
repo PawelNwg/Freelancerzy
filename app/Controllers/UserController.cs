@@ -252,7 +252,6 @@ namespace app.Controllers
             return RedirectToAction(nameof(List));
         }
 
-
         public IActionResult ConfirmUserRegistration()
         {
             return View();
@@ -719,6 +718,7 @@ namespace app.Controllers
         }
 
         #region Userreporting
+
         [Authorize]
         public async Task<IActionResult> UserReport(int? id)
         {
@@ -751,14 +751,13 @@ namespace app.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("ReportSuccess", userReport);
-
         }
 
         public IActionResult ReportSuccess(UserReport userReport)
         {
-
             return View(userReport);
         }
-        #endregion
+
+        #endregion Userreporting
     }
 }

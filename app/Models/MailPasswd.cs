@@ -8,13 +8,13 @@ namespace freelancerzy.Models
 {
     public class MailPasswd
     {
-        private String smtpEmailAdress = "freeelancerzy@gmail.com";
+        private String smtpEmailAdress = "freeelancerzy@outlook.com";
         public String SmtpEmailAdress { get { return smtpEmailAdress; } }
 
         private String emailSubject = "Freelancerzy - nowe hasło";
         public String EmailSubject { get { return emailSubject; } }
 
-        private String smtpHost = "smtp.gmail.com";
+        private String smtpHost = "smtp.office365.com";
         public String SmtpHost { get { return smtpHost; } }
 
         private int smtpPort = 587;
