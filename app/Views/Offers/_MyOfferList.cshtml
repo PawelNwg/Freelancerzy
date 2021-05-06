@@ -35,8 +35,14 @@
                     <td class="text-center align-bottom">
                         <div style="width: 400px">
 
-                            <a class="btn btn-primary" asp-action="Promote" asp-route-id="@offer.Offerid">Promuj</a>
+                            @if (offer.ExpirationDate > DateTime.Now)
+                            {
 
+                                    @if (offer.status == 1)
+                                    {<a class="btn btn-primary" asp-action="Promote" asp-route-id="@offer.Offerid">Usun Promowanie</a>}
+                                    else
+                                    {<a class="btn btn-primary" asp-action="Promote" asp-route-id="@offer.Offerid">Promuj</a>}
+                            }
                             <a class="btn btn-dark btn-outline-primary" asp-action="Details" asp-route-id="@offer.Offerid">Szczegóły</a>
 
                             <a class="btn btn-dark btn-outline-primary" asp-action="Edit" asp-route-id="@offer.Offerid">Edytuj</a>

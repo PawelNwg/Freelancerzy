@@ -504,7 +504,7 @@ namespace freelancerzy.Controllers
 
             var promotedOffer = _context.Offer.FirstOrDefault(x => x.Offerid == id);
 
-            if (promotedOffer.status == 0) promotedOffer.status = 1;
+            if (promotedOffer.status == 0 && promotedOffer.ExpirationDate > DateTime.Now) promotedOffer.status = 1;
             else promotedOffer.status = 0;
 
             _context.Offer.Update(promotedOffer);
