@@ -104,6 +104,7 @@ namespace freelancerzy.Controllers
 
             return View(user);
         }
+
         [Authorize(Roles = "administrator", AuthenticationSchemes = "CookieAuthentication")]
         [HttpPost]
         public async Task<IActionResult> BlockUser(int? id, int ReasonId)
@@ -509,6 +510,28 @@ namespace freelancerzy.Controllers
 
             _context.Offer.Update(promotedOffer);
             _context.Entry(promotedOffer).Property(x => x.status).IsModified = true;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("MyOffers");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Renew(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var offer = _context.Offer.FirstOrDefault(x => x.Offerid == id);
+
+            if (offer.ExpirationDate <= DateTime.Now)
+            {
+                offer.ExpirationDate = DateTime.Now.AddDays(14);
+                offer.status = 0;
+            }
+
+            _context.Offer.Update(offer);
+            _context.Entry(offer).Property(x => x.ExpirationDate).IsModified = true;
+            _context.Entry(offer).Property(x => x.status).IsModified = true;
 
             await _context.SaveChangesAsync();
             return RedirectToAction("MyOffers");

@@ -37,23 +37,26 @@
 
                             @if (offer.ExpirationDate > DateTime.Now)
                             {
-                                    @if (offer.status == 1)
-                                    {<a class="btn btn-primary" asp-action="Promote" asp-route-id="@offer.Offerid">Usun Promowanie</a>}
-                                    else
-                                    {<a class="btn btn-primary" asp-action="Promote" asp-route-id="@offer.Offerid">Promuj</a>}
+                                @if (offer.status == 1)
+                                {<a class="btn btn-primary" asp-action="Promote" asp-route-id="@offer.Offerid">Usun Promowanie</a>}
+                                else
+                                {<a class="btn btn-primary" asp-action="Promote" asp-route-id="@offer.Offerid">Promuj</a>}
+                            }
+                            else
+                            {
+                                <div style="clear:both; margin-top:10px;">
+                                    <span class="text-danger">Oferta wygasła</span>
+                                </div>
+                                <a class="btn btn-dark btn-outline-primary" id="renewOffer" asp-action="Renew" asp-route-id="@offer.Offerid">Odnów</a>
                             }
                             <a class="btn btn-dark btn-outline-primary" asp-action="Details" asp-route-id="@offer.Offerid">Szczegóły</a>
 
                             <a class="btn btn-dark btn-outline-primary" asp-action="Edit" asp-route-id="@offer.Offerid">Edytuj</a>
 
                             <a class="btn btn-dark btn-outline-primary" asp-action="Delete" asp-route-id="@offer.Offerid">Usuń</a>
-
-                            @if (offer.ExpirationDate < DateTime.Now)
-                            {
-                                <div style="clear:both; margin-top:10px;">
-                                    <span class="text-danger">Oferta wygasła</span>
-                                </div>
-                            }
+                            @*<div id="renewOfferDialog" title="Odnowienie oferty @offer.Title - @offer.Offerid">
+                                    Oferta została odnowiona, czas ważności 2 tygodnie od daty @offer.ExpirationDate
+                                </div>*@
                         </div>
                     </td>
                 </tr>
@@ -89,4 +92,16 @@
 </div>
 <script>
     var totalPages = @Model.TotalPages;
+
+    $(function () {
+
+        $('#renewOffer').click(function () {
+            alert("Oferta została odnowiona na czas dwóch tygodni");
+        });
+
+    });
 </script>
+@section scripts{
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+}
