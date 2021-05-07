@@ -19,6 +19,26 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
+
+        .loader {
+            margin: auto;
+            border: 2px solid #f3f3f3; /* Light grey */
+            border-top: 2px solid #383838;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
@@ -28,14 +48,26 @@
 
     <div class="container bg-white border border-primary rounded mt-3 pt-2 px-5">
         <div id="filtr" style="text-align: center;">
-            <input id="userId" class="form-control-lg" type="number" min=1 style="padding:3px; width:20%" maxlength="6"
+            <input id="userId" class="form-control-lg" type="number" min=1 style="        padding: 3px;
+        width: 20%;
+        height: 40px" maxlength="6"
                 placeholder="Id użytkownika">
-            <select asp-items="ViewBag.TypeId" id="typeId" style="padding:4px; margin:2px; width:20%">
+            <select asp-items="ViewBag.TypeId" id="typeId" style="        padding: 4px;
+        margin: 2px;
+        width: 22%;
+        height: 40px;
+        border-width: 2px;
+        border-style: inset;
+        border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));"
+                    class="form-control-lg text-muted">
                 <option value="0" >Wszyscy</option>
             </select>
-            <input id="userEmail" class="form-control-lg" type="text" style="padding:3px; width:30%"
+            <input id="userEmail" class="form-control-lg" type="text" style="        padding: 3px;
+        width: 30%;
+        height: 40px"
                 placeholder="Email użytkownika">
-            <button id="searchBtn" type="button" style="padding:7px 30px; margin:0px 0px 10px 10px"
+            <button id="searchBtn" type="button" style="        padding: 7px 30px;
+        margin: 0px 0px 10px 10px; height: 40px"
                 class="btn btn-outline-primary btn-dark">Szukaj</button>
         </div>
         
