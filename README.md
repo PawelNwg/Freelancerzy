@@ -1,5 +1,5 @@
 # Freelancerzy  
-### Projekt realizywany w ramach projektu zespołowego
+### Projekt realizywany w ramach projektu zespołowego.
 
 ### Twórcy
   - Paweł Niewęgłowski
